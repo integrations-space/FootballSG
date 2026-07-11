@@ -219,6 +219,7 @@ tbody tr:hover td{background:var(--surface-2)}
         <button data-v="treemap">▦ Treemap</button>
         <button data-v="charts">▮ Charts</button>
         <button data-v="table">☰ Table</button>
+        <button data-v="register">✎ Register &amp; contact</button>
         <button data-v="pathway">↗ Pathway</button>
       </div>
       <div class="panel">
@@ -452,6 +453,7 @@ const HINTS={
  treemap:"Clubs nested inside their region. Tile area scales with the lens metric (equal otherwise); colour follows the lens.",
  charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
  table:"Every field, sortable. Click a row for the full scouting card with sources.",
+ register:"Where and how to sign up — location, training schedule, weekend fit, and tappable register / call / email for every club. Sorted best-fit & nearest first.",
  pathway:"How a player climbs from an open academy into the elite pathway — the ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season)."
 };
 
@@ -712,6 +714,37 @@ function scatterChart(clubs){
  return svg;
 }
 
+/* ===================== VIEW: REGISTER & CONTACT ===================== */
+function renderRegister(vp,clubs){
+ const wrap=document.createElement("div");wrap.style.cssText="padding:16px";
+ wrap.innerHTML=`<div style="background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--ink-2);margin-bottom:14px;line-height:1.5">
+   <b>Before you commit:</b> the training <b>day &amp; time depends on the specific U14/U15 slot at each venue</b> — always ask the club to confirm it (e.g. Barça offered a <b>Fri 7pm weekday</b> slot). Cards are sorted <b>best weekend-fit &amp; nearest first</b>.</div>`;
+ const grid=document.createElement("div");grid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px";
+ const sorted=clubs.slice().sort((a,b)=>fitScore(b)-fitScore(a)||tmins(a)-tmins(b));
+ sorted.forEach(c=>{
+  const fitBadge=c.wdDay?["Weekday-daytime clash","b"]:c.we?["Weekend fixtures ✓","g"]:["No weekend","b"];
+  const acts=[];
+  if(c.reg)acts.push(`<a class="cbtn primary" href="${c.reg}" target="_blank" rel="noopener">↗ Register / trial</a>`);
+  if(c.web)acts.push(`<a class="cbtn" href="https://${c.web.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">◍ Website</a>`);
+  if(c.email)acts.push(`<a class="cbtn" href="mailto:${c.email}">✉ ${c.email}</a>`);
+  if(c.phone)acts.push(`<a class="cbtn" href="tel:${c.phone.replace(/[^+\d]/g,"")}">☎ ${c.phone}</a>`);
+  const fld=(k,v)=>`<div style="margin-top:5px"><span style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:800">${k}</span><div style="font-size:12.5px;color:var(--ink);line-height:1.45">${v}</div></div>`;
+  const card=document.createElement("div");card.style.cssText="border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--surface);display:flex;flex-direction:column;gap:2px";
+  card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+     <div style="font-weight:800;font-size:14.5px;line-height:1.2">${c.name}</div><span class="chip ${c.cat}">${c.cat}</span></div>
+   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:7px">
+     <span class="chip ${fitBadge[1]}">${fitBadge[0]}</span>
+     <span class="chip">${tmins(c)} min ${modeLabel()}</span>
+     <span class="chip">fit ${fitScore(c)}/3</span></div>
+   ${fld("Location",c.loc+" · "+REGION_LABEL[c.region])}
+   ${fld("Training",c.sched)}
+   ${fld("How to get in",c.trial||c.selText)}
+   <div class="actions" style="padding:10px 0 0;margin:0">${acts.length?acts.join(""):'<span style="font-size:12px;color:var(--muted)">Contact via website / socials</span>'}</div>`;
+  grid.appendChild(card);
+ });
+ wrap.appendChild(grid);vp.appendChild(wrap);
+}
+
 /* ===================== VIEW: PATHWAY ===================== */
 const LADDER=[
  ["1","Play often — open academy + school team","Enrol in a high-volume open academy (e.g. JSSL Elite 3×/wk, ActiveSG, Barça/Borussia) and play National School Games (C Division, Sec 1–2). This is where he gets good and gets seen — NSG is a free FAS scouting ground.","--c2"],
@@ -867,16 +900,16 @@ function render(){
  const clubs=filtered();
  renderTiles(clubs);
  $("#pill-count").textContent=clubs.length+" clubs";
- $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",pathway:"Open → Elite pathway"}[state.view];
+ $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",register:"Register & contact",pathway:"Open → Elite pathway"}[state.view];
  $("#v-hint").textContent=HINTS[state.view];
- $("#v-count").textContent=state.view==="pathway"?"How to progress":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
- const showLegend=state.view!=="table"&&state.view!=="charts"&&state.view!=="pathway";
+ $("#v-count").textContent=state.view==="pathway"?"How to progress":state.view==="register"?"How to sign up":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
+ const showLegend=!["table","charts","pathway","register"].includes(state.view);
  $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
  const note=$("#note");
  if(state.view==="table"||state.view==="charts"){note.classList.remove("hide");note.innerHTML="<b>Read me:</b> "+META.note;}else note.classList.add("hide");
  cancelAnim();const vp=$("#viewport");vp.innerHTML="";
  if(!clubs.length){vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">No clubs match these filters. Loosen a constraint on the left.</div>';return;}
- ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable,pathway:renderPathway}[state.view])(vp,clubs);
+ ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable,register:renderRegister,pathway:renderPathway}[state.view])(vp,clubs);
  if(state.sel&&!clubs.find(c=>c.id===state.sel)){/* keep drawer */}
 }
 
