@@ -10,7 +10,7 @@ self-contained file (no build step, no dependencies, no network calls).
 
 ## What it shows
 
-15 clubs across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
+22 clubs island-wide across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
 and **open enrolment** (brand & community academies) — with five ways to read the same data:
 
 | View | What it answers |
