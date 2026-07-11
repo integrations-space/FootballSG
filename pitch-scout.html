@@ -417,18 +417,24 @@ const CLUBS=[
   trial:"Trial availability not confirmed on official channels — call to confirm.",
   email:"soccerschools@chelseafc.com",phone:"+65 6440 5503",web:"chelseafc.com/en/soccer-schools",
   src:["chelseafc.com/en/soccer-schools"]},
- {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"Jurongville / Kranji / Kent Ridge Sec",km:5,car:12,transit:30,
-  ages:["U14","U15","U16"],feeMo:65,feeConf:"med",feeText:"~S$130–180/term (subsidised) — cheapest option",
+ {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"West venues: Jurongville, Kent Ridge, Kranji, Spectra Sec, Jurong Pioneer JC",km:5,car:12,transit:30,
+  ages:["U14","U15","U16"],feeMo:65,feeConf:"high",feeText:"S$130 for 19 sessions (Season 3 2026) — subsidised, cheapest option",
   local:["Broad-base development"],intl:false,intlText:"National FAS pathway (no overseas tours)",
   coach:"FAS / Sport Singapore coaches",tier:"Licensed",cred:"FAS national programme",
-  wd:true,we:true,wdDay:false,sched:"1–2×/wk per centre; weekend norm; DC+ midweek",
-  sel:"tiered",selText:"Open broad-base; selective DC+ (only to U12)",
-  alumni:"Feeds FAS national development",conf:"med",
-  join:"Open seasonal registration online each season (no trial/selection for the base academy). Sat/Sun sessions, 10 weeks per season at ActiveSG centres. Talented players are scouted into a Development Squad at the season-end carnival.",
-  req:"Ages 3–16. Open enrolment; Development Squad entry is by talent ID, not open registration.",
-  trial:"No trial — open seasonal programme (~S$130/season historically; verify on myactivesg). Register via the ActiveSG app or go.gov.sg/afa-register.",
-  email:"ActiveSG_Football@sport.gov.sg",web:"activesgcircle.gov.sg/academies-clubs/football",reg:"https://go.gov.sg/afa-register",
-  src:["fas.org.sg/minor_team/afa","activesgcircle.gov.sg"]},
+  wd:false,we:true,wdDay:false,sched:"Saturday sessions, 90 min × 19 per season (Season 3 2026 confirmed weekend; low intensity)",
+  slots:"All Saturday, near Tengah — Jurongville · Kent Ridge · Kranji: 10:30am–12pm · Spectra Sec · Jurong Pioneer JC: 3–4:30pm",
+  sel:"tiered",selText:"Open broad-base; selective DC / DC+ by talent ID (scouted, mostly younger bands)",
+  alumni:"Feeds FAS national development",conf:"high",
+  review:{conf:"medium (independent parent reviews online are sparse)",
+   verdict:"Great value and convenient, but a low-intensity, broad-base recreational programme — not an elite escalator. Licensed coaches (curriculum led by ex-international Aleksandar Duric); quality varies by centre.",
+   pros:["~S$6–7 per session, payable with ActiveSG credits","Licensed coaches, inclusive, character-focused","Island-wide weekend/west venues; fuss-free app booking"],
+   cons:["'Low intensity' / recreational by design","Selective DC+ tier only runs U8–U12 — no in-house step for a 14yo","Coach-dependent quality; mixed-ability groups can under-stretch a strong player"],
+   note:"For an ambitious 14yo aiming at the Singapore Youth League: use ActiveSG as cheap supplementary volume, but the decisive move is a club Centre-of-Excellence U15 trial (FC Jurong, Lion City Sailors, Balestier) or a competitive academy like JSSL — ActiveSG alone won't carry him to SYL."},
+  join:"Open seasonal booking — no trial/selection for the base academy. Browse the current season on the ActiveSG site/app, pick a venue + Saturday time, and register. Talented players are scouted into a Development Squad at the season-end carnival.",
+  req:"Ages 3–16 (Youth). Open enrolment; Development Squad entry is by talent ID, not open registration.",
+  trial:"No trial — just book a specific venue & Saturday slot for the season on the ActiveSG site/app.",
+  email:"ActiveSG_Football@sport.gov.sg",web:"activesg.gov.sg/programmes?keywords=Football",reg:"https://activesg.gov.sg/programmes?keywords=Football&activity-ids=mlhxSk7lNvZvXXSQXD7Ea",
+  src:["activesg.gov.sg/programmes?keywords=Football","fas.org.sg/minor_team/afa"]},
  {id:"tcfc",name:"Turf City FC",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
   ages:["U14","U15","U16"],feeMo:120,feeConf:"low",feeText:"~S$250–330/term (est)",
   local:["Community youth leagues"],intl:false,intlText:"None documented",
@@ -492,7 +498,7 @@ const HINTS={
  charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
  table:"Every field, sortable. Click a row for the full scouting card with sources.",
  register:"Where and how to sign up — location, training schedule, weekend fit, and tappable register / call / email for every club. Sorted best-fit & nearest first.",
- pathway:"How a player climbs from an open academy into the elite pathway — the ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season)."
+ pathway:"The goal: reach the Singapore Youth League. Your U15→U17 roadmap, the open→elite ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season)."
 };
 
 /* ----- fit + helpers ----- */
@@ -829,6 +835,11 @@ function renderRegister(vp,clubs){
 }
 
 /* ===================== VIEW: PATHWAY ===================== */
+const SYL_ROADMAP=[
+ ["2026 · now — U15 band","Enrol & trial","A 2012-born is already in the U15 band. Trial straight into a club Centre-of-Excellence U15 squad — FC Jurong, Tanjong Pagar, Lion City Sailors or Balestier. Not ready yet? Build volume at ActiveSG + school football (NSG C Division) + a competitive academy (JSSL), then re-trial at the Oct–Nov window.","--c2"],
+ ["2027 · age 15 — U15","Feature in SYL U15","Play the FAS Centre-of-Excellence U15 League. Earn regular game time, get a FAS player profile, and stay on the scouts' radar.","--c3"],
+ ["2028 · age 16 — U17","Compete in SYL U17","Step up to the U17 COE League — the level FAS/NDC scouts watch most closely for national selection.","--c8"]
+];
 const LADDER=[
  ["1","Play often — open academy + school team","Enrol in a high-volume open academy (e.g. JSSL Elite 3×/wk, ActiveSG, Barça/Borussia) and play National School Games (C Division, Sec 1–2). This is where he gets good and gets seen — NSG is a free FAS scouting ground.","--c2"],
  ["2","Trial into an SPL Centre of Excellence","When he's ready, register for a club's open COE trial. Nearest & west: Albirex → FC Jurong and Tanjong Pagar (both Jurong East). Most COE trials are free — the barrier is ability, not access.","--c3"],
@@ -850,6 +861,16 @@ const CALENDAR=[
 function renderPathway(vp){
  const box=document.createElement("div");box.style.cssText="padding:16px;display:grid;gap:24px";
  const sec=t=>`<div style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:12px">${t}</div>`;
+ // GOAL: Singapore Youth League roadmap
+ let goalSteps="";
+ SYL_ROADMAP.forEach(([w,h,d,c])=>{const col=cssv(c);goalSteps+=`<div style="display:grid;grid-template-columns:150px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
+   <div style="font-weight:800;font-size:12.5px;color:${col}">${w}</div>
+   <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
+ const goal=`<div style="border:1px solid var(--accent);border-radius:12px;padding:14px 15px;background:color-mix(in srgb,var(--accent) 7%,var(--surface))">
+   <div style="font-weight:800;font-size:16px">Goal — reach the Singapore Youth League (SYL)</div>
+   <div style="font-size:12.5px;color:var(--ink-2);margin:4px 0 12px;line-height:1.5">SYL is the elite club league, run at <b>U15 and U17</b> bands (there is no standalone U14 or U16). A <b>2012-born is already U15</b>, so the ladder is: <b>enrol/trial now → feature in U15 → step up to U17</b>. Confirm his birth <b>month</b> — bands go by birth year.</div>
+   <div style="display:grid;gap:9px">${goalSteps}</div>
+   <div style="font-size:12px;color:var(--muted);margin-top:11px">SYL clubs to target near Tengah: <b>Albirex → FC Jurong</b> &amp; <b>Tanjong Pagar</b> (Jurong East, ~13 min), plus <b>Lion City Sailors</b> and <b>Balestier</b>. The fastest route in is a <b>COE U15 trial now</b> — ActiveSG &amp; school football are the feeder if he needs more development first.</div></div>`;
  // LADDER
  let l=`<div>${sec("The ladder — open → elite")}<div style="display:grid;gap:10px">`;
  LADDER.forEach(([n,h,d,c])=>{const col=cssv(c);l+=`<div style="display:grid;grid-template-columns:40px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--surface)">
@@ -873,7 +894,7 @@ function renderPathway(vp){
    <div style="font-weight:800;font-size:13px;color:${col}">${w}</div>
    <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
  cal+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">⚠ Exact Oct–Dec 2026 trial dates aren't published yet (it's ${META.compiled}). Each club's card links its trial page/form — that's where the dates appear. Best move: contact FC Jurong & Tanjong Pagar now to be told when the 2027 COE trial opens.</div></div>`;
- box.innerHTML=l+e+cal;vp.appendChild(box);
+ box.innerHTML=goal+l+e+cal;vp.appendChild(box);
 }
 
 /* ===================== VIEW: TABLE ===================== */
@@ -904,6 +925,42 @@ function renderTable(vp,clubs){
  t.appendChild(tb);wrap.appendChild(t);vp.appendChild(wrap);
 }
 
+/* ===================== ActiveSG Season 3 2026 venues (user-provided) ===================== */
+const ASG_SESSIONS=[
+ {v:"Jurongville Secondary",r:"west",km:5,car:12,t:"10:30am–12pm",avail:19,cap:40},
+ {v:"Kent Ridge Secondary",r:"west",km:5,car:12,t:"10:30am–12pm",avail:2,cap:20},
+ {v:"Kranji Secondary",r:"west",km:6,car:13,t:"10:30am–12pm",avail:19,cap:45},
+ {v:"Spectra Secondary",r:"west",km:7,car:14,t:"3:00–4:30pm",avail:7,cap:30},
+ {v:"Jurong Pioneer JC",r:"west",km:8,car:15,t:"3:00–4:30pm",avail:6,cap:20},
+ {v:"Queensway Secondary",r:"central",km:14,car:22,t:"2:30–4:00pm",avail:12,cap:30},
+ {v:"Naval Base Secondary",r:"north",km:18,car:26,t:"9:30–11:00am",avail:12,cap:30},
+ {v:"Bendemeer Secondary",r:"central",km:19,car:28,t:"3:00–4:30pm",avail:7,cap:30},
+ {v:"Bedok Green Secondary",r:"east",km:25,car:38,t:"3:00–4:30pm",avail:12,cap:30},
+ {v:"Junyuan Primary",r:"east",km:28,car:40,t:"10:30am–12pm",avail:3,cap:25},
+ {v:"Meridian Secondary",r:"east",km:30,car:42,t:"10:30am–12pm",avail:6,cap:40}
+];
+function asgSessionsBlock(){
+ const rows=ASG_SESSIONS.slice().sort((a,b)=>a.car-b.car);
+ const maxc=Math.max(...rows.map(r=>r.car));
+ const west=rows.filter(r=>r.km<=15).length;
+ const bars=rows.map(r=>{
+  const col=r.car<=15?"--good":r.car<=25?"--warn":"--bad";
+  const w=Math.max(4,Math.round(r.car/maxc*100));
+  const sp=r.avail<=3?"b":r.avail<=8?"w":"g";
+  return `<div style="display:grid;grid-template-columns:150px 1fr 40px 72px;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)">
+    <div style="font-size:12px;font-weight:700;line-height:1.15">${r.v.replace(" Secondary"," Sec").replace(" Primary"," Pri")}<div style="font-weight:500;color:var(--muted);font-size:10.5px">${REGION_LABEL[r.r]} · Sat ${r.t}</div></div>
+    <div style="height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden"><div style="height:100%;width:${w}%;background:var(${col})"></div></div>
+    <div class="tnum" style="font-size:11.5px;color:var(--ink-2)">${r.car}m</div>
+    <div><span class="chip ${sp}">${r.avail}/${r.cap} left</span></div></div>`;
+ }).join("");
+ return `<div class="join" style="margin-top:14px"><div class="jh">ActiveSG Season 3 2026 · Youth venues <span class="badge">all Saturday · $130 · 19 sessions</span></div>
+  <div style="padding:11px 12px">
+   <div style="font-size:12px;color:var(--ink-2);margin-bottom:4px">All 11 bookable venues, <b>nearest to Tengah first</b>. Bar = travel time (car); chip = spots left — fewer means book fast.</div>
+   ${bars}
+   <div style="font-size:11px;color:var(--muted);margin-top:9px"><b>${west} west venues within ~15 min.</b> Kent Ridge (2 left) &amp; Junyuan (3 left) are nearly full; Jurongville &amp; Kranji have the most room (19 each).</div>
+  </div></div>`;
+}
+
 /* ===================== DRAWER ===================== */
 function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.innerHTML="";return;}const c=CLUBS.find(x=>x.id===id);if(!c){d.className="drawer";return;}
  const f=fitScore(c);
@@ -924,7 +981,20 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
    <div class="f"><div class="kk">Data confidence</div><div class="vv"><span class="chip ${c.conf==="high"?"g":c.conf==="med"?"w":"b"}">${c.conf}</span></div></div>
   </div>
   ${joinBlock(c)}
+  ${c.id==="asg"?asgSessionsBlock():""}
+  ${c.review?reviewBlock(c):""}
   <div class="src">Sources: ${c.src.map(s=>`<a href="https://${s.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">${s}</a>`).join(" · ")}</div>`;
+}
+function reviewBlock(c){const r=c.review;if(!r)return "";
+ const lab=(t,col)=>`<div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:var(${col})">${t}</div>`;
+ return `<div class="join" style="margin-top:14px"><div class="jh">Independent review <span class="badge">confidence: ${r.conf||"—"}</span></div>
+  <div style="padding:11px 12px;font-size:12.5px;color:var(--ink-2);line-height:1.5">
+   <div style="color:var(--ink);font-weight:600;margin-bottom:9px">${r.verdict}</div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 16px">
+     <div>${lab("Pros","--good")}${r.pros.map(p=>`<div style="margin-top:3px">✓ ${p}</div>`).join("")}</div>
+     <div>${lab("Cons","--bad")}${r.cons.map(p=>`<div style="margin-top:3px">✗ ${p}</div>`).join("")}</div></div>
+   ${r.note?`<div style="margin-top:10px;padding:9px 11px;background:var(--surface-2);border-radius:8px;border-left:3px solid var(--accent)"><b>For your case:</b> ${r.note}</div>`:""}
+  </div></div>`;
 }
 function joinBlock(c){
  const badge=c.cat==="elite"?"Selection-based":"Open enrolment";
