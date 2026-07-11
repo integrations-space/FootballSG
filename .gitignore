@@ -1,0 +1,5 @@
+# scratch / temp
+*.tmp
+c.js
+pitch_check.js
+dom_out.html

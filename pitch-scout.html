@@ -1,0 +1,751 @@
+<title>The Pitch — U14 Scouting Board (Singapore, west-side)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ground:#f5f8f3; --surface:#fdfefb; --surface-2:#eaf0e7;
+  --ink:#111512; --ink-2:#43514a; --muted:#7d8b82;
+  --line:#dbe4da; --line-2:#c6d2c5; --ring:rgba(17,21,18,.10);
+  --accent:#1f8a4c; --accent-2:#125f38; --chalk:#ffffff;
+  --good:#0ca30c; --warn:#e0920a; --bad:#d03b3b;
+  --c1:#2a78d6; --c2:#1baf7a; --c3:#eda100; --c4:#008300;
+  --c5:#4a3aa7; --c6:#e34948; --c7:#e87ba4; --c8:#eb6834;
+  --shadow:0 1px 2px rgba(17,21,18,.05),0 10px 26px -14px rgba(17,21,18,.22);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --ground:#0e130f; --surface:#151c17; --surface-2:#1d251f;
+  --ink:#f1f5ef; --ink-2:#b7c4bb; --muted:#8a978e;
+  --line:#26302a; --line-2:#333e37; --ring:rgba(255,255,255,.12);
+  --accent:#33b06a; --accent-2:#84dba6; --chalk:#e9f2ec;
+  --good:#2fbf4a; --warn:#f0a92a; --bad:#e46464;
+  --c1:#3987e5; --c2:#199e70; --c3:#c98500; --c4:#0a9a0a;
+  --c5:#9085e9; --c6:#e66767; --c7:#d55181; --c8:#d95926;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -14px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  --ground:#0e130f; --surface:#151c17; --surface-2:#1d251f;
+  --ink:#f1f5ef; --ink-2:#b7c4bb; --muted:#8a978e;
+  --line:#26302a; --line-2:#333e37; --ring:rgba(255,255,255,.12);
+  --accent:#33b06a; --accent-2:#84dba6; --chalk:#e9f2ec;
+  --good:#2fbf4a; --warn:#f0a92a; --bad:#e46464;
+  --c1:#3987e5; --c2:#199e70; --c3:#c98500; --c4:#0a9a0a;
+  --c5:#9085e9; --c6:#e66767; --c7:#d55181; --c8:#d95926;
+}
+:root[data-theme="light"]{
+  --ground:#f5f8f3; --surface:#fdfefb; --surface-2:#eaf0e7;
+  --ink:#111512; --ink-2:#43514a; --muted:#7d8b82;
+  --line:#dbe4da; --line-2:#c6d2c5; --ring:rgba(17,21,18,.10);
+  --accent:#1f8a4c; --accent-2:#125f38; --chalk:#ffffff;
+  --good:#0ca30c; --warn:#e0920a; --bad:#d03b3b;
+  --c1:#2a78d6; --c2:#1baf7a; --c3:#eda100; --c4:#008300;
+  --c5:#4a3aa7; --c6:#e34948; --c7:#e87ba4; --c8:#eb6834;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.tnum{font-variant-numeric:tabular-nums}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:800;letter-spacing:-.01em}
+a{color:var(--accent-2)}
+button{font-family:inherit}
+.wrap{max-width:1260px;margin:0 auto;padding:20px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:14px}
+.crest{width:46px;height:46px;border-radius:11px;flex:0 0 auto;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,var(--accent-2) 6px 12px);position:relative;box-shadow:inset 0 0 0 2px var(--chalk)}
+.crest::after{content:"";position:absolute;inset:7px;border:2px solid var(--chalk);border-radius:50%}
+.brand h1{font-size:22px;line-height:1.05}
+.brand .sub{font-size:12.5px;color:var(--ink-2);margin-top:3px;max-width:60ch}
+.topmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{font-size:11px;font-weight:700;letter-spacing:.04em;padding:5px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2);background:var(--surface);white-space:nowrap}
+.pill.home{border-color:var(--accent);color:var(--accent-2)}
+.themebtn{cursor:pointer;background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--ink-2)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-bottom:18px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.tile .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tile .v{font-size:25px;font-weight:800;margin-top:4px;letter-spacing:-.02em}
+.tile .d{font-size:12px;color:var(--ink-2);margin-top:1px}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:start}
+@media (max-width:920px){.layout{grid-template-columns:1fr}}
+.rail{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);position:sticky;top:12px}
+@media (max-width:920px){.rail{position:static}}
+.rail h3{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;font-weight:700}
+.rail section{padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.rail section:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.lens{display:flex;flex-direction:column;gap:4px}
+.lens button{display:flex;align-items:center;gap:9px;text-align:left;width:100%;background:transparent;border:1px solid transparent;border-radius:9px;padding:8px 10px;cursor:pointer;color:var(--ink-2);font-size:13.5px;font-weight:600}
+.lens button .dot{width:11px;height:11px;border-radius:3px;flex:0 0 auto;background:var(--muted)}
+.lens button small{color:var(--muted);font-weight:500;font-size:11px}
+.lens button:hover{background:var(--surface-2)}
+.lens button.on{background:var(--surface-2);border-color:var(--line-2);color:var(--ink)}
+.lens button.on .dot{box-shadow:0 0 0 3px var(--ring)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 2px;font-size:13.5px;color:var(--ink);cursor:pointer;font-weight:600}
+.sw{width:38px;height:22px;border-radius:999px;background:var(--line-2);position:relative;transition:background .15s;flex:0 0 auto}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--chalk);transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.toggle.on .sw{background:var(--accent)}
+.toggle.on .sw::after{transform:translateX(16px)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{flex:1;min-width:42px;font-size:12px;font-weight:700;padding:6px 4px;border-radius:8px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.seg button.on{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.stage{min-width:0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{font-size:13px;font-weight:700;padding:9px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#06130b}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.panel-head h2{font-size:16px}
+.panel-head .hint{font-size:12px;color:var(--muted);margin-top:3px;max-width:64ch}
+.count{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:7px 15px;padding:10px 16px;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink-2);align-items:center}
+.legend .li{display:flex;align-items:center;gap:6px}
+.legend .sw2{width:12px;height:12px;border-radius:3px;flex:0 0 auto;border:1px solid var(--ring)}
+.legend .sq{border-radius:2px}
+.viewport{position:relative;width:100%}
+canvas{display:block;width:100%;touch-action:none;cursor:grab}
+svg{display:block;width:100%;height:auto}
+.tip{position:fixed;z-index:60;pointer-events:none;background:#06130b;color:#eef4ef;border-radius:10px;padding:9px 11px;font-size:12.5px;line-height:1.5;max-width:290px;box-shadow:0 12px 34px -8px rgba(0,0,0,.55);opacity:0;transition:opacity .1s;border:1px solid rgba(255,255,255,.12)}
+.tip.on{opacity:1}
+.tip .tt{font-weight:800;margin-bottom:3px}
+.tip .kk{color:#9fb3a6;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.tip .row{display:flex;justify-content:space-between;gap:14px}
+.note{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:12px;color:var(--ink-2);margin:12px 16px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:1040px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:top}
+th{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface);cursor:pointer;user-select:none;position:sticky;top:0}
+td.nm{font-weight:700;white-space:normal;min-width:150px}
+tbody tr:hover td{background:var(--surface-2)}
+.chip{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
+.chip.g{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,transparent)}
+.chip.w{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+.chip.b{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+.chip.elite{color:var(--c5);border-color:color-mix(in srgb,var(--c5) 45%,transparent)}
+.chip.open{color:var(--c2);border-color:color-mix(in srgb,var(--c2) 45%,transparent)}
+.dots{display:flex;gap:3px}
+.dots i{width:7px;height:7px;border-radius:2px;background:var(--line-2)}
+.dots i.on{background:var(--c4)}
+.drawer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .2s}
+.drawer.on{max-height:640px;padding:14px 16px;border-top:1px solid var(--line)}
+.drawer h3{font-size:15px}
+.drawer .subh{font-size:12px;color:var(--muted);margin:1px 0 10px}
+.drawer .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px 18px}
+.drawer .f .kk{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.drawer .f .vv{font-size:13px;color:var(--ink);margin-top:1px}
+.drawer .src{font-size:11px;color:var(--muted);margin-top:12px;word-break:break-word}
+.foot{max-width:1260px;margin:22px auto 44px;padding:0 20px;font-size:11.5px;color:var(--muted)}
+.hide{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="crest" aria-hidden="true"></div>
+      <div>
+        <h1>The Pitch — U14 Scouting Board</h1>
+        <div class="sub">A knowledge graph of Singapore youth football pathways, read from a home base in <b>Tengah</b> (west). U14 and up · switch the <b>focus lens</b> to recolour every view.</div>
+      </div>
+    </div>
+    <div class="topmeta">
+      <span class="pill home">◎ Home base · Tengah</span>
+      <span class="pill" id="pill-count">— clubs</span>
+      <button class="themebtn" id="themebtn">◐ Theme</button>
+    </div>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="layout">
+    <aside class="rail">
+      <section>
+        <h3>Focus lens</h3>
+        <div class="lens" id="lensbox"></div>
+      </section>
+      <section>
+        <h3>Hard constraints</h3>
+        <div class="toggle" id="t-weekend"><span>Weekend sessions</span><span class="sw"></span></div>
+        <div class="toggle" id="t-nowd"><span>No weekday-daytime clash</span><span class="sw"></span></div>
+        <div class="toggle" id="t-west"><span>West / ≤12 km</span><span class="sw"></span></div>
+      </section>
+      <section>
+        <h3>Pathway type</h3>
+        <div class="seg" id="seg-cat">
+          <button data-v="all" class="on">All</button>
+          <button data-v="elite">Elite</button>
+          <button data-v="open">Open</button>
+        </div>
+      </section>
+      <section>
+        <h3>Offers age band</h3>
+        <div class="seg" id="seg-age">
+          <button data-v="all" class="on">Any</button>
+          <button data-v="U14">U14</button>
+          <button data-v="U15">U15</button>
+          <button data-v="U16">U16</button>
+          <button data-v="U17">U17+</button>
+        </div>
+      </section>
+      <section>
+        <h3>Max travel (car)</h3>
+        <div class="seg" id="seg-dist">
+          <button data-v="99" class="on">Any</button>
+          <button data-v="20">≤20 min</button>
+          <button data-v="30">≤30 min</button>
+        </div>
+      </section>
+    </aside>
+
+    <div class="stage">
+      <div class="tabs" id="tabs">
+        <button data-v="graph" class="on">◕ Knowledge graph</button>
+        <button data-v="sankey">⇄ Sankey flow</button>
+        <button data-v="treemap">▦ Treemap</button>
+        <button data-v="charts">▮ Charts</button>
+        <button data-v="table">☰ Table</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 id="v-title">Knowledge graph</h2>
+            <div class="hint" id="v-hint"></div>
+          </div>
+          <div class="count" id="v-count"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="viewport" id="viewport"></div>
+        <div class="note hide" id="note"></div>
+        <div class="drawer" id="drawer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot" id="foot"></div>
+<div class="tip" id="tip"></div>
+
+<script>
+/* ===================== DATA (verified research, 2026 — confirm figures with clubs) ===================== */
+const AGES=["U14","U15","U16","U17","U18","U19"];
+// km/car(min)/transit(min) from Tengah; feeMo: monthly S$ (0=free/subsidised, null=not published)
+const CLUBS=[
+ {id:"lcs",name:"Lion City Sailors FA",cat:"elite",region:"central",loc:"8 Mattar Rd (MacPherson)",km:25,car:38,transit:65,
+  ages:["U14","U15","U16","U17","U19"],feeMo:184,feeConf:"med",feeText:"Paid track ~S$46/session (S$549/term); elite scholarship funded",
+  local:["Singapore Youth League","SPL2"],intl:true,intlText:"Asiana Cup (Jakarta), Europe tours (Den Bosch)",
+  coach:"Luka Lalić — ex-Feyenoord Head of Methodology",tier:"Elite",cred:"AFC Two-Star Academy",
+  wd:true,we:true,wdDay:false,sched:"Weekday training + weekend SYL matches",
+  sel:"tiered",selText:"Paid academy open; elite S$1m scholarship selective",
+  alumni:"Joshua Little, Nathan Mao (youngest SPL debutant)",conf:"high",
+  src:["lioncitysailorsfa.sg","lioncitysailorsfc.sg/academy"]},
+ {id:"fcj",name:"Albirex → FC Jurong",cat:"elite",region:"west",loc:"Jurong East / West Stadium",km:6,car:13,transit:35,
+  ages:["U15","U17","U19"],feeMo:0,feeConf:"med",feeText:"COE free (selection-based); FC Jurong grassroots S$100–200/mo",
+  local:["Singapore Youth League"],intl:false,intlText:"Local & overseas friendlies; Albirex/Japan link (partial)",
+  coach:"Habil Hakim (Academy Director)",tier:"Licensed",cred:"AFC 'C' Licence",
+  wd:true,we:true,wdDay:false,sched:"Weekday-eve COE (U15 trial ~5–6:30pm) + weekend matches",
+  sel:"tiered",selText:"COE elite via open trials→selection; grassroots open",
+  alumni:"Long-standing SPL champion development system",conf:"med",
+  src:["fcjurong.com","albirex.com.sg"]},
+ {id:"tpu",name:"Tanjong Pagar United",cat:"elite",region:"west",loc:"Jurong East Stadium",km:6,car:13,transit:35,
+  ages:["U15","U17"],feeMo:null,feeConf:"low",feeText:"COE selection-based; fees not published",
+  local:["Singapore Youth League"],intl:false,intlText:"No documented youth overseas programme",
+  coach:"Nicolas Possetti (youth lead)",tier:"Unlisted",cred:"Badges not published",
+  wd:true,we:true,wdDay:false,sched:"Weekend SYL matches; midweek training (confirm)",
+  sel:"selective",selText:"Open trials → selection into SYL squad",
+  alumni:"Historic national-team & SPL producer",conf:"med",
+  src:["tpufc.joji.com.sg/category/youth"]},
+ {id:"sss",name:"Singapore Sports School",cat:"elite",region:"north",loc:"1 Champions Way, Woodlands",km:12,car:19,transit:52,
+  ages:["U14","U15","U16","U17","U18","U19"],feeMo:340,feeConf:"med",feeText:"MOE school fee ~S$340/mo (day); boarding roughly 2×; FAS scheme aid",
+  local:["National School Games","Singapore Youth League"],intl:true,intlText:"Berlin base (Poelchau) + Hertha BSC attachments",
+  coach:"Isa Halim — ex-national midfielder",tier:"Elite",cred:"AFC 'A' Diploma",
+  wd:true,we:true,wdDay:true,sched:"Training embedded in boarding-school weekday timetable",
+  sel:"selective",selText:"Invite/scouted — FAS/NDC recommendation + admission",
+  alumni:"Safuwan Baharudin, Hami Syahin",conf:"high",
+  src:["sportsschool.edu.sg/.../football-academy"]},
+ {id:"tsk",name:"Tasek Sailors",cat:"elite",region:"west",loc:"West Centre — Crest Sec / Millennia Inst",km:8,car:14,transit:35,
+  ages:["U14","U15"],feeMo:0,feeConf:"med",feeText:"Charity-funded / heavily subsidised (community programme)",
+  local:["Singapore Youth League","JSSL League"],intl:false,intlText:"Domestic only",
+  coach:"Mohd Aidil — mentored NDC U16",tier:"Community",cred:"Badges not published",
+  wd:true,we:true,wdDay:false,sched:"Community-centre training + weekend league",
+  sel:"open",selText:"Mission-driven community enrolment; LCS elite pathway",
+  alumni:"Sarrvin Raj → LCS Elite programme",conf:"med",
+  src:["lioncitysailorsfc.sg/tasek-sailors","tasek.org"]},
+ {id:"ndc",name:"FAS National Dev. Centre",cat:"elite",region:"central",loc:"Kallang Football Hub",km:21,car:30,transit:55,
+  ages:["U14","U15","U16"],feeMo:0,feeConf:"med",feeText:"Free — national programme (Unleash The Roar); scouted, no fee",
+  local:["Singapore Youth League (via own club)"],intl:true,intlText:"Spain tour (Atlético, Getafe); UTR overseas scholarship",
+  coach:"Javier Gainza Rojas (U14, Spanish)",tier:"Elite",cred:"FAS technical dept",
+  wd:true,we:false,wdDay:false,sched:"Weekday centralised training; weekends back at own club",
+  sel:"selective",selText:"Invite / scouted only — not an open trial",
+  alumni:"Feeder to the Young Lions (est. 2000)",conf:"med",
+  src:["unleashtheroar.com.sg/.../ndc-u13-u16"]},
+ {id:"tmp",name:"Tampines Rovers",cat:"elite",region:"east",loc:"Our Tampines Hub (+JSSL venues)",km:30,car:45,transit:78,
+  ages:["U14","U15","U16","U17","U19"],feeMo:null,feeConf:"low",feeText:"COE selection-based; JSSL feeder ~S$42/session",
+  local:["Singapore Youth League","JSSL League"],intl:true,intlText:"Gothia Cup, JSSL 7s, Bangkok 7s (via JSSL)",
+  coach:"COE staff (youth head not named)",tier:"Unlisted",cred:"FAS-licensed COE",
+  wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
+  sel:"tiered",selText:"JSSL feeder open; COE scouted/selective",
+  alumni:"Regular first-team & national U-team graduates",conf:"med",
+  src:["tampinesrovers.com","jssl-singapore.com"]},
+ {id:"bal",name:"Balestier Khalsa",cat:"elite",region:"central",loc:"Bishan / Toa Payoh / Yio Chu Kang",km:19,car:28,transit:52,
+  ages:["U15","U17"],feeMo:null,feeConf:"low",feeText:"COE selection-based; fees not published",
+  local:["Singapore Youth League"],intl:false,intlText:"None found",
+  coach:"Qiu Li (youth)",tier:"Unlisted",cred:"Badges not published",
+  wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
+  sel:"selective",selText:"Open trials → selective Junior COE",
+  alumni:"Not documented",conf:"low",
+  src:["fas.org.sg/.../balestier-khalsa","spl.sg"]},
+ {id:"gey",name:"Geylang International",cat:"elite",region:"east",loc:"Our Tampines Hub / Geylang TC",km:28,car:42,transit:70,
+  ages:["U14","U15","U17","U19"],feeMo:null,feeConf:"low",feeText:"First Kick community + COE selection; not priced publicly",
+  local:["Singapore Youth League"],intl:true,intlText:"City Football Group + Matsumoto Yamaga links",
+  coach:"Galvin Ng (U14), Jamil Ali (U15)",tier:"Licensed",cred:"Structured youth dept",
+  wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
+  sel:"tiered",selText:"First Kick open; COE scouted",
+  alumni:"Zikos Chua (youngest SPL debutant), Darren Teh",conf:"med",
+  src:["geylang.football"]},
+ {id:"jssl",name:"JSSL Singapore",cat:"open",region:"central",loc:"Portsdown / Woodleigh / Tampines",km:14,car:26,transit:50,
+  ages:["U14","U15","U16","U17","U18"],feeMo:130,feeConf:"low",feeText:"~S$280–350/term (est); Elite 3×/wk priced higher",
+  local:["JSSL League (Sun)","Singapore Youth League"],intl:true,intlText:"JSSL Singapore 7s (Asia's largest), overseas tours",
+  coach:"Paul Parker (ex-England / Man Utd)",tier:"Elite",cred:"Official Arsenal Soccer School partner",
+  wd:true,we:true,wdDay:false,sched:"Rec 1–2×/wk; Elite 3×/wk + Sunday league",
+  sel:"tiered",selText:"Open recreational + trial-based Elite teams",
+  alumni:"Feeder to national youth setups",conf:"med",
+  src:["jssl-singapore.com","jssl-singapore7s.com"]},
+ {id:"bor",name:"Borussia Academy SG",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
+  ages:["U14","U16"],feeMo:210,feeConf:"high",feeText:"From S$530/term (official); varies by tier",
+  local:["JSSL League","Singapore Youth League"],intl:false,intlText:"Borussia M'gladbach curriculum (no named tour)",
+  coach:"Ulli Niedermeyer · ex-Bundesliga Bakary Diakite",tier:"Elite",cred:"Bundesliga club partner",
+  wd:true,we:true,wdDay:false,sched:"Technical 1×/wk; competitive 2×/wk + weekend",
+  sel:"tiered",selText:"Open technical + competitive team tier",
+  alumni:"Not documented",conf:"high",
+  src:["borussia-academy-sg.com"]},
+ {id:"bar",name:"Barça Academy SG",cat:"open",region:"west",loc:"Perse School (Chestnut Dr) +3",km:10,car:16,transit:42,
+  ages:["U14","U15","U16"],feeMo:200,feeConf:"high",feeText:"From S$500/term (official); 90-min weekly + kit",
+  local:["Barça SG Super League (Sun)"],intl:true,intlText:"Barça Academy World Cup pathway",
+  coach:"Barça-appointed head coach",tier:"Elite",cred:"La Masia methodology (FCB official)",
+  wd:true,we:true,wdDay:false,sched:"Training Mon–Sat; Sundays = match days",
+  sel:"open",selText:"Open enrolment; internal competitive league",
+  alumni:"Global Barça pathway (caps ~16)",conf:"high",
+  src:["barcaacademy.sg"]},
+ {id:"che",name:"Chelsea FC Soccer School",cat:"open",region:"central",loc:"Rainforest Hub @ Turf City",km:11,car:18,transit:52,
+  ages:["U14","U15","U16","U17"],feeMo:160,feeConf:"low",feeText:"~S$320–450/term (est)",
+  local:["Development sessions & friendlies"],intl:true,intlText:"Chelsea global curriculum; coach/player visits & camps",
+  coach:"FA/UEFA-certified staff",tier:"Licensed",cred:"Chelsea FC Foundation (since 2013)",
+  wd:true,we:true,wdDay:false,sched:"~1–2×/wk incl. weekend at Turf City",
+  sel:"open",selText:"Open, non-selective soccer school",
+  alumni:"Not documented",conf:"med",
+  src:["chelseafc.com/en/soccer-schools"]},
+ {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"Jurongville / Kranji / Kent Ridge Sec",km:5,car:12,transit:30,
+  ages:["U14","U15","U16"],feeMo:65,feeConf:"med",feeText:"~S$130–180/term (subsidised) — cheapest option",
+  local:["Broad-base development"],intl:false,intlText:"National FAS pathway (no overseas tours)",
+  coach:"FAS / Sport Singapore coaches",tier:"Licensed",cred:"FAS national programme",
+  wd:true,we:true,wdDay:false,sched:"1–2×/wk per centre; weekend norm; DC+ midweek",
+  sel:"tiered",selText:"Open broad-base; selective DC+ (only to U12)",
+  alumni:"Feeds FAS national development",conf:"med",
+  src:["fas.org.sg/minor_team/afa","activesgcircle.gov.sg"]},
+ {id:"tcfc",name:"Turf City FC",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
+  ages:["U14","U15","U16"],feeMo:120,feeConf:"low",feeText:"~S$250–330/term (est)",
+  local:["Community youth leagues"],intl:false,intlText:"None documented",
+  coach:"Coach Tomas + TCFC team",tier:"Community",cred:"Independent community club (est. 2011)",
+  wd:true,we:true,wdDay:false,sched:"Weekend classes + some weekday sessions",
+  sel:"open",selText:"Open, inclusive community club",
+  alumni:"Not documented",conf:"med",
+  src:["tcfcsingapore.com"]}
+];
+const META={compiled:"2026-07",note:"Figures are indicative — confirm current fees, training days & times with each club before enrolling. COE = Centre of Excellence."};
+
+/* ===================== ENGINE ===================== */
+const $=s=>document.querySelector(s);
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const REGION_LABEL={west:"West",central:"Central",east:"East",north:"North"};
+const state={lens:"overview",cat:"all",age:"all",dist:99,weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
+
+const LENSES=[
+ {id:"overview",label:"Overview",desc:"pathway + region",v:"--accent"},
+ {id:"distance",label:"Distance",desc:"travel from Tengah",v:"--c1"},
+ {id:"training",label:"Training days",desc:"weekend vs weekday",v:"--c2"},
+ {id:"fees",label:"Fees",desc:"monthly cost",v:"--c3"},
+ {id:"ages",label:"Age groups",desc:"bands U14→U19",v:"--c4"},
+ {id:"games",label:"Games",desc:"local & international",v:"--c5"},
+ {id:"coach",label:"Coaching",desc:"pedigree & licences",v:"--c8"}
+];
+const HINTS={
+ graph:"Tengah sits at the centre. Attribute hubs orbit it and each club hangs off the hubs it belongs to — switch lens to change the hubs. Drag nodes; hover for detail.",
+ sankey:"Flow from region → club → the current lens's attribute. Ribbon width is one club-share; colour follows the lens.",
+ treemap:"Clubs nested inside their region. Tile area scales with the lens metric (equal otherwise); colour follows the lens.",
+ charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
+ table:"Every field, sortable. Click a row for the full scouting card with sources."
+};
+
+/* ----- fit + helpers ----- */
+const fitScore=c=>(c.we?1:0)+(!c.wdDay?1:0)+(c.km<=12?1:0);
+const feeBand=c=>c.feeMo===null?"Not published":c.feeMo===0?"Free / subsidised":c.feeMo<150?"< S$150/mo":c.feeMo<=300?"S$150–300/mo":"> S$300/mo";
+const distBand=c=>c.km<=8?"≤ 8 km":c.km<=15?"9–15 km":"> 15 km";
+const distColor=c=>cssv(c.km<=8?"--good":c.km<=15?"--warn":"--bad");
+const tierColor=t=>({Elite:cssv("--c8"),Licensed:cssv("--c3"),Community:cssv("--c2"),Unlisted:cssv("--muted")}[t]);
+const catColor=c=>cssv(c.cat==="elite"?"--c5":"--c2");
+function trainClass(c){return !c.we?"none":c.wdDay?"day":"good"}
+function trainColor(c){return cssv(trainClass(c)==="good"?"--good":trainClass(c)==="day"?"--warn":"--bad")}
+function feeColor(c){const r=["--muted","#cde2fb","#86b6ef","#3987e5","#184f95"];const i=c.feeMo===null?0:c.feeMo===0?1:c.feeMo<150?2:c.feeMo<=300?3:4;return i===0?cssv("--muted"):r[i]}
+function ageColor(c){const n=c.ages.length;const r=["#b7d3f6","#6da7ec","#2a78d6","#184f95"];return r[Math.min(3,Math.max(0,n-2))]}
+function gamesColor(c){return c.intl?cssv("--c1"):cssv("--muted")}
+function nodeColor(c){switch(state.lens){case"distance":return distColor(c);case"training":return trainColor(c);case"fees":return feeColor(c);case"ages":return ageColor(c);case"games":return gamesColor(c);case"coach":return tierColor(c.tier);default:return catColor(c)}}
+
+/* attribute membership per lens (for graph / sankey / treemap grouping) */
+function attrsOf(c){
+ switch(state.lens){
+  case"distance":return [distBand(c)];
+  case"training":{const a=[];if(c.we)a.push("Weekend");if(c.wd&&!c.wdDay)a.push("Weekday eve");if(c.wdDay)a.push("Weekday daytime");return a.length?a:["—"]}
+  case"fees":return [feeBand(c)];
+  case"ages":return c.ages.slice();
+  case"games":{const a=c.local.map(x=>x.replace(/\s*\(.*\)/,"")); if(c.intl)a.push("International"); return [...new Set(a)]}
+  case"coach":return [c.tier];
+  default:return [c.cat==="elite"?"Elite pathway":"Open enrolment"];
+ }
+}
+const ATTR_ORDER={
+ distance:["≤ 8 km","9–15 km","> 15 km"],
+ training:["Weekend","Weekday eve","Weekday daytime","—"],
+ fees:["Free / subsidised","< S$150/mo","S$150–300/mo","> S$300/mo","Not published"],
+ ages:AGES.slice(),
+ coach:["Elite","Licensed","Community","Unlisted"],
+ overview:["Elite pathway","Open enrolment"]
+};
+function attrColor(name){
+ switch(state.lens){
+  case"distance":return cssv(name==="≤ 8 km"?"--good":name==="9–15 km"?"--warn":"--bad");
+  case"training":return cssv(name==="Weekend"?"--good":name==="Weekday eve"?"--c2":name==="Weekday daytime"?"--warn":"--muted");
+  case"fees":{const m={"Free / subsidised":"#1baf7a","< S$150/mo":"#86b6ef","S$150–300/mo":"#2a78d6","> S$300/mo":"#184f95","Not published":cssv("--muted")};return m[name]}
+  case"ages":{const i=AGES.indexOf(name);const r=["#cde2fb","#9ec5f4","#5598e7","#2a78d6","#1c5cab","#104281"];return r[i]||cssv("--c4")}
+  case"games":return name==="International"?cssv("--c1"):cssv("--c5");
+  case"coach":return tierColor(name);
+  default:return cssv(name==="Elite pathway"?"--c5":"--c2");
+ }
+}
+
+/* ----- filtering ----- */
+function filtered(){
+ return CLUBS.filter(c=>{
+  if(state.cat!=="all"&&c.cat!==state.cat)return false;
+  if(state.age!=="all"){const need=state.age==="U17"?["U17","U18","U19"]:[state.age];if(!need.some(a=>c.ages.includes(a)))return false;}
+  if(state.dist!==99&&c.car>state.dist)return false;
+  if(state.weekend&&!c.we)return false;
+  if(state.nowd&&c.wdDay)return false;
+  if(state.west&&c.km>12)return false;
+  return true;
+ });
+}
+
+/* ===================== TOOLTIP ===================== */
+const tip=$("#tip");
+function showTip(html,x,y){tip.innerHTML=html;tip.classList.add("on");const w=tip.offsetWidth,h=tip.offsetHeight;let l=x+14,t=y+14;if(l+w>innerWidth-8)l=x-w-14;if(t+h>innerHeight-8)t=y-h-14;tip.style.left=l+"px";tip.style.top=t+"px";}
+function hideTip(){tip.classList.remove("on");}
+function clubTip(c){
+ return `<div class="tt">${c.name}</div><div class="kk">${c.cat==="elite"?"Elite pathway":"Open enrolment"} · ${REGION_LABEL[c.region]}</div>
+ <div class="row"><span class="kk">From Tengah</span><span>${c.car} min · ${c.km} km</span></div>
+ <div class="row"><span class="kk">Fees</span><span>${c.feeMo===null?"n/p":c.feeMo===0?"free/subsid.":"~S$"+c.feeMo+"/mo"}</span></div>
+ <div class="row"><span class="kk">Weekend</span><span>${c.we?"yes":"no"}${c.wdDay?" · wkday-day":""}</span></div>
+ <div class="row"><span class="kk">Ages</span><span>${c.ages.join(" ")}</span></div>
+ <div class="row"><span class="kk">Coach</span><span>${c.tier}</span></div>`;
+}
+
+/* ===================== VIEW: KNOWLEDGE GRAPH (canvas force) ===================== */
+let anim=null;
+function renderGraph(vp,clubs){
+ cancelAnim();
+ const W=vp.clientWidth||900, H=560, DPR=Math.min(2,devicePixelRatio||1);
+ const cv=document.createElement("canvas");cv.width=W*DPR;cv.height=H*DPR;cv.style.height=H+"px";vp.appendChild(cv);
+ const g=cv.getContext("2d");g.scale(DPR,DPR);
+ // build nodes
+ const attrNames=[...new Set(clubs.flatMap(attrsOf))];
+ const order=ATTR_ORDER[state.lens]||[];
+ attrNames.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b)});
+ const home={id:"__home",type:"home",label:"TENGAH",x:W/2,y:H/2,vx:0,vy:0,r:26,fixed:true};
+ const nodes=[home];const byId={__home:home};
+ attrNames.forEach((a,i)=>{const ang=-Math.PI/2+i/attrNames.length*Math.PI*2;const n={id:"a_"+a,type:"attr",label:a,color:attrColor(a),x:W/2+Math.cos(ang)*140,y:H/2+Math.sin(ang)*140,vx:0,vy:0,r:9};nodes.push(n);byId[n.id]=n;});
+ clubs.forEach((c,i)=>{const ang=i/clubs.length*Math.PI*2;const n={type:"club",club:c,label:c.name,color:nodeColor(c),x:W/2+Math.cos(ang)*230+(i%3-1)*8,y:H/2+Math.sin(ang)*230,vx:0,vy:0,r:c.cat==="elite"?11:9};nodes.push(n);n.club._n=n;});
+ const links=[];
+ attrNames.forEach(a=>links.push([home,byId["a_"+a],90,.02]));
+ clubs.forEach(c=>{const as=attrsOf(c);as.forEach(a=>{if(byId["a_"+a])links.push([c._n,byId["a_"+a],70,.06]);});if(!as.some(a=>byId["a_"+a]))links.push([c._n,home,180,.02]);});
+ // simulate
+ let alpha=1;const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ function step(){
+  for(let i=0;i<nodes.length;i++){const a=nodes[i];if(a.fixed)continue;
+   for(let j=i+1;j<nodes.length;j++){const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy||1;let d=Math.sqrt(d2);const rep=(a.type==="club"&&b.type==="club"?3600:1900)/d2;const fx=dx/d*rep,fy=dy/d*rep;a.vx+=fx;a.vy+=fy;if(!b.fixed){b.vx-=fx;b.vy-=fy;}}}
+  links.forEach(([a,b,len,k])=>{let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;const f=(d-len)*k;const fx=dx/d*f,fy=dy/d*f;if(!a.fixed){a.vx+=fx;a.vy+=fy;}if(!b.fixed){b.vx-=fx;b.vy-=fy;}});
+  nodes.forEach(n=>{if(n.fixed)return;n.vx+=(W/2-n.x)*.006;n.vy+=(H/2-n.y)*.006;n.x+=n.vx*alpha;n.y+=n.vy*alpha;n.vx*=.86;n.vy*=.86;n.x=Math.max(n.r+4,Math.min(W-n.r-4,n.x));n.y=Math.max(n.r+4,Math.min(H-n.r-90,n.y));});
+  alpha*=.985;
+ }
+ function draw(){
+  g.clearRect(0,0,W,H);
+  // pitch stripes backdrop
+  g.save();for(let i=0;i<6;i++){g.fillStyle=i%2?cssv("--surface"):cssv("--surface-2");g.globalAlpha=.5;g.fillRect(i*W/6,0,W/6,H);}g.restore();
+  links.forEach(([a,b])=>{g.strokeStyle=b.type==="attr"?colWithA(b.color,.35):cssv("--line-2");g.lineWidth=a.type==="home"||b.type==="attr"&&a.type==="home"?1:1.4;g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();});
+  nodes.forEach(n=>{
+   if(n.type==="home"){g.fillStyle=cssv("--accent");g.strokeStyle=cssv("--chalk");g.lineWidth=2.5;roundNode(g,n.x,n.y,n.r);g.fill();g.stroke();g.fillStyle=cssv("--chalk");g.font="700 11px "+cssv("--sans");g.textAlign="center";g.textBaseline="middle";g.fillText("TENGAH",n.x,n.y);}
+   else if(n.type==="attr"){g.fillStyle=cssv("--surface");g.strokeStyle=n.color;g.lineWidth=2.4;g.beginPath();g.rect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);g.fill();g.stroke();g.fillStyle=cssv("--ink-2");g.font="600 11px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";g.fillText(n.label,n.x,n.y+n.r+3);}
+   else{g.fillStyle=n.color;g.strokeStyle=cssv("--surface");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r,0,7);g.fill();g.stroke();if(state.sel===n.club.id){g.strokeStyle=cssv("--ink");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r+4,0,7);g.stroke();}g.fillStyle=cssv("--ink");g.font="600 10.5px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";const lbl=n.club.name.length>18?n.club.name.slice(0,17)+"…":n.club.name;g.fillText(lbl,n.x,n.y+n.r+2);}
+  });
+ }
+ if(reduce){for(let i=0;i<300;i++)step();draw();}
+ else{let t=0;(function loop(){step();if(t++%1===0)draw();if(alpha>.02&&t<600){anim=requestAnimationFrame(loop);}else{draw();anim=null;}})();}
+ // interaction
+ let drag=null;
+ function at(mx,my){let best=null,bd=1e9;nodes.forEach(n=>{const d=Math.hypot(n.x-mx,n.y-my);if(d<n.r+7&&d<bd){bd=d;best=n;}});return best;}
+ function pos(e){const r=cv.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top,cx:t.clientX,cy:t.clientY};}
+ cv.onpointermove=e=>{const p=pos(e);if(drag){drag.x=p.x;drag.y=p.y;drag.vx=drag.vy=0;if(!anim){alpha=Math.max(alpha,.4);let t=0;(function loop(){step();draw();if((alpha>.02||drag)&&t++<600)anim=requestAnimationFrame(loop);else anim=null;})();}return;}
+  const n=at(p.x,p.y);cv.style.cursor=n?(n.type==="club"?"pointer":"grab"):"default";
+  if(n&&n.type==="club"){showTip(clubTip(n.club),p.cx,p.cy);}else if(n&&n.type==="attr"){showTip(`<div class="tt">${n.label}</div><div class="kk">${LENSES.find(l=>l.id===state.lens).label} hub</div>`,p.cx,p.cy);}else hideTip();};
+ cv.onpointerdown=e=>{const p=pos(e);const n=at(p.x,p.y);if(n&&!n.fixed){drag=n;n.fixed=false;cv.setPointerCapture(e.pointerId);}};
+ cv.onpointerup=e=>{if(drag&&drag.club){state.sel=state.sel===drag.club.id?null:drag.club.id;openDrawer(state.sel);draw();}drag=null;};
+ cv.onpointerleave=()=>{hideTip();};
+}
+function roundNode(g,x,y,r){g.beginPath();g.arc(x,y,r,0,7);}
+function colWithA(hex,a){if(hex.startsWith("#")){const n=hex.length===4?hex.replace(/#(.)(.)(.)/,"#$1$1$2$2$3$3"):hex;const r=parseInt(n.slice(1,3),16),gg=parseInt(n.slice(3,5),16),b=parseInt(n.slice(5,7),16);return`rgba(${r},${gg},${b},${a})`;}return hex;}
+function cancelAnim(){if(anim){cancelAnimationFrame(anim);anim=null;}}
+
+/* ===================== VIEW: SANKEY ===================== */
+function renderSankey(vp,clubs){
+ const W=vp.clientWidth||900,H=Math.max(420,clubs.length*30+40),padY=16;
+ const NS="http://www.w3.org/2000/svg";const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img"});
+ const colX=[66,W/2,W-104];const clip=(s,n)=>s.length>n?s.slice(0,n-1)+"…":s;
+ // columns: region, club, attr
+ const regions=[...new Set(clubs.map(c=>c.region))].sort((a,b)=>["west","central","north","east"].indexOf(a)-["west","central","north","east"].indexOf(b));
+ const attrNames=[...new Set(clubs.flatMap(attrsOf))];const order=ATTR_ORDER[state.lens]||[];attrNames.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return(ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b)});
+ const gap=8;
+ function layout(items,val){const tot=items.reduce((s,i)=>s+val(i),0)||1;const avail=H-padY*2-gap*(items.length-1);let y=padY;return items.map(i=>{const h=Math.max(10,val(i)/tot*avail);const o={item:i,y,h};y+=h+gap;return o;});}
+ const regVal=r=>clubs.filter(c=>c.region===r).length;
+ const L1=layout(regions,regVal); const l1m={};L1.forEach(o=>l1m[o.item]=o);
+ const L2=layout(clubs.slice().sort((a,b)=>regions.indexOf(a.region)-regions.indexOf(b.region)),()=>1);const l2m={};L2.forEach(o=>l2m[o.item.id]=o);
+ const attrVal=a=>clubs.reduce((s,c)=>s+(attrsOf(c).includes(a)?1/attrsOf(c).length:0),0);
+ const L3=layout(attrNames,attrVal);const l3m={};L3.forEach(o=>l3m[o.item]=o);
+ // ribbons region->club
+ const g1=el("g");
+ // track offsets
+ const roff={},loffL={},loffR={},aoff={};
+ clubs.forEach(c=>{
+  const r=l1m[c.region],cl=l2m[c.id];
+  const h=cl.h; roff[c.region]=(roff[c.region]||0);
+  const y0=r.y+(roff[c.region]); roff[c.region]+=h;
+  const y1=cl.y;
+  g1.appendChild(ribbon(colX[0]+9,y0,colX[1]-11,y1,h,colWithA(catColor(c),.22)));
+ });
+ // ribbons club->attr
+ clubs.forEach(c=>{const as=attrsOf(c);const cl=l2m[c.id];const share=cl.h/as.length;as.forEach((a,k)=>{const at=l3m[a];if(!at)return;const y0=cl.y+(loffR[c.id]||0);loffR[c.id]=(loffR[c.id]||0)+share;const y1=at.y+(aoff[a]||0);aoff[a]=(aoff[a]||0)+share;g1.appendChild(ribbon(colX[1]+11,y0,colX[2]-9,y1,share,colWithA(attrColor(a),.30)));});});
+ svg.appendChild(g1);
+ // nodes
+ L1.forEach(o=>{svg.appendChild(bar(colX[0]-9,o.y,9,o.h,cssv("--ink-2")));svg.appendChild(txt(colX[0]-14,o.y+o.h/2,REGION_LABEL[o.item],"end",cssv("--ink"),12,700));});
+ L2.forEach(o=>{const c=o.item;const b=bar(colX[1]-5,o.y,10,o.h,nodeColor(c));b.style.cursor="pointer";b.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);b.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);b.onmouseleave=hideTip;b.onclick=()=>{state.sel=state.sel===c.id?null:c.id;openDrawer(state.sel);};svg.appendChild(b);svg.appendChild(txt(colX[1]+12,o.y+o.h/2,c.name,"start",cssv("--ink"),11,600));});
+ L3.forEach(o=>{svg.appendChild(bar(colX[2],o.y,9,o.h,attrColor(o.item)));svg.appendChild(txt(colX[2]+13,o.y+o.h/2,clip(o.item,15),"start",cssv("--ink"),11,700));});
+ // column captions
+ svg.appendChild(txt(colX[0]-9,padY-6,"REGION","start",cssv("--muted"),10,700));
+ svg.appendChild(txt(colX[1]-5,padY-6,"CLUB","start",cssv("--muted"),10,700));
+ svg.appendChild(txt(colX[2],padY-6,clip(LENSES.find(l=>l.id===state.lens).label.toUpperCase(),13),"start",cssv("--muted"),10,700));
+ vp.appendChild(svg);
+}
+function ribbon(x0,y0,x1,y1,h,fill){const mx=(x0+x1)/2;const d=`M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+h} C${mx},${y1+h} ${mx},${y0+h} ${x0},${y0+h} Z`;return el("path",{d,fill});}
+function bar(x,y,w,h,fill){return el("rect",{x,y,width:w,height:h,rx:2.5,fill});}
+function txt(x,y,s,anchor,fill,size,weight){const t=el("text",{x,y,"text-anchor":anchor,fill,"font-size":size,"font-weight":weight||600,"font-family":cssv("--sans")});t.setAttribute("dominant-baseline","middle");t.textContent=s;return t;}
+function el(tag,attrs){const e=document.createElementNS("http://www.w3.org/2000/svg",tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+/* ===================== VIEW: TREEMAP (nested squarified) ===================== */
+function renderTreemap(vp,clubs){
+ const W=vp.clientWidth||900,H=520,pad=6;
+ const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
+ const metric=c=>state.lens==="fees"?(c.feeMo===null?18:Math.max(18,c.feeMo)):state.lens==="ages"?c.ages.length*20:60;
+ const regions=[...new Set(clubs.map(c=>c.region))];
+ const groups=regions.map(r=>{const cs=clubs.filter(c=>c.region===r);return{r,cs,val:cs.reduce((s,c)=>s+metric(c),0)};}).filter(g=>g.cs.length).sort((a,b)=>b.val-a.val);
+ const outer=squarify(groups.map(g=>({...g,value:g.val})),{x:0,y:0,w:W,h:H});
+ outer.forEach(rr=>{
+  const g=rr.data;
+  svg.appendChild(el("rect",{x:rr.x+1,y:rr.y+1,width:Math.max(0,rr.w-2),height:Math.max(0,rr.h-2),rx:8,fill:cssv("--surface-2"),stroke:cssv("--line-2"),"stroke-width":1}));
+  const inRect={x:rr.x+4,y:rr.y+22,w:rr.w-8,h:rr.h-26};
+  svg.appendChild(txt(rr.x+10,rr.y+13,REGION_LABEL[g.r].toUpperCase()+" · "+g.cs.length,"start",cssv("--muted"),10.5,700));
+  const cells=squarify(g.cs.map(c=>({c,value:metric(c)})),inRect);
+  cells.forEach(ce=>{const c=ce.data.c;if(ce.w<3||ce.h<3)return;
+   const rect=el("rect",{x:ce.x+1.5,y:ce.y+1.5,width:Math.max(0,ce.w-3),height:Math.max(0,ce.h-3),rx:5,fill:colWithA(nodeColor(c),.9),stroke:cssv("--surface"),"stroke-width":2});
+   rect.style.cursor="pointer";rect.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);rect.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);rect.onmouseleave=hideTip;rect.onclick=()=>{state.sel=state.sel===c.id?null:c.id;openDrawer(state.sel);};
+   svg.appendChild(rect);
+   if(ce.w>62&&ce.h>26){const short=c.name.replace("Singapore ","").replace(" International","");svg.appendChild(fo(ce.x+6,ce.y+5,ce.w-10,ce.h-8,short,c));}
+  });
+ });
+ vp.appendChild(svg);
+}
+function fo(x,y,w,h,name,c){const f=el("foreignObject",{x,y,width:Math.max(0,w),height:Math.max(0,h)});const div=document.createElement("div");div.style.cssText="font:700 11px "+cssv("--sans")+";color:#fff;line-height:1.15;text-shadow:0 1px 2px rgba(0,0,0,.4);pointer-events:none;overflow:hidden;height:100%";div.innerHTML=`${name}<div style="font-weight:600;font-size:10px;opacity:.9;margin-top:2px">${c.car}min · ${c.feeMo===null?"n/p":c.feeMo===0?"free":"S$"+c.feeMo}</div>`;f.appendChild(div);return f;}
+function squarify(items,rect){ // returns [{data,x,y,w,h}]
+ items=items.filter(i=>i.value>0);const total=items.reduce((s,i)=>s+i.value,0)||1;
+ let {x,y,w,h}=rect;const out=[];let row=[],rowVal=0;let items2=items.map(i=>({...i,_a:i.value/total*(w*h)}));
+ function worst(row,len){const s=row.reduce((a,b)=>a+b._a,0);const mx=Math.max(...row.map(r=>r._a)),mn=Math.min(...row.map(r=>r._a));return Math.max(len*len*mx/(s*s),s*s/(len*len*mn));}
+ let rem=items2.slice();
+ while(rem.length){const len=Math.min(w,h);const cur=rem[0];const test=[...row,cur];if(row.length===0||worst(row,len)>=worst(test,len)){row=test;rem.shift();}else{layoutRow(row,len);row=[];}}
+ if(row.length)layoutRow(row,Math.min(w,h));
+ function layoutRow(row,len){const s=row.reduce((a,b)=>a+b._a,0);const thick=s/len;if(w>=h){let yy=y;row.forEach(r=>{const hh=r._a/thick;out.push({data:r,x,y:yy,w:thick,h:hh});yy+=hh;});x+=thick;w-=thick;}else{let xx=x;row.forEach(r=>{const ww=r._a/thick;out.push({data:r,x:xx,y,w:ww,h:thick});xx+=ww;});y+=thick;h-=thick;}}
+ return out;
+}
+
+/* ===================== VIEW: CHARTS ===================== */
+function renderCharts(vp,clubs){
+ const wrap=document.createElement("div");wrap.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:16px";
+ wrap.appendChild(chartCard("Monthly fees (S$)","0 = free/subsidised · excludes not-published",feesChart(clubs)));
+ wrap.appendChild(chartCard("Travel from Tengah (car, min)","green ≤20 · amber ≤30 · red >30",travelChart(clubs)));
+ wrap.appendChild(chartCard("Age-band coverage","filled = band offered (U14→U19)",ageMatrix(clubs)));
+ wrap.appendChild(chartCard("Cost vs. distance","lower-left = cheap & close",scatterChart(clubs)));
+ vp.appendChild(wrap);
+}
+function chartCard(title,sub,node){const d=document.createElement("div");d.style.cssText="border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface)";d.innerHTML=`<div style="font-weight:800;font-size:13.5px">${title}</div><div style="font-size:11px;color:var(--muted);margin:1px 0 10px">${sub}</div>`;d.appendChild(node);return d;}
+function feesChart(clubs){
+ const data=clubs.filter(c=>c.feeMo!==null).sort((a,b)=>a.feeMo-b.feeMo);
+ const W=320,rowH=24,H=data.length*rowH+10,max=Math.max(300,...data.map(c=>c.feeMo)),x0=118,barMax=W-x0-42;
+ const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
+ data.forEach((c,i)=>{const y=i*rowH+6,bw=Math.max(3,barMax*(c.feeMo/max));
+  svg.appendChild(txt(4,y+8,c.name.length>16?c.name.slice(0,15)+"…":c.name,"start",cssv("--ink-2"),10.5,600));
+  const r=el("rect",{x:x0,y,width:bw,height:12,rx:3,fill:catColor(c)});r.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmouseleave=hideTip;svg.appendChild(r);
+  const lbl=c.feeMo===0?"free":"S$"+c.feeMo,lx=x0+bw+4,inside=lx+34>W;
+  svg.appendChild(txt(inside?x0+bw-4:lx,y+7,lbl,inside?"end":"start",inside?"#fff":cssv("--ink-2"),10,700));});
+ const np=clubs.length-data.length;if(np)svg.appendChild(txt(4,H-2,np+" not published","start",cssv("--muted"),10,600));
+ return svg;
+}
+function travelChart(clubs){
+ const data=clubs.slice().sort((a,b)=>a.car-b.car);const W=320,rowH=24,H=data.length*rowH+6,max=Math.max(50,...data.map(c=>c.car));
+ const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
+ data.forEach((c,i)=>{const y=i*rowH+6,bw=(W-150)*(c.car/max);const col=cssv(c.car<=20?"--good":c.car<=30?"--warn":"--bad");
+  svg.appendChild(txt(4,y+8,c.name.length>17?c.name.slice(0,16)+"…":c.name,"start",cssv("--ink-2"),10.5,600));
+  const r=el("rect",{x:120,y,width:Math.max(3,bw),height:12,rx:3,fill:col});r.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmouseleave=hideTip;svg.appendChild(r);
+  svg.appendChild(txt(120+Math.max(3,bw)+4,y+7,c.car+"m",("start"),cssv("--ink-2"),10,700));});
+ return svg;
+}
+function ageMatrix(clubs){
+ const W=320,left=118,cw=(W-left-6)/AGES.length,rowH=20,H=clubs.length*rowH+24;
+ const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
+ AGES.forEach((a,j)=>svg.appendChild(txt(left+cw*j+cw/2,10,a,"middle",cssv("--muted"),9.5,700)));
+ clubs.forEach((c,i)=>{const y=i*rowH+18;svg.appendChild(txt(4,y+9,c.name.length>17?c.name.slice(0,16)+"…":c.name,"start",cssv("--ink-2"),10.5,600));
+  AGES.forEach((a,j)=>{const on=c.ages.includes(a);const r=el("rect",{x:left+cw*j+1.5,y:y+1,width:cw-3,height:rowH-6,rx:3,fill:on?cssv("--c4"):cssv("--surface-2"),stroke:cssv("--line"),"stroke-width":on?0:1});if(on){r.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmouseleave=hideTip;}svg.appendChild(r);});});
+ return svg;
+}
+function scatterChart(clubs){
+ const data=clubs.filter(c=>c.feeMo!==null);const W=320,H=240,mL=34,mB=26,mT=8,mR=8;
+ const xmax=Math.max(50,...data.map(c=>c.car)),ymax=Math.max(300,...data.map(c=>c.feeMo));
+ const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
+ const X=v=>mL+(v/xmax)*(W-mL-mR),Y=v=>H-mB-(v/ymax)*(H-mB-mT);
+ [0,.5,1].forEach(t=>{const gx=X(xmax*t);svg.appendChild(el("line",{x1:gx,y1:mT,x2:gx,y2:H-mB,stroke:cssv("--line"),"stroke-width":1}));svg.appendChild(txt(gx,H-mB+11,Math.round(xmax*t)+"m","middle",cssv("--muted"),9,600));});
+ [0,.5,1].forEach(t=>{const gy=Y(ymax*t);svg.appendChild(el("line",{x1:mL,y1:gy,x2:W-mR,y2:gy,stroke:cssv("--line"),"stroke-width":1}));svg.appendChild(txt(mL-4,gy+3,"$"+Math.round(ymax*t),"end",cssv("--muted"),9,600));});
+ data.forEach(c=>{const cx=X(c.car),cy=Y(c.feeMo);const dot=el("circle",{cx,cy,r:c.cat==="elite"?6:5,fill:colWithA(catColor(c),.85),stroke:cssv("--surface"),"stroke-width":2});dot.style.cursor="pointer";dot.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);dot.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);dot.onmouseleave=hideTip;dot.onclick=()=>{state.sel=c.id;openDrawer(c.id);};svg.appendChild(dot);});
+ return svg;
+}
+
+/* ===================== VIEW: TABLE ===================== */
+function renderTable(vp,clubs){
+ const cols=[["name","Club"],["cat","Path"],["region","Region"],["car","Car"],["km","km"],["feeMo","Fee/mo"],["fit","Fit"],["we","Wknd"],["ages","Ages"],["tier","Coach"],["intl","Intl"],["conf","Conf"]];
+ const dir=state.sort.dir,key=state.sort.key;
+ const val=c=>key==="fit"?fitScore(c):key==="ages"?c.ages.length:key==="feeMo"?(c.feeMo===null?9999:c.feeMo):key==="intl"?(c.intl?1:0):key==="we"?(c.we?1:0):c[key];
+ const rows=clubs.slice().sort((a,b)=>{const x=val(a),y=val(b);return (typeof x==="string"?x.localeCompare(y):x-y)*dir;});
+ const wrap=document.createElement("div");wrap.className="tablewrap";
+ const t=document.createElement("table");const thead=document.createElement("thead");const tr=document.createElement("tr");
+ cols.forEach(([k,lbl])=>{const th=document.createElement("th");th.textContent=lbl+(key===k?(dir>0?" ▲":" ▼"):"");th.onclick=()=>{state.sort=state.sort.key===k?{key:k,dir:-dir}:{key:k,dir:k==="name"||k==="region"?1:-1};render();};tr.appendChild(th);});
+ thead.appendChild(tr);t.appendChild(thead);
+ const tb=document.createElement("tbody");
+ rows.forEach(c=>{const r=document.createElement("tr");r.style.cursor="pointer";r.onclick=()=>{state.sel=state.sel===c.id?null:c.id;openDrawer(state.sel);};
+  const f=fitScore(c);
+  r.innerHTML=`<td class="nm">${c.name}<div style="font-weight:500;color:var(--muted);font-size:11px">${c.loc}</div></td>
+   <td><span class="chip ${c.cat}">${c.cat}</span></td>
+   <td>${REGION_LABEL[c.region]}</td>
+   <td class="tnum">${c.car}m</td><td class="tnum">${c.km}</td>
+   <td class="tnum">${c.feeMo===null?'<span class="chip">n/p</span>':c.feeMo===0?'<span class="chip g">free</span>':"S$"+c.feeMo}</td>
+   <td><span class="chip ${f===3?"g":f===2?"w":"b"}">${f}/3</span></td>
+   <td>${c.we?'<span class="chip g">yes</span>':'<span class="chip b">no</span>'}${c.wdDay?' <span class="chip w">wkday</span>':""}</td>
+   <td><div class="dots" title="${c.ages.join(' ')}">${AGES.map(a=>`<i class="${c.ages.includes(a)?"on":""}"></i>`).join("")}</div></td>
+   <td><span class="chip">${c.tier}</span></td>
+   <td>${c.intl?'<span class="chip g">✓</span>':'<span class="chip">–</span>'}</td>
+   <td><span class="chip ${c.conf==="high"?"g":c.conf==="med"?"w":"b"}">${c.conf}</span></td>`;
+  tb.appendChild(r);});
+ t.appendChild(tb);wrap.appendChild(t);vp.appendChild(wrap);
+}
+
+/* ===================== DRAWER ===================== */
+function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.innerHTML="";return;}const c=CLUBS.find(x=>x.id===id);if(!c){d.className="drawer";return;}
+ const f=fitScore(c);
+ d.className="drawer on";
+ d.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+   <div><h3>${c.name}</h3><div class="subh">${c.loc} · ${REGION_LABEL[c.region]} · <span class="chip ${c.cat}">${c.cat==="elite"?"Elite pathway":"Open enrolment"}</span> · fit ${f}/3</div></div>
+   <button class="themebtn" onclick="state.sel=null;openDrawer(null)">✕ close</button></div>
+  <div class="grid">
+   <div class="f"><div class="kk">Travel from Tengah</div><div class="vv">${c.car} min car · ${c.transit} min transit · ${c.km} km</div></div>
+   <div class="f"><div class="kk">Fees</div><div class="vv">${c.feeText}</div></div>
+   <div class="f"><div class="kk">Age groups</div><div class="vv">${c.ages.join(" · ")}</div></div>
+   <div class="f"><div class="kk">Training</div><div class="vv">${c.sched}</div></div>
+   <div class="f"><div class="kk">Local competition</div><div class="vv">${c.local.join(" · ")}</div></div>
+   <div class="f"><div class="kk">International</div><div class="vv">${c.intl?c.intlText:"— "+c.intlText}</div></div>
+   <div class="f"><div class="kk">Coaching</div><div class="vv">${c.coach} <span style="color:var(--muted)">(${c.cred})</span></div></div>
+   <div class="f"><div class="kk">Selection</div><div class="vv">${c.selText}</div></div>
+   <div class="f"><div class="kk">Notable</div><div class="vv">${c.alumni}</div></div>
+   <div class="f"><div class="kk">Data confidence</div><div class="vv"><span class="chip ${c.conf==="high"?"g":c.conf==="med"?"w":"b"}">${c.conf}</span></div></div>
+  </div>
+  <div class="src">Sources: ${c.src.join(" · ")}</div>`;
+}
+
+/* ===================== LEGEND ===================== */
+function renderLegend(){
+ const box=$("#legend");box.innerHTML="";
+ let items=[];
+ switch(state.lens){
+  case"distance":items=[["≤ 8 km","--good"],["9–15 km","--warn"],["> 15 km","--bad"]];break;
+  case"training":items=[["Weekend ✓","--good"],["Weekday eve","--c2"],["Weekday daytime clash","--warn"],["No weekend","--bad"]];break;
+  case"fees":items=[["Free / subsidised","#1baf7a"],["< S$150","#86b6ef"],["S$150–300","#2a78d6"],["> S$300","#184f95"],["Not published","--muted"]];break;
+  case"ages":items=[["More bands → darker","--c4"]];break;
+  case"games":items=[["Plays internationally","--c1"],["Local only","--muted"]];break;
+  case"coach":items=[["Elite / pro","--c8"],["Licensed","--c3"],["Community","--c2"],["Unlisted","--muted"]];break;
+  default:items=[["Elite pathway","--c5"],["Open enrolment","--c2"]];
+ }
+ items.forEach(([lbl,c])=>{const v=c.startsWith("--")?cssv(c):c;box.insertAdjacentHTML("beforeend",`<span class="li"><span class="sw2" style="background:${v}"></span>${lbl}</span>`);});
+ box.insertAdjacentHTML("beforeend",`<span class="li" style="margin-left:auto;color:var(--muted)">◻ attribute hub &nbsp; ● club &nbsp; ⬤ elite (larger)</span>`);
+}
+
+/* ===================== TILES ===================== */
+function renderTiles(clubs){
+ const west=clubs.filter(c=>c.km<=12).length;
+ const wkend=clubs.filter(c=>c.we&&!c.wdDay).length;
+ const cars=clubs.map(c=>c.car).sort((a,b)=>a-b);const med=cars.length?cars[Math.floor(cars.length/2)]:0;
+ const priced=clubs.filter(c=>c.feeMo!==null);const cheapest=priced.length?priced.reduce((a,b)=>a.feeMo<b.feeMo?a:b):null;
+ const closest=clubs.length?clubs.reduce((a,b)=>a.car<b.car?a:b):null;
+ const T=[
+  ["Clubs in view",clubs.length,`of ${CLUBS.length} tracked`],
+  ["West / ≤12 km",west,"near-home options"],
+  ["Weekend-friendly",wkend,"no weekday-daytime clash"],
+  ["Median travel",med+" min",'by car from Tengah'],
+  ["Closest",closest?closest.name.replace("Singapore ",""):"—",closest?closest.car+" min car":""],
+  ["Lowest fee",cheapest?(cheapest.feeMo===0?"Free":"S$"+cheapest.feeMo):"—",cheapest?cheapest.name.replace("Singapore ",""):""]
+ ];
+ $("#tiles").innerHTML=T.map(([k,v,d])=>`<div class="tile"><div class="k">${k}</div><div class="v tnum">${v}</div><div class="d">${d}</div></div>`).join("");
+}
+
+/* ===================== RENDER DISPATCH ===================== */
+function render(){
+ const clubs=filtered();
+ renderTiles(clubs);
+ $("#pill-count").textContent=clubs.length+" clubs";
+ $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table"}[state.view];
+ $("#v-hint").textContent=HINTS[state.view];
+ $("#v-count").textContent="Lens · "+LENSES.find(l=>l.id===state.lens).label;
+ const showLegend=state.view!=="table"&&state.view!=="charts";
+ $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
+ const note=$("#note");
+ if(state.view==="table"||state.view==="charts"){note.classList.remove("hide");note.innerHTML="<b>Read me:</b> "+META.note;}else note.classList.add("hide");
+ cancelAnim();const vp=$("#viewport");vp.innerHTML="";
+ if(!clubs.length){vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">No clubs match these filters. Loosen a constraint on the left.</div>';return;}
+ ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable}[state.view])(vp,clubs);
+ if(state.sel&&!clubs.find(c=>c.id===state.sel)){/* keep drawer */}
+}
+
+/* ===================== WIRE UP ===================== */
+function buildLens(){$("#lensbox").innerHTML=LENSES.map(l=>`<button data-l="${l.id}" class="${l.id===state.lens?"on":""}"><span class="dot" style="background:${cssv(l.v)}"></span><span>${l.label}<br><small>${l.desc}</small></span></button>`).join("");
+ document.querySelectorAll("#lensbox button").forEach(b=>b.onclick=()=>{state.lens=b.dataset.l;buildLens();render();});}
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#tabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");state.view=b.dataset.v;render();});
+function seg(id,key,cast){document.querySelectorAll(id+" button").forEach(b=>b.onclick=()=>{document.querySelectorAll(id+" button").forEach(x=>x.classList.remove("on"));b.classList.add("on");state[key]=cast?cast(b.dataset.v):b.dataset.v;render();});}
+seg("#seg-cat","cat");seg("#seg-age","age");seg("#seg-dist","dist",Number);
+function tog(id,key){const e=$(id);e.onclick=()=>{state[key]=!state[key];e.classList.toggle("on",state[key]);render();};}
+tog("#t-weekend","weekend");tog("#t-west","west");tog("#t-nowd","nowd");
+$("#themebtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");const next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);buildLens();render();if(state.sel)openDrawer(state.sel);};
+addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,180);});
+$("#foot").innerHTML=`Compiled ${META.compiled} for a personal U14 club search from Tengah · 15 clubs · data verified against club sites, FAS/SYL & local press. ${META.note} <b>Not affiliated with any club.</b>`;
+// deep-link: #view=sankey&lens=fees
+(function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens");
+ if(v&&HINTS[v]){state.view=v;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
+ if(l&&LENSES.find(x=>x.id===l))state.lens=l;})();
+buildLens();render();
+</script>
