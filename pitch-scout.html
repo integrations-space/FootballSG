@@ -140,7 +140,21 @@ tbody tr:hover td{background:var(--surface-2)}
 .cbtn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:7px 12px;border-radius:9px;text-decoration:none;border:1px solid var(--line-2);color:var(--ink);background:var(--surface)}
 .cbtn.primary{background:var(--accent);color:#06130b;border-color:var(--accent)}
 .cbtn:hover{border-color:var(--accent)}
-.cbtn.dis{opacity:.5;cursor:not-allowed}
+.cbtn.dis{opacity:.5;cursor:not-allowed;pointer-events:none}
+.enqb{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 15px;margin-bottom:14px}
+.enqb .eh{font-weight:800;font-size:15px}
+.enqb .esub{font-size:12px;color:var(--muted);margin:1px 0 12px}
+.enq-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.enq-inputs select,.enq-inputs input{width:100%;padding:8px 10px;border:1px solid var(--line-2);border-radius:8px;background:var(--ground);color:var(--ink);font-family:inherit;font-size:13px}
+.enq-inputs select:focus,.enq-inputs input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+.enq-tools{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.enq-tools .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-right:auto}
+.enq-mini{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.enq-q{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:2px 16px;margin-bottom:12px}
+.enq-grp{grid-column:1/-1;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);font-weight:800;margin:9px 0 2px}
+.enq-q label{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--ink-2);padding:4px 0;cursor:pointer;line-height:1.4}
+.enq-q input{margin-top:3px;flex:0 0 auto;accent-color:var(--accent);width:15px;height:15px}
+#enq-preview{white-space:pre-wrap;background:var(--ground);border:1px solid var(--line);border-radius:9px;padding:12px 13px;font-family:inherit;font-size:12.5px;line-height:1.55;color:var(--ink);max-height:300px;overflow:auto;margin:0 0 11px}
 .drawer .src{font-size:11px;color:var(--muted);margin-top:12px;word-break:break-word}
 .foot{max-width:1260px;margin:22px auto 44px;padding:0 20px;font-size:11.5px;color:var(--muted)}
 .hide{display:none!important}
@@ -437,6 +451,30 @@ const REGION_LABEL={west:"West",central:"Central",east:"East",north:"North"};
 const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
 const tmins=c=>state.mode==="car"?c.car:c.transit;
 const modeLabel=()=>state.mode==="car"?"car":"transit";
+// Enquiry-email builder: selectable questions + live draft
+const QUESTIONS=[
+ {id:"slot",g:"Schedule & location",t:"What day(s) and time is the U14/U15 training slot, and at which venue? Is there a weekend (Sat/Sun) option?",on:true},
+ {id:"matches",g:"Schedule & location",t:"What days and where are matches played?",on:true},
+ {id:"venue",g:"Schedule & location",t:"Would he/she be based at your west venue (Jurong East / Choa Chu Kang area)?",on:false},
+ {id:"band",g:"Level & age band",t:"Is my child (14, born [MONTH/YEAR]) in your U14 or U15 squad, and is there runway up to U17/U19?",on:true},
+ {id:"tier",g:"Level & age band",t:"Is this the open/recreational tier or the competitive/COE team?",on:false},
+ {id:"trial",g:"Trial",t:"Is there a trial — the next date, the cost, and how to register?",on:true},
+ {id:"trialbring",g:"Trial",t:"What should he/she bring or wear for the trial, and how long does it run?",on:false},
+ {id:"retry",g:"Trial",t:"If not selected now, when is the next intake or re-trial?",on:false},
+ {id:"fees",g:"Fees & commitment",t:"What are the full fees for the U14/U15 programme, and what is included (kit, insurance, match fees)?",on:true},
+ {id:"minsess",g:"Fees & commitment",t:"What is the minimum number of sessions per week to stay match-eligible?",on:false},
+ {id:"coach",g:"Coaching & pathway",t:"Who coaches this age group, and what licence (AFC/UEFA) do they hold?",on:false},
+ {id:"pathway",g:"Coaching & pathway",t:"What is the pathway if he/she does well (COE, Singapore Youth League, scouting to the NDC)?",on:true},
+ {id:"games",g:"Games & exposure",t:"What competition do U14/U15 play, how many games a season, and how much game time do squad players get?",on:false},
+ {id:"tours",g:"Games & exposure",t:"Are there overseas tours or tournaments, and are they optional or extra cost?",on:false},
+ {id:"venueadmin",g:"Logistics & admin",t:"Full venue address and drop-off / parking; nearest MRT or bus?",on:false},
+ {id:"weather",g:"Logistics & admin",t:"What is the wet-weather or haze policy, and are sessions made up?",on:false},
+ {id:"insurance",g:"Logistics & admin",t:"Is there insurance cover during training and matches?",on:false}
+];
+const enq={club:"",child:"son",born:"",name:"",phone:"",replyBy:"",q:new Set(QUESTIONS.filter(q=>q.on).map(q=>q.id))};
+const applyPron=(t,child)=>{const he=child==="daughter"?"she":"he",him=child==="daughter"?"her":"him";return t.replace(/he\/she/g,he).replace(/him\/her/g,him);};
+function fmtDate(v){if(!v)return "[DATE]";const d=new Date(v+"T00:00:00");return isNaN(d)?v:d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});}
+function mailtoStr(to,s,b){return `mailto:${to||""}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;}
 
 const LENSES=[
  {id:"overview",label:"Overview",desc:"pathway + region",v:"--accent"},
@@ -715,19 +753,63 @@ function scatterChart(clubs){
 }
 
 /* ===================== VIEW: REGISTER & CONTACT ===================== */
+function enqData(){
+ const c=enq.club?CLUBS.find(x=>x.id===enq.club):null;
+ const e=enquiryEmail({clubName:c?c.name:"",child:enq.child,born:enq.born.trim(),name:enq.name.trim(),phone:enq.phone.trim(),replyBy:enq.replyBy,q:enq.q});
+ return {c,subject:e.subject,body:e.body};
+}
+function updateEnq(){
+ const {c,subject,body}=enqData();
+ const pv=document.getElementById("enq-preview");
+ if(pv)pv.textContent="To: "+(c&&c.email?c.email:"[club email]")+"\nSubject: "+subject+"\n\n"+body;
+ const s=document.getElementById("enq-send");
+ if(s){if(c&&c.email){s.href=mailtoStr(c.email,subject,body);s.classList.remove("dis");s.textContent="✉ Open in email app";}
+  else{s.classList.add("dis");s.removeAttribute("href");s.textContent=c?"✉ No email listed — use Copy":"✉ Pick a club to email";}}
+}
+function syncChecks(d){d.querySelectorAll('.enq-q input[type=checkbox]').forEach(cb=>{cb.checked=enq.q.has(cb.dataset.q);});}
+function renderEnquiry(wrap){
+ const d=document.createElement("div");d.className="enqb";
+ let opts=`<option value="">Choose a club (or fill in later)</option>`;
+ CLUBS.slice().sort((a,b)=>fitScore(b)-fitScore(a)||tmins(a)-tmins(b)).forEach(c=>{opts+=`<option value="${c.id}"${enq.club===c.id?" selected":""}>${c.name}${c.email?"":" — no email (copy only)"}</option>`;});
+ let qh="",lastG="";
+ QUESTIONS.forEach(q=>{if(q.g!==lastG){qh+=`<div class="enq-grp">${q.g}</div>`;lastG=q.g;}qh+=`<label><input type="checkbox" data-q="${q.id}"${enq.q.has(q.id)?" checked":""}><span>${q.t}</span></label>`;});
+ d.innerHTML=`<div class="eh">✉ Enquiry email builder</div>
+   <div class="esub">Pick a club and tick the questions — the draft updates live below in your template (greeting → intro → trial intent → questions → reply-by date). Then open it in your email app or copy it.</div>
+   <div class="enq-inputs">
+     <select id="enq-club" aria-label="Club">${opts}</select>
+     <select id="enq-child" aria-label="Parent of"><option value="son"${enq.child==="son"?" selected":""}>Parent of a son</option><option value="daughter"${enq.child==="daughter"?" selected":""}>Parent of a daughter</option></select>
+     <input id="enq-born" placeholder="Child born e.g. 03/2012" value="${enq.born}">
+     <input id="enq-name" placeholder="Your name" value="${enq.name}">
+     <input id="enq-phone" placeholder="Your phone" value="${enq.phone}">
+     <input id="enq-reply" type="date" aria-label="Reply by" value="${enq.replyBy}">
+   </div>
+   <div class="enq-tools"><span class="lbl">Questions to include</span>
+     <button class="enq-mini" id="enq-key" type="button">Key only</button><button class="enq-mini" id="enq-all" type="button">All</button><button class="enq-mini" id="enq-none" type="button">None</button></div>
+   <div class="enq-q">${qh}</div>
+   <pre id="enq-preview"></pre>
+   <div class="actions" style="padding:0"><a class="cbtn primary" id="enq-send" target="_blank" rel="noopener">✉ Open in email app</a><button class="cbtn" type="button" id="enq-copy">⧉ Copy draft</button></div>`;
+ wrap.appendChild(d);
+ d.querySelector("#enq-club").addEventListener("change",e=>{enq.club=e.target.value;updateEnq();});
+ d.querySelector("#enq-child").addEventListener("change",e=>{enq.child=e.target.value;updateEnq();});
+ ["born","name","phone"].forEach(k=>d.querySelector("#enq-"+k).addEventListener("input",e=>{enq[k]=e.target.value;updateEnq();}));
+ d.querySelector("#enq-reply").addEventListener("input",e=>{enq.replyBy=e.target.value;updateEnq();});
+ d.querySelectorAll('.enq-q input[type=checkbox]').forEach(cb=>cb.addEventListener("change",e=>{const id=e.target.dataset.q;if(e.target.checked)enq.q.add(id);else enq.q.delete(id);updateEnq();}));
+ d.querySelector("#enq-key").addEventListener("click",()=>{enq.q=new Set(QUESTIONS.filter(q=>q.on).map(q=>q.id));syncChecks(d);updateEnq();});
+ d.querySelector("#enq-all").addEventListener("click",()=>{enq.q=new Set(QUESTIONS.map(q=>q.id));syncChecks(d);updateEnq();});
+ d.querySelector("#enq-none").addEventListener("click",()=>{enq.q=new Set();syncChecks(d);updateEnq();});
+ d.querySelector("#enq-copy").addEventListener("click",e=>{const{c,subject,body}=enqData();copyText("To: "+(c&&c.email?c.email:"[club email]")+"\nSubject: "+subject+"\n\n"+body,e.currentTarget);});
+ updateEnq();
+}
 function renderRegister(vp,clubs){
  const wrap=document.createElement("div");wrap.style.cssText="padding:16px";
- wrap.innerHTML=`<div style="background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--ink-2);margin-bottom:14px;line-height:1.5">
-   <b>Before you commit:</b> the training <b>day &amp; time depends on the specific U14/U15 slot at each venue</b> — always ask the club to confirm it (e.g. Barça offered a <b>Fri 7pm weekday</b> slot). Cards are sorted <b>best weekend-fit &amp; nearest first</b>.</div>`;
+ renderEnquiry(wrap);
+ wrap.insertAdjacentHTML("beforeend",`<div style="background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--ink-2);margin:4px 0 14px;line-height:1.5">
+   <b>Before you commit:</b> the training <b>day &amp; time depends on the specific U14/U15 slot at each venue</b> — always ask the club to confirm it (e.g. Barça offered a <b>Fri 7pm weekday</b> slot). Cards below are sorted <b>best weekend-fit &amp; nearest first</b>.</div>`);
  const grid=document.createElement("div");grid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px";
  const sorted=clubs.slice().sort((a,b)=>fitScore(b)-fitScore(a)||tmins(a)-tmins(b));
  sorted.forEach(c=>{
   const fitBadge=c.wdDay?["Weekday-daytime clash","b"]:c.we?["Weekend fixtures ✓","g"]:["No weekend","b"];
-  const acts=[];
-  if(c.reg)acts.push(`<a class="cbtn primary" href="${c.reg}" target="_blank" rel="noopener">↗ Register / trial</a>`);
-  if(c.web)acts.push(`<a class="cbtn" href="https://${c.web.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">◍ Website</a>`);
-  if(c.email)acts.push(`<a class="cbtn" href="mailto:${c.email}">✉ ${c.email}</a>`);
-  if(c.phone)acts.push(`<a class="cbtn" href="tel:${c.phone.replace(/[^+\d]/g,"")}">☎ ${c.phone}</a>`);
+  const acts=contactActions(c);
   const fld=(k,v)=>`<div style="margin-top:5px"><span style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:800">${k}</span><div style="font-size:12.5px;color:var(--ink);line-height:1.45">${v}</div></div>`;
   const card=document.createElement("div");card.style.cssText="border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--surface);display:flex;flex-direction:column;gap:2px";
   card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
@@ -739,10 +821,11 @@ function renderRegister(vp,clubs){
    ${fld("Location",c.loc+" · "+REGION_LABEL[c.region])}
    ${fld("Training",c.sched)}
    ${fld("How to get in",c.trial||c.selText)}
-   <div class="actions" style="padding:10px 0 0;margin:0">${acts.length?acts.join(""):'<span style="font-size:12px;color:var(--muted)">Contact via website / socials</span>'}</div>`;
+   <div class="actions" style="padding:10px 0 0;margin:0">${acts||'<span style="font-size:12px;color:var(--muted)">Contact via website / socials</span>'}</div>`;
   grid.appendChild(card);
  });
  wrap.appendChild(grid);vp.appendChild(wrap);
+ updateEnq(); // wrap now in DOM — populate the live preview & send link
 }
 
 /* ===================== VIEW: PATHWAY ===================== */
@@ -849,16 +932,45 @@ function joinBlock(c){
  if(c.join)steps.push(["How to get in",c.join]);
  if(c.req)steps.push(["Requirements",c.req]);
  if(c.trial)steps.push(["Trial",c.trial]);
- const acts=[];
- if(c.reg)acts.push(`<a class="cbtn primary" href="${c.reg}" target="_blank" rel="noopener">↗ Register / trial</a>`);
- if(c.web)acts.push(`<a class="cbtn" href="https://${c.web.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">◍ Website</a>`);
- if(c.email)acts.push(`<a class="cbtn" href="mailto:${c.email}">✉ ${c.email}</a>`);
- if(c.phone)acts.push(`<a class="cbtn" href="tel:${c.phone.replace(/[^+\d]/g,"")}">☎ ${c.phone}</a>`);
- if(!steps.length&&!acts.length)return "";
+ const acts=contactActions(c);
+ if(!steps.length&&!acts)return "";
  return `<div class="join"><div class="jh">How to join <span class="badge">${badge}</span></div>
   <div class="jbody">${steps.map(([k,v])=>`<div class="step"><div class="kk">${k}</div><div class="vv">${v}</div></div>`).join("")}</div>
-  ${acts.length?`<div class="actions">${acts.join("")}</div>`:""}</div>`;
+  ${acts?`<div class="actions">${acts}</div>`:""}</div>`;
 }
+/* ---- enquiry email template + contact actions (shared) ---- */
+// Build the structured email. opts overrides the defaults (used by the live builder).
+function enquiryEmail(o){
+ o=o||{};
+ const name=o.clubName||"[Club name]", child=o.child||"son", born=o.born||"[MONTH/YEAR]";
+ const him=child==="daughter"?"her":"him", replyBy=o.replyBy?fmtDate(o.replyBy):"[DATE]";
+ const ids=o.q||new Set(QUESTIONS.filter(q=>q.on).map(q=>q.id));
+ const qs=QUESTIONS.filter(q=>ids.has(q.id)).map((q,i)=>`${i+1}. ${applyPron(q.t,child).replace("[MONTH/YEAR]",born)}`);
+ const L=[`Dear ${name} team,`,``,
+  `I am the parent of a ${child} aged 14 (Secondary 2, born ${born}), and we are exploring youth football academies for ${him}. We live in Tengah (west Singapore) and can commit mainly to weekend sessions.`,``,
+  `We are keen to enrol ${him} in your U14/U15 programme and would like to arrange a trial.`,``];
+ if(qs.length)L.push(`Before that, could you kindly advise on the following:`,...qs,``);
+ L.push(`We greatly appreciate your time and guidance.`,``,
+  `We look forward to your reply by ${replyBy}. Thank you.`,``,
+  `Warmest regards,`,(o.name||"[YOUR NAME]"),`Parent of a ${child}`,(o.phone||"[YOUR PHONE]"));
+ const subject=`Enquiry — U14/U15 trial & enrolment${o.clubName?` (${o.clubName})`:""}`;
+ return {subject,body:L.join("\n")};
+}
+function enquirySubject(name){return enquiryEmail({clubName:name}).subject;}
+function enquiryBody(name){return enquiryEmail({clubName:name}).body;}
+function mailtoFor(c){const e=enquiryEmail({clubName:c.name});return mailtoStr(c.email,e.subject,e.body);}
+function contactActions(c){
+ const a=[];
+ if(c.reg)a.push(`<a class="cbtn primary" href="${c.reg}" target="_blank" rel="noopener">↗ Register / trial</a>`);
+ if(c.email)a.push(`<a class="cbtn" href="${mailtoFor(c)}">✉ Draft email</a>`);
+ a.push(`<button class="cbtn" type="button" onclick="copyText('Subject: '+enquirySubject(CLUBS.find(x=>x.id==='${c.id}').name)+'\\n\\n'+enquiryBody(CLUBS.find(x=>x.id==='${c.id}').name),this)">⧉ Copy enquiry</button>`);
+ if(c.web)a.push(`<a class="cbtn" href="https://${c.web.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">◍ Website</a>`);
+ if(c.phone)a.push(`<a class="cbtn" href="tel:${c.phone.replace(/[^+\d]/g,"")}">☎ ${c.phone}</a>`);
+ return a.join("");
+}
+function copyText(text,btn){const done=()=>{const o=btn.textContent;btn.textContent="Copied ✓";btn.style.color="var(--good)";setTimeout(()=>{btn.textContent=o;btn.style.color="";},1600);};
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));}else fallbackCopy(text,done);}
+function fallbackCopy(text,done){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){}document.body.removeChild(ta);}
 
 /* ===================== LEGEND ===================== */
 function renderLegend(){
