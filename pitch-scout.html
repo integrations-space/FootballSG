@@ -58,6 +58,9 @@ header.top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;justify-con
 .topmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .pill{font-size:11px;font-weight:700;letter-spacing:.04em;padding:5px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2);background:var(--surface);white-space:nowrap}
 .pill.home{border-color:var(--accent);color:var(--accent-2)}
+#homeSel{border:0;background:transparent;color:var(--accent-2);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;max-width:170px;padding:0}
+#homeSel:focus-visible{outline:2px solid var(--accent);border-radius:4px}
+#homeSel option{background:var(--surface);color:var(--ink)}
 .themebtn{cursor:pointer;background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--ink-2)}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-bottom:18px}
 .tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
@@ -200,11 +203,11 @@ tbody tr:hover td{background:var(--surface-2)}
       <div class="crest" aria-hidden="true"></div>
       <div>
         <h1>The Pitch — U14 Scouting Board</h1>
-        <div class="sub">A knowledge graph of Singapore youth football pathways, read from a home base in <b>Tengah</b> (west). U14 and up · switch the <b>focus lens</b> to recolour every view.</div>
+        <div class="sub">A knowledge graph of Singapore youth football pathways, measured from your chosen <b>home base</b>. U14 and up · switch the <b>focus lens</b> to recolour every view.</div>
       </div>
     </div>
     <div class="topmeta">
-      <span class="pill home">◎ Home base · Tengah</span>
+      <label class="pill home" for="homeSel" style="gap:6px;padding-right:8px;cursor:pointer">◎ Home <select id="homeSel" aria-label="Home base"></select></label>
       <span class="pill" id="pill-count">— clubs</span>
       <button class="themebtn" id="themebtn">◐ Theme</button>
     </div>
@@ -223,7 +226,7 @@ tbody tr:hover td{background:var(--surface-2)}
         <h3>Hard constraints</h3>
         <div class="toggle" id="t-weekend"><span>Weekend sessions</span><span class="sw"></span></div>
         <div class="toggle" id="t-nowd"><span>No weekday-daytime clash</span><span class="sw"></span></div>
-        <div class="toggle" id="t-west"><span>West / ≤12 km</span><span class="sw"></span></div>
+        <div class="toggle" id="t-west"><span>Near home ≤12 km</span><span class="sw"></span></div>
       </section>
       <section>
         <h3>Pathway type</h3>
@@ -456,7 +459,7 @@ const CLUBS=[
   local:["Broad-base development"],intl:false,intlText:"National FAS pathway (no overseas tours)",
   coach:"FAS / Sport Singapore coaches",tier:"Licensed",cred:"FAS national programme",
   wd:false,we:true,wdDay:false,sched:"Saturday sessions, 90 min × 19 per season (Season 3 2026 confirmed weekend; low intensity)",
-  slots:"All Saturday, near Tengah — Jurongville · Kent Ridge · Kranji: 10:30am–12pm · Spectra Sec · Jurong Pioneer JC: 3–4:30pm",
+  slots:"All Saturday (west venues) — Jurongville · Kent Ridge · Kranji: 10:30am–12pm · Spectra Sec · Jurong Pioneer JC: 3–4:30pm",
   sel:"tiered",selText:"Open broad-base; selective DC / DC+ by talent ID (scouted, mostly younger bands)",
   alumni:"Feeds FAS national development",conf:"high",
   review:{conf:"medium (independent parent reviews online are sparse)",
@@ -573,8 +576,43 @@ const $=s=>document.querySelector(s);
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const REGION_LABEL={west:"West",central:"Central",north:"North",ne:"North-East",east:"East"};
 const REGION_ORDER=["west","central","north","ne","east"];
-const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
-const tmins=c=>state.mode==="car"?c.car:c.transit;
+const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
+// Home-base picker: pick any SG town; travel is estimated from an approx km-grid.
+// Tengah keeps its researched car/transit/km figures; other bases are straight-line estimates.
+const HOME_BASES=[
+ {id:"tengah",name:"Tengah",region:"west",xy:[11,14]},
+ {id:"jurongeast",name:"Jurong East",region:"west",xy:[12,11]},
+ {id:"bukitbatok",name:"Bukit Batok",region:"west",xy:[14,15]},
+ {id:"choachukang",name:"Choa Chu Kang",region:"west",xy:[12,18]},
+ {id:"bukitpanjang",name:"Bukit Panjang",region:"west",xy:[15,17]},
+ {id:"clementi",name:"Clementi",region:"west",xy:[15,8]},
+ {id:"jurongwest",name:"Jurong West",region:"west",xy:[8,12]},
+ {id:"bukittimah",name:"Bukit Timah",region:"central",xy:[17,13]},
+ {id:"queenstown",name:"Queenstown",region:"central",xy:[20,7]},
+ {id:"toapayoh",name:"Toa Payoh",region:"central",xy:[24,13]},
+ {id:"bishan",name:"Bishan",region:"central",xy:[23,16]},
+ {id:"angmokio",name:"Ang Mo Kio",region:"central",xy:[24,19]},
+ {id:"kallang",name:"Kallang / City",region:"central",xy:[25,10]},
+ {id:"woodlands",name:"Woodlands",region:"north",xy:[17,24]},
+ {id:"yishun",name:"Yishun",region:"north",xy:[22,23]},
+ {id:"sembawang",name:"Sembawang",region:"north",xy:[20,25]},
+ {id:"serangoon",name:"Serangoon",region:"ne",xy:[27,15]},
+ {id:"hougang",name:"Hougang",region:"ne",xy:[29,17]},
+ {id:"sengkang",name:"Sengkang",region:"ne",xy:[29,20]},
+ {id:"punggol",name:"Punggol",region:"ne",xy:[31,22]},
+ {id:"marineparade",name:"Marine Parade / Katong",region:"east",xy:[29,6]},
+ {id:"bedok",name:"Bedok",region:"east",xy:[33,8]},
+ {id:"tampines",name:"Tampines",region:"east",xy:[36,11]},
+ {id:"pasirris",name:"Pasir Ris",region:"east",xy:[37,14]},
+ {id:"changi",name:"Changi",region:"east",xy:[41,11]}
+];
+const CLUB_XY={lcs:[27,11],fcj:[12,11],tpu:[12,11],sss:[17,24],tsk:[11,15],ndc:[25,10],tmp:[36,11],bal:[23,16],gey:[34,10],jssl:[19,8],bor:[18,9],bar:[15,17],che:[17,13],asg:[11,15],tcfc:[18,9],hgfc:[27,16],espzen:[9,9],mof:[8,12],euroasia:[23,13],rmf:[30,6],sky:[28,16],f17:[39,9]};
+function homeBase(){return HOME_BASES.find(h=>h.id===state.home)||HOME_BASES[0];}
+const homeXY=()=>homeBase().xy, homeName=()=>homeBase().name, homeRegion=()=>homeBase().region;
+function estTravel(a,b){const s=Math.hypot(a[0]-b[0],a[1]-b[1]),r=s*1.4;return {km:Math.round(r),car:Math.round(6+r*1.15),transit:Math.round(10+r*2.2)};}
+function travelOf(c){if(state.home==="tengah")return {km:c.km,car:c.car,transit:c.transit};const xy=CLUB_XY[c.id];return xy?estTravel(homeXY(),xy):{km:c.km,car:c.car,transit:c.transit};}
+const kmOf=c=>travelOf(c).km, carOf=c=>travelOf(c).car, transitOf=c=>travelOf(c).transit;
+const tmins=c=>state.mode==="car"?carOf(c):transitOf(c);
 const modeLabel=()=>state.mode==="car"?"car":"transit";
 // Enquiry-email builder: selectable questions + live draft
 const QUESTIONS=[
@@ -603,7 +641,7 @@ function mailtoStr(to,s,b){return `mailto:${to||""}?subject=${encodeURIComponent
 
 const LENSES=[
  {id:"overview",label:"Overview",desc:"pathway + region",v:"--accent"},
- {id:"distance",label:"Distance",desc:"travel from Tengah",v:"--c1"},
+ {id:"distance",label:"Distance",desc:"travel from home",v:"--c1"},
  {id:"training",label:"Training days",desc:"weekend vs weekday",v:"--c2"},
  {id:"fees",label:"Fees",desc:"monthly cost",v:"--c3"},
  {id:"ages",label:"Age groups",desc:"bands U14→U19",v:"--c4"},
@@ -611,7 +649,7 @@ const LENSES=[
  {id:"coach",label:"Coaching",desc:"pedigree & licences",v:"--c8"}
 ];
 const HINTS={
- graph:"Tengah sits at the centre. Attribute hubs orbit it and each club hangs off the hubs it belongs to — switch lens to change the hubs. Drag nodes; hover for detail.",
+ graph:"Your home base sits at the centre. Attribute hubs orbit it and each club hangs off the hubs it belongs to — switch lens to change the hubs. Drag nodes; hover for detail.",
  sankey:"Flow from region → club → the current lens's attribute. Ribbon width is one club-share; colour follows the lens.",
  treemap:"Clubs nested inside their region. Tile area scales with the lens metric (equal otherwise); colour follows the lens.",
  charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
@@ -621,10 +659,10 @@ const HINTS={
 };
 
 /* ----- fit + helpers ----- */
-const fitScore=c=>(c.we?1:0)+(!c.wdDay?1:0)+(c.km<=12?1:0);
+const fitScore=c=>(c.we?1:0)+(!c.wdDay?1:0)+(kmOf(c)<=12?1:0);
 const feeBand=c=>c.feeMo===null?"Not published":c.feeMo===0?"Free / subsidised":c.feeMo<150?"< S$150/mo":c.feeMo<=300?"S$150–300/mo":"> S$300/mo";
-const distBand=c=>c.km<=8?"≤ 8 km":c.km<=15?"9–15 km":"> 15 km";
-const distColor=c=>cssv(c.km<=8?"--good":c.km<=15?"--warn":"--bad");
+const distBand=c=>{const k=kmOf(c);return k<=8?"≤ 8 km":k<=15?"9–15 km":"> 15 km";};
+const distColor=c=>{const k=kmOf(c);return cssv(k<=8?"--good":k<=15?"--warn":"--bad");};
 const tierColor=t=>({Elite:cssv("--c8"),Licensed:cssv("--c3"),Community:cssv("--c2"),Unlisted:cssv("--muted")}[t]);
 const catColor=c=>cssv(c.cat==="elite"?"--c5":"--c2");
 function trainClass(c){return !c.we?"none":c.wdDay?"day":"good"}
@@ -674,7 +712,7 @@ function filtered(){
   if(state.dist!==99&&tmins(c)>state.dist)return false;
   if(state.weekend&&!c.we)return false;
   if(state.nowd&&c.wdDay)return false;
-  if(state.west&&c.km>12)return false;
+  if(state.west&&kmOf(c)>12)return false;
   return true;
  });
 }
@@ -685,7 +723,7 @@ function showTip(html,x,y){tip.innerHTML=html;tip.classList.add("on");const w=ti
 function hideTip(){tip.classList.remove("on");}
 function clubTip(c){
  return `<div class="tt">${c.name}</div><div class="kk">${c.cat==="elite"?"Elite pathway":"Open enrolment"} · ${REGION_LABEL[c.region]}</div>
- <div class="row"><span class="kk">From Tengah</span><span>${c.car} min · ${c.km} km</span></div>
+ <div class="row"><span class="kk">From ${homeName()}</span><span>${carOf(c)} min · ${kmOf(c)} km</span></div>
  <div class="row"><span class="kk">Fees</span><span>${c.feeMo===null?"n/p":c.feeMo===0?"free/subsid.":"~S$"+c.feeMo+"/mo"}</span></div>
  <div class="row"><span class="kk">Weekend</span><span>${c.we?"yes":"no"}${c.wdDay?" · wkday-day":""}</span></div>
  <div class="row"><span class="kk">Ages</span><span>${c.ages.join(" ")}</span></div>
@@ -710,7 +748,8 @@ function renderGraph(vp,clubs){
  const attrNames=[...new Set(clubs.flatMap(attrsOf))];
  const order=ATTR_ORDER[state.lens]||[];
  attrNames.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b)});
- const home={id:"__home",type:"home",label:"TENGAH",x:cx,y:cy,vx:0,vy:0,r:homeR,fixed:true};
+ const hn=homeName().toUpperCase();
+ const home={id:"__home",type:"home",label:hn.length>9?hn.slice(0,8)+"…":hn,x:cx,y:cy,vx:0,vy:0,r:homeR,fixed:true};
  const nodes=[home];const byId={__home:home};
  attrNames.forEach((a,i)=>{const ang=-Math.PI/2+i/attrNames.length*Math.PI*2;const n={id:"a_"+a,type:"attr",label:a,color:attrColor(a),x:cx+Math.cos(ang)*attrR,y:cy+Math.sin(ang)*attrR,vx:0,vy:0,r:aR};nodes.push(n);byId[n.id]=n;});
  clubs.forEach((c,i)=>{const ang=i/clubs.length*Math.PI*2;const n={type:"club",club:c,label:c.name,color:nodeColor(c),x:cx+Math.cos(ang)*clubR+(i%3-1)*6,y:cy+Math.sin(ang)*clubR,vx:0,vy:0,r:c.cat==="elite"?(narrow?10:11):(narrow?8:9)};nodes.push(n);n.club._n=n;});
@@ -732,7 +771,7 @@ function renderGraph(vp,clubs){
   g.save();for(let i=0;i<6;i++){g.fillStyle=i%2?cssv("--surface"):cssv("--surface-2");g.globalAlpha=.5;g.fillRect(i*W/6,0,W/6,H);}g.restore();
   links.forEach(([a,b])=>{g.strokeStyle=b.type==="attr"?colWithA(b.color,.35):cssv("--line-2");g.lineWidth=a.type==="home"||b.type==="attr"&&a.type==="home"?1:1.4;g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();});
   nodes.forEach(n=>{
-   if(n.type==="home"){g.fillStyle=cssv("--accent");g.strokeStyle=cssv("--chalk");g.lineWidth=2.5;roundNode(g,n.x,n.y,n.r);g.fill();g.stroke();g.fillStyle=cssv("--chalk");g.font="700 "+(narrow?10:11)+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="middle";g.fillText("TENGAH",n.x,n.y);}
+   if(n.type==="home"){g.fillStyle=cssv("--accent");g.strokeStyle=cssv("--chalk");g.lineWidth=2.5;roundNode(g,n.x,n.y,n.r);g.fill();g.stroke();g.fillStyle=cssv("--chalk");g.font="700 "+(n.label.length>7?(narrow?8:9):(narrow?10:11))+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="middle";g.fillText(n.label,n.x,n.y);}
    else if(n.type==="attr"){g.fillStyle=cssv("--surface");g.strokeStyle=n.color;g.lineWidth=2.4;g.beginPath();g.rect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);g.fill();g.stroke();g.fillStyle=cssv("--ink-2");g.font="600 "+(narrow?9:11)+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";const al=n.label.length>lblMax?n.label.slice(0,lblMax-1)+"…":n.label;g.fillText(al,n.x,n.y+n.r+3);}
    else{g.fillStyle=n.color;g.strokeStyle=cssv("--surface");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r,0,7);g.fill();g.stroke();if(state.sel===n.club.id){g.strokeStyle=cssv("--ink");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r+4,0,7);g.stroke();}g.fillStyle=cssv("--ink");g.font="600 "+lblF+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";const lbl=n.club.name.length>lblMax?n.club.name.slice(0,lblMax-1)+"…":n.club.name;g.fillText(lbl,n.x,n.y+n.r+2);}
   });
@@ -821,7 +860,7 @@ function renderTreemap(vp,clubs){
  });
  vp.appendChild(svg);
 }
-function fo(x,y,w,h,name,c){const f=el("foreignObject",{x,y,width:Math.max(0,w),height:Math.max(0,h)});const div=document.createElement("div");div.style.cssText="font:700 11px "+cssv("--sans")+";color:#fff;line-height:1.15;text-shadow:0 1px 2px rgba(0,0,0,.4);pointer-events:none;overflow:hidden;height:100%";div.innerHTML=`${name}<div style="font-weight:600;font-size:10px;opacity:.9;margin-top:2px">${c.car}min · ${c.feeMo===null?"n/p":c.feeMo===0?"free":"S$"+c.feeMo}</div>`;f.appendChild(div);return f;}
+function fo(x,y,w,h,name,c){const f=el("foreignObject",{x,y,width:Math.max(0,w),height:Math.max(0,h)});const div=document.createElement("div");div.style.cssText="font:700 11px "+cssv("--sans")+";color:#fff;line-height:1.15;text-shadow:0 1px 2px rgba(0,0,0,.4);pointer-events:none;overflow:hidden;height:100%";div.innerHTML=`${name}<div style="font-weight:600;font-size:10px;opacity:.9;margin-top:2px">${carOf(c)}min · ${c.feeMo===null?"n/p":c.feeMo===0?"free":"S$"+c.feeMo}</div>`;f.appendChild(div);return f;}
 function squarify(items,rect){ // returns [{data,x,y,w,h}]
  items=items.filter(i=>i.value>0);const total=items.reduce((s,i)=>s+i.value,0)||1;
  let {x,y,w,h}=rect;const out=[];let row=[],rowVal=0;let items2=items.map(i=>({...i,_a:i.value/total*(w*h)}));
@@ -837,7 +876,7 @@ function squarify(items,rect){ // returns [{data,x,y,w,h}]
 function renderCharts(vp,clubs){
  const wrap=document.createElement("div");wrap.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:16px";
  wrap.appendChild(chartCard("Monthly fees (S$)","0 = free/subsidised · excludes not-published",feesChart(clubs)));
- wrap.appendChild(chartCard(`Travel from Tengah (${modeLabel()}, min)`,state.mode==="car"?"green ≤20 · amber ≤30 · red >30":"green ≤40 · amber ≤55 · red >55",travelChart(clubs)));
+ wrap.appendChild(chartCard(`Travel from ${homeName()} (${modeLabel()}, min)`,state.mode==="car"?"green ≤20 · amber ≤30 · red >30":"green ≤40 · amber ≤55 · red >55",travelChart(clubs)));
  wrap.appendChild(chartCard("Age-band coverage","filled = band offered (U14→U19)",ageMatrix(clubs)));
  wrap.appendChild(chartCard("Cost vs. distance","lower-left = cheap & close",scatterChart(clubs)));
  vp.appendChild(wrap);
@@ -1039,7 +1078,7 @@ function renderTable(vp,clubs){
   r.innerHTML=`<td class="nm">${c.name}<div style="font-weight:500;color:var(--muted);font-size:11px">${c.loc}</div></td>
    <td><span class="chip ${c.cat}">${c.cat}</span></td>
    <td>${REGION_LABEL[c.region]}</td>
-   <td class="tnum">${tmins(c)}m</td><td class="tnum">${c.km}</td>
+   <td class="tnum">${tmins(c)}m</td><td class="tnum">${kmOf(c)}</td>
    <td class="tnum">${c.feeMo===null?'<span class="chip">n/p</span>':c.feeMo===0?'<span class="chip g">free</span>':"S$"+c.feeMo}</td>
    <td><span class="chip ${f===3?"g":f===2?"w":"b"}">${f}/3</span></td>
    <td>${c.we?'<span class="chip g">yes</span>':'<span class="chip b">no</span>'}${c.wdDay?' <span class="chip w">wkday</span>':""}</td>
@@ -1053,37 +1092,38 @@ function renderTable(vp,clubs){
 
 /* ===================== ActiveSG Season 3 2026 venues (user-provided) ===================== */
 const ASG_SESSIONS=[
- {v:"Jurongville Secondary",r:"west",km:5,car:12,t:"10:30am–12pm",avail:19,cap:40},
- {v:"Kent Ridge Secondary",r:"west",km:5,car:12,t:"10:30am–12pm",avail:2,cap:20},
- {v:"Kranji Secondary",r:"west",km:6,car:13,t:"10:30am–12pm",avail:19,cap:45},
- {v:"Spectra Secondary",r:"west",km:7,car:14,t:"3:00–4:30pm",avail:7,cap:30},
- {v:"Jurong Pioneer JC",r:"west",km:8,car:15,t:"3:00–4:30pm",avail:6,cap:20},
- {v:"Queensway Secondary",r:"central",km:14,car:22,t:"2:30–4:00pm",avail:12,cap:30},
- {v:"Naval Base Secondary",r:"north",km:18,car:26,t:"9:30–11:00am",avail:12,cap:30},
- {v:"Bendemeer Secondary",r:"central",km:19,car:28,t:"3:00–4:30pm",avail:7,cap:30},
- {v:"Bedok Green Secondary",r:"east",km:25,car:38,t:"3:00–4:30pm",avail:12,cap:30},
- {v:"Junyuan Primary",r:"east",km:28,car:40,t:"10:30am–12pm",avail:3,cap:25},
- {v:"Meridian Secondary",r:"east",km:30,car:42,t:"10:30am–12pm",avail:6,cap:40}
+ {v:"Jurongville Secondary",r:"west",xy:[12,11],car:12,t:"10:30am–12pm",avail:19,cap:40},
+ {v:"Kent Ridge Secondary",r:"west",xy:[12,17],car:12,t:"10:30am–12pm",avail:2,cap:20},
+ {v:"Kranji Secondary",r:"west",xy:[12,19],car:13,t:"10:30am–12pm",avail:19,cap:45},
+ {v:"Spectra Secondary",r:"west",xy:[13,19],car:14,t:"3:00–4:30pm",avail:7,cap:30},
+ {v:"Jurong Pioneer JC",r:"west",xy:[9,12],car:15,t:"3:00–4:30pm",avail:6,cap:20},
+ {v:"Queensway Secondary",r:"central",xy:[20,7],car:22,t:"2:30–4:00pm",avail:12,cap:30},
+ {v:"Naval Base Secondary",r:"north",xy:[20,25],car:26,t:"9:30–11:00am",avail:12,cap:30},
+ {v:"Bendemeer Secondary",r:"central",xy:[25,11],car:28,t:"3:00–4:30pm",avail:7,cap:30},
+ {v:"Bedok Green Secondary",r:"east",xy:[33,8],car:38,t:"3:00–4:30pm",avail:12,cap:30},
+ {v:"Junyuan Primary",r:"east",xy:[35,11],car:40,t:"10:30am–12pm",avail:3,cap:25},
+ {v:"Meridian Secondary",r:"east",xy:[37,14],car:42,t:"10:30am–12pm",avail:6,cap:40}
 ];
 function asgSessionsBlock(){
- const rows=ASG_SESSIONS.slice().sort((a,b)=>a.car-b.car);
- const maxc=Math.max(...rows.map(r=>r.car));
- const west=rows.filter(r=>r.km<=15).length;
- const bars=rows.map(r=>{
-  const col=r.car<=15?"--good":r.car<=25?"--warn":"--bad";
-  const w=Math.max(4,Math.round(r.car/maxc*100));
+ const car=r=>state.home==="tengah"?r.car:estTravel(homeXY(),r.xy).car;
+ const rows=ASG_SESSIONS.slice().sort((a,b)=>car(a)-car(b));
+ const maxc=Math.max(...rows.map(car));
+ const near=rows.filter(r=>car(r)<=15).length;
+ const bars=rows.map(r=>{const cm=car(r);
+  const col=cm<=15?"--good":cm<=25?"--warn":"--bad";
+  const w=Math.max(4,Math.round(cm/maxc*100));
   const sp=r.avail<=3?"b":r.avail<=8?"w":"g";
   return `<div style="display:grid;grid-template-columns:150px 1fr 40px 72px;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)">
     <div style="font-size:12px;font-weight:700;line-height:1.15">${r.v.replace(" Secondary"," Sec").replace(" Primary"," Pri")}<div style="font-weight:500;color:var(--muted);font-size:10.5px">${REGION_LABEL[r.r]} · Sat ${r.t}</div></div>
     <div style="height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden"><div style="height:100%;width:${w}%;background:var(${col})"></div></div>
-    <div class="tnum" style="font-size:11.5px;color:var(--ink-2)">${r.car}m</div>
+    <div class="tnum" style="font-size:11.5px;color:var(--ink-2)">${cm}m</div>
     <div><span class="chip ${sp}">${r.avail}/${r.cap} left</span></div></div>`;
  }).join("");
  return `<div class="join" style="margin-top:14px"><div class="jh">ActiveSG Season 3 2026 · Youth venues <span class="badge">all Saturday · $130 · 19 sessions</span></div>
   <div style="padding:11px 12px">
-   <div style="font-size:12px;color:var(--ink-2);margin-bottom:4px">All 11 bookable venues, <b>nearest to Tengah first</b>. Bar = travel time (car); chip = spots left — fewer means book fast.</div>
+   <div style="font-size:12px;color:var(--ink-2);margin-bottom:4px">All 11 bookable venues, <b>nearest to ${homeName()} first</b>. Bar = travel time (${modeLabel()==="car"?"car":"car"}); chip = spots left — fewer means book fast.</div>
    ${bars}
-   <div style="font-size:11px;color:var(--muted);margin-top:9px"><b>${west} west venues within ~15 min.</b> Kent Ridge (2 left) &amp; Junyuan (3 left) are nearly full; Jurongville &amp; Kranji have the most room (19 each).</div>
+   <div style="font-size:11px;color:var(--muted);margin-top:9px"><b>${near} venue${near===1?"":"s"} within ~15 min of ${homeName()}.</b> Availability (Season 3): Kent Ridge (2 left) &amp; Junyuan (3 left) are nearly full; Jurongville &amp; Kranji have the most room (19 each).</div>
   </div></div>`;
 }
 
@@ -1095,7 +1135,7 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
    <div><h3>${c.name}</h3><div class="subh">${c.loc} · ${REGION_LABEL[c.region]} · <span class="chip ${c.cat}">${c.cat==="elite"?"Elite pathway":"Open enrolment"}</span> · fit ${f}/3</div></div>
    <button class="themebtn" onclick="state.sel=null;openDrawer(null)">✕ close</button></div>
   <div class="grid">
-   <div class="f"><div class="kk">Travel from Tengah</div><div class="vv">${c.car} min car · ${c.transit} min transit · ${c.km} km</div></div>
+   <div class="f"><div class="kk">Travel from ${homeName()}</div><div class="vv">${carOf(c)} min car · ${transitOf(c)} min transit · ${kmOf(c)} km</div></div>
    <div class="f"><div class="kk">Fees</div><div class="vv">${c.feeText}</div></div>
    <div class="f"><div class="kk">Age groups</div><div class="vv">${c.ages.join(" · ")}</div></div>
    <div class="f"><div class="kk">Training</div><div class="vv">${c.sched}</div></div>
@@ -1143,7 +1183,7 @@ function enquiryEmail(o){
  const ids=o.q||new Set(QUESTIONS.filter(q=>q.on).map(q=>q.id));
  const qs=QUESTIONS.filter(q=>ids.has(q.id)).map((q,i)=>`${i+1}. ${applyPron(q.t,child).replace("[MONTH/YEAR]",born)}`);
  const L=[`Dear ${name} team,`,``,
-  `I am the parent of a ${child} aged 14 (Secondary 2, born ${born}), and we are exploring youth football academies for ${him}. We live in Tengah (west Singapore) and can commit mainly to weekend sessions.`,``,
+  `I am the parent of a ${child} aged 14 (Secondary 2, born ${born}), and we are exploring youth football academies for ${him}. We live in ${homeName()} (${REGION_LABEL[homeRegion()]||homeRegion()} Singapore) and can commit mainly to weekend sessions.`,``,
   `We are keen to enrol ${him} in your U14/U15 programme and would like to arrange a trial.`,``];
  if(qs.length)L.push(`Before that, could you kindly advise on the following:`,...qs,``);
  L.push(`We greatly appreciate your time and guidance.`,``,
@@ -1187,16 +1227,16 @@ function renderLegend(){
 
 /* ===================== TILES ===================== */
 function renderTiles(clubs){
- const west=clubs.filter(c=>c.km<=12).length;
+ const west=clubs.filter(c=>kmOf(c)<=12).length;
  const wkend=clubs.filter(c=>c.we&&!c.wdDay).length;
  const cars=clubs.map(tmins).sort((a,b)=>a-b);const med=cars.length?cars[Math.floor(cars.length/2)]:0;
  const priced=clubs.filter(c=>c.feeMo!==null);const cheapest=priced.length?priced.reduce((a,b)=>a.feeMo<b.feeMo?a:b):null;
  const closest=clubs.length?clubs.reduce((a,b)=>tmins(a)<tmins(b)?a:b):null;
  const T=[
   ["Clubs in view",clubs.length,`of ${CLUBS.length} tracked`],
-  ["West / ≤12 km",west,"near-home options"],
+  ["Near home ≤12 km",west,"near-home options"],
   ["Weekend-friendly",wkend,"no weekday-daytime clash"],
-  ["Median travel",med+" min",`by ${modeLabel()} from Tengah`],
+  ["Median travel",med+" min",`by ${modeLabel()} from ${homeName()}`],
   ["Closest",closest?closest.name.replace("Singapore ",""):"—",closest?tmins(closest)+" min "+modeLabel():""],
   ["Lowest fee",cheapest?(cheapest.feeMo===0?"Free":"S$"+cheapest.feeMo):"—",cheapest?cheapest.name.replace("Singapore ",""):""]
  ];
@@ -1244,12 +1284,14 @@ addEventListener("orientationchange",()=>{clearTimeout(window._rz);window._rz=se
  const set=v=>{rail.classList.toggle("collapsed",v);chev.textContent=v?"▸":"▾";tog.setAttribute("aria-expanded",String(!v));};
  tog.onclick=()=>set(!rail.classList.contains("collapsed"));
  if(innerWidth<=920)set(true);})();
-$("#foot").innerHTML=`Compiled ${META.compiled} for a personal U14 club search from Tengah · ${CLUBS.length} clubs island-wide · data verified against club sites, FAS/SYL & local press. ${META.note} <b>Not affiliated with any club.</b>`;
+$("#foot").innerHTML=`Compiled ${META.compiled} for a personal U14 club search · ${CLUBS.length} clubs island-wide · data verified against club sites, FAS/SYL & local press. ${META.note} <b>Not affiliated with any club.</b>`;
 // deep-link: #view=sankey&lens=fees
 (function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens"),m=h.get("mode");
  if(v&&HINTS[v]){state.view=v;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
  if(l&&LENSES.find(x=>x.id===l))state.lens=l;
  if(m==="transit"){state.mode="transit";document.querySelectorAll("#seg-mode button").forEach(b=>b.classList.toggle("on",b.dataset.v==="transit"));document.querySelectorAll("#seg-dist button").forEach(x=>{const dv=x.dataset.transit;if(dv){x.dataset.v=dv;x.textContent="≤"+dv+" min";}});$("#dist-h3").textContent="Max travel · transit";}
+ const hb=h.get("home");if(hb&&HOME_BASES.find(x=>x.id===hb))state.home=hb;
  const cid=h.get("club");if(cid&&CLUBS.find(x=>x.id===cid))state.sel=cid;})();
-buildLens();render();if(state.sel)openDrawer(state.sel);
+function buildHome(){const sel=$("#homeSel");if(!sel)return;let html="";REGION_ORDER.forEach(r=>{const bs=HOME_BASES.filter(b=>b.region===r);if(!bs.length)return;html+=`<optgroup label="${REGION_LABEL[r]}">`+bs.map(b=>`<option value="${b.id}"${b.id===state.home?" selected":""}>${b.name}</option>`).join("")+"</optgroup>";});sel.innerHTML=html;sel.value=state.home;sel.onchange=()=>{state.home=sel.value;render();if(state.sel)openDrawer(state.sel);};}
+buildLens();buildHome();render();if(state.sel)openDrawer(state.sel);
 </script>

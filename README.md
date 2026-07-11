@@ -31,7 +31,11 @@ A single control recolours **every** view by the dimension you care about:
 
 ### Filters (hard constraints)
 
-Weekend sessions · No weekday-daytime clash · West / ≤12 km · pathway type · age band offered · max travel time. **Travel-by toggle** switches all timings between **car and public transit**.
+Weekend sessions · No weekday-daytime clash · Near home ≤12 km · pathway type · age band offered · max travel time. **Travel-by toggle** switches all timings between **car and public transit**.
+
+### Home base
+
+A **home-base picker** (25 Singapore towns across all regions) recomputes every distance, travel time, the "nearest"/"near-home" KPIs and the ≤12 km filter from wherever you live — the graph re-centres on your town. Tengah keeps its researched figures; other towns use a straight-line (coordinate) estimate. Deep-link: `#home=tampines`.
 
 ## Data
 
