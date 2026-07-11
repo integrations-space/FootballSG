@@ -42,7 +42,7 @@
   --c5:#4a3aa7; --c6:#e34948; --c7:#e87ba4; --c8:#eb6834;
 }
 *{box-sizing:border-box}
-html,body{margin:0}
+html,body{margin:0;overflow-x:hidden}
 body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .tnum{font-variant-numeric:tabular-nums}
 h1,h2,h3{margin:0;text-wrap:balance;font-weight:800;letter-spacing:-.01em}
@@ -158,6 +158,39 @@ tbody tr:hover td{background:var(--surface-2)}
 .drawer .src{font-size:11px;color:var(--muted);margin-top:12px;word-break:break-word}
 .foot{max-width:1260px;margin:22px auto 44px;padding:0 20px;font-size:11.5px;color:var(--muted)}
 .hide{display:none!important}
+.rail-toggle{display:none;width:100%;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:9px;padding:11px 13px;font-size:13.5px;font-weight:700;color:var(--ink);cursor:pointer;margin-bottom:2px}
+@media (max-width:920px){
+ .rail{position:static;padding:12px}
+ .rail-toggle{display:flex}
+ .rail.collapsed>section{display:none}
+ .rail.collapsed{padding-bottom:12px}
+}
+@media (max-width:640px){
+ .wrap{padding:12px}
+ header.top{gap:10px;padding-bottom:12px;margin-bottom:14px}
+ .brand{gap:11px}
+ .brand h1{font-size:18px}
+ .brand .sub{font-size:11.5px}
+ .crest{width:38px;height:38px}
+ .topmeta{gap:6px}
+ .tiles{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+ .tile{padding:10px 12px}
+ .tile .v{font-size:21px}
+ .layout{gap:12px}
+ .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:3px;scrollbar-width:none}
+ .tabs::-webkit-scrollbar{display:none}
+ .tabs button{flex:0 0 auto;white-space:nowrap;padding:9px 13px}
+ .panel-head{flex-direction:column;gap:5px}
+ .panel-head .count{align-self:flex-start}
+ .legend{gap:6px 11px;padding:9px 13px}
+ .drawer .grid{grid-template-columns:1fr 1fr}
+ .enq-inputs{grid-template-columns:1fr 1fr}
+ .enq-q{grid-template-columns:1fr}
+}
+@media (max-width:400px){
+ .tiles{grid-template-columns:1fr 1fr}
+ .drawer .grid,.enq-inputs{grid-template-columns:1fr}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -180,7 +213,8 @@ tbody tr:hover td{background:var(--surface-2)}
   <div class="tiles" id="tiles"></div>
 
   <div class="layout">
-    <aside class="rail">
+    <aside class="rail" id="rail">
+      <button class="rail-toggle" id="railToggle" type="button" aria-expanded="true"><span>☰ Filters &amp; focus lens</span><span id="railChev">▾</span></button>
       <section>
         <h3>Focus lens</h3>
         <div class="lens" id="lensbox"></div>
@@ -577,27 +611,34 @@ function clubTip(c){
 let anim=null;
 function renderGraph(vp,clubs){
  cancelAnim();
- const W=vp.clientWidth||900, H=560, DPR=Math.min(2,devicePixelRatio||1);
+ const W=vp.clientWidth||900;
+ const narrow=W<700, vh=window.innerHeight||800;
+ const H=narrow?Math.max(400,Math.min(Math.round(vh*0.66),680)):560;
+ const DPR=Math.min(2,devicePixelRatio||1);
+ const cx=W/2, cy=H/2, R=Math.min(W,H)/2-40;
+ const attrR=R*0.52, clubR=R*0.92, homeR=narrow?22:26, aR=narrow?8:9;
+ const bottomPad=narrow?58:80, repK=Math.max(.32,(W*H)/(900*560));
+ const lblF=narrow?9:10.5, lblMax=narrow?14:18;
  const cv=document.createElement("canvas");cv.width=W*DPR;cv.height=H*DPR;cv.style.height=H+"px";vp.appendChild(cv);
  const g=cv.getContext("2d");g.scale(DPR,DPR);
  // build nodes
  const attrNames=[...new Set(clubs.flatMap(attrsOf))];
  const order=ATTR_ORDER[state.lens]||[];
  attrNames.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b)});
- const home={id:"__home",type:"home",label:"TENGAH",x:W/2,y:H/2,vx:0,vy:0,r:26,fixed:true};
+ const home={id:"__home",type:"home",label:"TENGAH",x:cx,y:cy,vx:0,vy:0,r:homeR,fixed:true};
  const nodes=[home];const byId={__home:home};
- attrNames.forEach((a,i)=>{const ang=-Math.PI/2+i/attrNames.length*Math.PI*2;const n={id:"a_"+a,type:"attr",label:a,color:attrColor(a),x:W/2+Math.cos(ang)*140,y:H/2+Math.sin(ang)*140,vx:0,vy:0,r:9};nodes.push(n);byId[n.id]=n;});
- clubs.forEach((c,i)=>{const ang=i/clubs.length*Math.PI*2;const n={type:"club",club:c,label:c.name,color:nodeColor(c),x:W/2+Math.cos(ang)*230+(i%3-1)*8,y:H/2+Math.sin(ang)*230,vx:0,vy:0,r:c.cat==="elite"?11:9};nodes.push(n);n.club._n=n;});
+ attrNames.forEach((a,i)=>{const ang=-Math.PI/2+i/attrNames.length*Math.PI*2;const n={id:"a_"+a,type:"attr",label:a,color:attrColor(a),x:cx+Math.cos(ang)*attrR,y:cy+Math.sin(ang)*attrR,vx:0,vy:0,r:aR};nodes.push(n);byId[n.id]=n;});
+ clubs.forEach((c,i)=>{const ang=i/clubs.length*Math.PI*2;const n={type:"club",club:c,label:c.name,color:nodeColor(c),x:cx+Math.cos(ang)*clubR+(i%3-1)*6,y:cy+Math.sin(ang)*clubR,vx:0,vy:0,r:c.cat==="elite"?(narrow?10:11):(narrow?8:9)};nodes.push(n);n.club._n=n;});
  const links=[];
- attrNames.forEach(a=>links.push([home,byId["a_"+a],90,.02]));
- clubs.forEach(c=>{const as=attrsOf(c);as.forEach(a=>{if(byId["a_"+a])links.push([c._n,byId["a_"+a],70,.06]);});if(!as.some(a=>byId["a_"+a]))links.push([c._n,home,180,.02]);});
+ attrNames.forEach(a=>links.push([home,byId["a_"+a],attrR,.02]));
+ clubs.forEach(c=>{const as=attrsOf(c);as.forEach(a=>{if(byId["a_"+a])links.push([c._n,byId["a_"+a],R*0.34,.06]);});if(!as.some(a=>byId["a_"+a]))links.push([c._n,home,clubR,.02]);});
  // simulate
  let alpha=1;const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
  function step(){
   for(let i=0;i<nodes.length;i++){const a=nodes[i];if(a.fixed)continue;
-   for(let j=i+1;j<nodes.length;j++){const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy||1;let d=Math.sqrt(d2);const rep=(a.type==="club"&&b.type==="club"?3600:1900)/d2;const fx=dx/d*rep,fy=dy/d*rep;a.vx+=fx;a.vy+=fy;if(!b.fixed){b.vx-=fx;b.vy-=fy;}}}
+   for(let j=i+1;j<nodes.length;j++){const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy||1;let d=Math.sqrt(d2);const rep=(a.type==="club"&&b.type==="club"?3600:1900)*repK/d2;const fx=dx/d*rep,fy=dy/d*rep;a.vx+=fx;a.vy+=fy;if(!b.fixed){b.vx-=fx;b.vy-=fy;}}}
   links.forEach(([a,b,len,k])=>{let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;const f=(d-len)*k;const fx=dx/d*f,fy=dy/d*f;if(!a.fixed){a.vx+=fx;a.vy+=fy;}if(!b.fixed){b.vx-=fx;b.vy-=fy;}});
-  nodes.forEach(n=>{if(n.fixed)return;n.vx+=(W/2-n.x)*.006;n.vy+=(H/2-n.y)*.006;n.x+=n.vx*alpha;n.y+=n.vy*alpha;n.vx*=.86;n.vy*=.86;n.x=Math.max(n.r+4,Math.min(W-n.r-4,n.x));n.y=Math.max(n.r+4,Math.min(H-n.r-90,n.y));});
+  nodes.forEach(n=>{if(n.fixed)return;n.vx+=(cx-n.x)*.006;n.vy+=(cy-n.y)*.006;n.x+=n.vx*alpha;n.y+=n.vy*alpha;n.vx*=.86;n.vy*=.86;n.x=Math.max(n.r+4,Math.min(W-n.r-4,n.x));n.y=Math.max(n.r+4,Math.min(H-n.r-bottomPad,n.y));});
   alpha*=.985;
  }
  function draw(){
@@ -606,9 +647,9 @@ function renderGraph(vp,clubs){
   g.save();for(let i=0;i<6;i++){g.fillStyle=i%2?cssv("--surface"):cssv("--surface-2");g.globalAlpha=.5;g.fillRect(i*W/6,0,W/6,H);}g.restore();
   links.forEach(([a,b])=>{g.strokeStyle=b.type==="attr"?colWithA(b.color,.35):cssv("--line-2");g.lineWidth=a.type==="home"||b.type==="attr"&&a.type==="home"?1:1.4;g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();});
   nodes.forEach(n=>{
-   if(n.type==="home"){g.fillStyle=cssv("--accent");g.strokeStyle=cssv("--chalk");g.lineWidth=2.5;roundNode(g,n.x,n.y,n.r);g.fill();g.stroke();g.fillStyle=cssv("--chalk");g.font="700 11px "+cssv("--sans");g.textAlign="center";g.textBaseline="middle";g.fillText("TENGAH",n.x,n.y);}
-   else if(n.type==="attr"){g.fillStyle=cssv("--surface");g.strokeStyle=n.color;g.lineWidth=2.4;g.beginPath();g.rect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);g.fill();g.stroke();g.fillStyle=cssv("--ink-2");g.font="600 11px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";g.fillText(n.label,n.x,n.y+n.r+3);}
-   else{g.fillStyle=n.color;g.strokeStyle=cssv("--surface");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r,0,7);g.fill();g.stroke();if(state.sel===n.club.id){g.strokeStyle=cssv("--ink");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r+4,0,7);g.stroke();}g.fillStyle=cssv("--ink");g.font="600 10.5px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";const lbl=n.club.name.length>18?n.club.name.slice(0,17)+"…":n.club.name;g.fillText(lbl,n.x,n.y+n.r+2);}
+   if(n.type==="home"){g.fillStyle=cssv("--accent");g.strokeStyle=cssv("--chalk");g.lineWidth=2.5;roundNode(g,n.x,n.y,n.r);g.fill();g.stroke();g.fillStyle=cssv("--chalk");g.font="700 "+(narrow?10:11)+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="middle";g.fillText("TENGAH",n.x,n.y);}
+   else if(n.type==="attr"){g.fillStyle=cssv("--surface");g.strokeStyle=n.color;g.lineWidth=2.4;g.beginPath();g.rect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);g.fill();g.stroke();g.fillStyle=cssv("--ink-2");g.font="600 "+(narrow?9:11)+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";const al=n.label.length>lblMax?n.label.slice(0,lblMax-1)+"…":n.label;g.fillText(al,n.x,n.y+n.r+3);}
+   else{g.fillStyle=n.color;g.strokeStyle=cssv("--surface");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r,0,7);g.fill();g.stroke();if(state.sel===n.club.id){g.strokeStyle=cssv("--ink");g.lineWidth=2;g.beginPath();g.arc(n.x,n.y,n.r+4,0,7);g.stroke();}g.fillStyle=cssv("--ink");g.font="600 "+lblF+"px "+cssv("--sans");g.textAlign="center";g.textBaseline="top";const lbl=n.club.name.length>lblMax?n.club.name.slice(0,lblMax-1)+"…":n.club.name;g.fillText(lbl,n.x,n.y+n.r+2);}
   });
  }
  if(reduce){for(let i=0;i<300;i++)step();draw();}
@@ -1112,6 +1153,12 @@ function tog(id,key){const e=$(id);e.onclick=()=>{state[key]=!state[key];e.class
 tog("#t-weekend","weekend");tog("#t-west","west");tog("#t-nowd","nowd");
 $("#themebtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");const next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);buildLens();render();if(state.sel)openDrawer(state.sel);};
 addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,180);});
+addEventListener("orientationchange",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,260);});
+// collapsible filter rail on mobile (default collapsed so the graph is reachable)
+(function(){const rail=$("#rail"),tog=$("#railToggle"),chev=$("#railChev");
+ const set=v=>{rail.classList.toggle("collapsed",v);chev.textContent=v?"▸":"▾";tog.setAttribute("aria-expanded",String(!v));};
+ tog.onclick=()=>set(!rail.classList.contains("collapsed"));
+ if(innerWidth<=920)set(true);})();
 $("#foot").innerHTML=`Compiled ${META.compiled} for a personal U14 club search from Tengah · 15 clubs · data verified against club sites, FAS/SYL & local press. ${META.note} <b>Not affiliated with any club.</b>`;
 // deep-link: #view=sankey&lens=fees
 (function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens"),m=h.get("mode");
