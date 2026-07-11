@@ -124,12 +124,23 @@ tbody tr:hover td{background:var(--surface-2)}
 .dots i{width:7px;height:7px;border-radius:2px;background:var(--line-2)}
 .dots i.on{background:var(--c4)}
 .drawer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .2s}
-.drawer.on{max-height:640px;padding:14px 16px;border-top:1px solid var(--line)}
+.drawer.on{max-height:none;overflow:visible;padding:14px 16px;border-top:1px solid var(--line)}
 .drawer h3{font-size:15px}
 .drawer .subh{font-size:12px;color:var(--muted);margin:1px 0 10px}
 .drawer .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px 18px}
 .drawer .f .kk{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .drawer .f .vv{font-size:13px;color:var(--ink);margin-top:1px}
+.join{margin-top:14px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.join .jh{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface-2);border-bottom:1px solid var(--line);font-weight:800;font-size:12.5px}
+.join .jh .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
+.join .jbody{padding:11px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 16px}
+.join .step .kk{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-2);font-weight:800}
+.join .step .vv{font-size:13px;color:var(--ink);margin-top:2px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;padding:0 12px 12px}
+.cbtn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:7px 12px;border-radius:9px;text-decoration:none;border:1px solid var(--line-2);color:var(--ink);background:var(--surface)}
+.cbtn.primary{background:var(--accent);color:#06130b;border-color:var(--accent)}
+.cbtn:hover{border-color:var(--accent)}
+.cbtn.dis{opacity:.5;cursor:not-allowed}
 .drawer .src{font-size:11px;color:var(--muted);margin-top:12px;word-break:break-word}
 .foot{max-width:1260px;margin:22px auto 44px;padding:0 20px;font-size:11.5px;color:var(--muted)}
 .hide{display:none!important}
@@ -185,11 +196,18 @@ tbody tr:hover td{background:var(--surface-2)}
         </div>
       </section>
       <section>
-        <h3>Max travel (car)</h3>
+        <h3>Travel by</h3>
+        <div class="seg" id="seg-mode">
+          <button data-v="car" class="on">Car</button>
+          <button data-v="transit">Public transit</button>
+        </div>
+      </section>
+      <section>
+        <h3 id="dist-h3">Max travel · car</h3>
         <div class="seg" id="seg-dist">
           <button data-v="99" class="on">Any</button>
-          <button data-v="20">≤20 min</button>
-          <button data-v="30">≤30 min</button>
+          <button data-v="20" data-car="20" data-transit="45">≤20 min</button>
+          <button data-v="30" data-car="30" data-transit="60">≤30 min</button>
         </div>
       </section>
     </aside>
@@ -201,6 +219,7 @@ tbody tr:hover td{background:var(--surface-2)}
         <button data-v="treemap">▦ Treemap</button>
         <button data-v="charts">▮ Charts</button>
         <button data-v="table">☰ Table</button>
+        <button data-v="pathway">↗ Pathway</button>
       </div>
       <div class="panel">
         <div class="panel-head">
@@ -234,6 +253,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekday training + weekend SYL matches",
   sel:"tiered",selText:"Paid academy open; elite S$1m scholarship selective",
   alumni:"Joshua Little, Nathan Mao (youngest SPL debutant)",conf:"high",
+  join:"Sign up for a free trial online. Grassroots streams take trial sign-ups directly; Elite / Sailors DC candidates are shortlisted by coaches and invited.",
+  req:"Ages 3–18 across General, Competitive and Elite (pro-pathway) streams; a U14 team plays the Youth Championship League. Elite/DC entry is by coach shortlisting.",
+  trial:"Free trial via the online sign-up form (Elite/DC candidates shortlisted before being invited).",
+  email:"footballschool@lcsfc.sg",phone:"+65 9002 4871",web:"lioncitysailorsfa.sg",reg:"https://www.lioncitysailorsfa.sg/p/sign-up.html",
   src:["lioncitysailorsfa.sg","lioncitysailorsfc.sg/academy"]},
  {id:"fcj",name:"Albirex → FC Jurong",cat:"elite",region:"west",loc:"Jurong East / West Stadium",km:6,car:13,transit:35,
   ages:["U15","U17","U19"],feeMo:0,feeConf:"med",feeText:"COE free (selection-based); FC Jurong grassroots S$100–200/mo",
@@ -242,6 +265,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekday-eve COE (U15 trial ~5–6:30pm) + weekend matches",
   sel:"tiered",selText:"COE elite via open trials→selection; grassroots open",
   alumni:"Long-standing SPL champion development system",conf:"med",
+  join:"Two routes. COE (competitive): watch fcjurong.com/news for periodic open trials, register via the seasonal Google Form. Grassroots: book a free trial online, then pay membership + a monthly package.",
+  req:"2026 COE trials were U15 (born 2011–2012), U17, U19 — a 2011/12-born fits U15. Grassroots academy open to all youth 6+, beginners welcome.",
+  trial:"COE trials are free, by Google-Form with a deadline, at Jurong East Stadium (form rotates each cycle). Grassroots: free trial/tour, then ~S$170 registration + S$100–200/mo.",
+  email:"habil_hakim@fcjurong.com",web:"fa.fcjurong.com",reg:"https://fa.fcjurong.com/en/trial/",
   src:["fcjurong.com","albirex.com.sg"]},
  {id:"tpu",name:"Tanjong Pagar United",cat:"elite",region:"west",loc:"Jurong East Stadium",km:6,car:13,transit:35,
   ages:["U15","U17"],feeMo:null,feeConf:"low",feeText:"COE selection-based; fees not published",
@@ -250,6 +277,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekend SYL matches; midweek training (confirm)",
   sel:"selective",selText:"Open trials → selection into SYL squad",
   alumni:"Historic national-team & SPL producer",conf:"med",
+  join:"Join via the youth 'Freekicks Programme' (ages 6–16). Registration is shown on a poster only, so the practical route is to contact the youth coordinator by phone/email.",
+  req:"Freekicks covers 6–16 (spans U14/U15). No published birth-year band or selection criteria.",
+  trial:"Trial existence/cost not published — call the club to confirm.",
+  email:"info@tpufc.org",phone:"+65 6479 6930",web:"tpufc.joji.com.sg/freekicks-programme",
   src:["tpufc.joji.com.sg/category/youth"]},
  {id:"sss",name:"Singapore Sports School",cat:"elite",region:"north",loc:"1 Champions Way, Woodlands",km:12,car:19,transit:52,
   ages:["U14","U15","U16","U17","U18","U19"],feeMo:340,feeConf:"med",feeText:"MOE school fee ~S$340/mo (day); boarding roughly 2×; FAS scheme aid",
@@ -258,6 +289,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:true,sched:"Training embedded in boarding-school weekday timetable",
   sel:"selective",selText:"Invite/scouted — FAS/NDC recommendation + admission",
   alumni:"Safuwan Baharudin, Hami Syahin",conf:"high",
+  join:"MOE through-train school — entry needs school admission + football selection. Apply directly to Sports School in the application window, then attend selection trials; offer only after selection + interview.",
+  req:"Sec 1 intake is boys, Singapore Citizens, a set birth-year cohort. For a Sec 2 (14yo) the route is competitive MID-STREAM entry — generally needs FAS/UTR recommendation or NDC-level potential.",
+  trial:"Football selection trials run in phases (2027 intake cycle now closed). Mid-stream Secondary dates aren't published — contact admissions.",
+  email:"admissions@sportsschool.edu.sg",phone:"+65 6766 0100",web:"sportsschool.edu.sg/admissions/admission-to-secondary-1",
   src:["sportsschool.edu.sg/.../football-academy"]},
  {id:"tsk",name:"Tasek Sailors",cat:"elite",region:"west",loc:"West Centre — Crest Sec / Millennia Inst",km:8,car:14,transit:35,
   ages:["U14","U15"],feeMo:0,feeConf:"med",feeText:"Charity-funded / heavily subsidised (community programme)",
@@ -266,6 +301,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Community-centre training + weekend league",
   sel:"open",selText:"Mission-driven community enrolment; LCS elite pathway",
   alumni:"Sarrvin Raj → LCS Elite programme",conf:"med",
+  join:"No formal trial/registration — families join by emailing the regional Programme Manager. A football-plus-mentorship CHARITY for disadvantaged/at-risk youth (not a general academy); talented players can pathway into LCS Elite.",
+  req:"Open to boys & girls 7–21 (a 14yo is eligible). Targeted at socially disadvantaged / at-risk youth with wraparound support; no published football selection criteria.",
+  trial:"No open trial advertised — enrolment is by direct email to the West Centre.",
+  email:"nurhannah@tasek.org",web:"tasek.org/programmes/tasek-sailors",
   src:["lioncitysailorsfc.sg/tasek-sailors","tasek.org"]},
  {id:"ndc",name:"FAS National Dev. Centre",cat:"elite",region:"central",loc:"Kallang Football Hub",km:21,car:30,transit:55,
   ages:["U14","U15","U16"],feeMo:0,feeConf:"med",feeText:"Free — national programme (Unleash The Roar); scouted, no fee",
@@ -274,6 +313,10 @@ const CLUBS=[
   wd:true,we:false,wdDay:false,sched:"Weekday centralised training; weekends back at own club",
   sel:"selective",selText:"Invite / scouted only — not an open trial",
   alumni:"Feeder to the Young Lions (est. 2000)",conf:"med",
+  join:"INVITE / SCOUTED-ONLY — no public sign-up or trial. FAS scouts spot players at the Singapore Youth League and National School Games and invite them.",
+  req:"Tier NDC U13–U16 (covers U14/U15). Selection by scouting/invitation on performance; no self-nomination. All SYL players enter the FAS Talent-ID database.",
+  trial:"No public trial. The way in: join an FAS-accredited SYL club (see syl.sg/accredited-club), play NSG for your school, perform, and get spotted.",
+  web:"unleashtheroar.com.sg/let-them-play/ndc-u13-u16",
   src:["unleashtheroar.com.sg/.../ndc-u13-u16"]},
  {id:"tmp",name:"Tampines Rovers",cat:"elite",region:"east",loc:"Our Tampines Hub (+JSSL venues)",km:30,car:45,transit:78,
   ages:["U14","U15","U16","U17","U19"],feeMo:null,feeConf:"low",feeText:"COE selection-based; JSSL feeder ~S$42/session",
@@ -282,6 +325,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
   sel:"tiered",selText:"JSSL feeder open; COE scouted/selective",
   alumni:"Regular first-team & national U-team graduates",conf:"med",
+  join:"Youth is run by JSSL FC under a feeder partnership — join JSSL programs; best players pathway into the Tampines COE (U16/U19). Book a free JSSL trial, or apply to the combined JSSL FC & Tampines COE trial via JotForm when open.",
+  req:"JSSL Elite covers U7–U16 (incl. U14/U15); top players are fast-tracked to U16/U19 COE. Current birth-year bands posted on the JotForm/socials.",
+  trial:"Free first JSSL trial; combined COE trial form on JotForm (2025 window was closed at research time).",
+  email:"admin@jssl-singapore.com",phone:"+65 9640 9047",web:"jssl-singapore.com/elite-program",reg:"https://www.jssl-singapore.com/free-trial",
   src:["tampinesrovers.com","jssl-singapore.com"]},
  {id:"bal",name:"Balestier Khalsa",cat:"elite",region:"central",loc:"Bishan / Toa Payoh / Yio Chu Kang",km:19,car:28,transit:52,
   ages:["U15","U17"],feeMo:null,feeConf:"low",feeText:"COE selection-based; fees not published",
@@ -290,6 +337,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
   sel:"selective",selText:"Open trials → selective Junior COE",
   alumni:"Not documented",conf:"low",
+  join:"Open COE trials by age band (U13/U15/U17), announced periodically on the club's Facebook/Instagram with a registration link; historically also walk-in at the Toa Payoh Stadium office.",
+  req:"Male SG citizens/PRs by birth-year band; fields a U15 COE team. Exact bands are stated in the registration posts.",
+  trial:"Open COE selection trials (free/paid unknown). Book via links on the Balestier Khalsa Facebook/Instagram; historically walk-in at the office.",
+  phone:"+65 6356 0049",web:"facebook.com/balestierkhalsa",
   src:["fas.org.sg/.../balestier-khalsa","spl.sg"]},
  {id:"gey",name:"Geylang International",cat:"elite",region:"east",loc:"Our Tampines Hub / Geylang TC",km:28,car:42,transit:70,
   ages:["U14","U15","U17","U19"],feeMo:null,feeConf:"low",feeText:"First Kick community + COE selection; not priced publicly",
@@ -298,6 +349,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
   sel:"tiered",selText:"First Kick open; COE scouted",
   alumni:"Zikos Chua (youngest SPL debutant), Darren Teh",conf:"med",
+  join:"Contact the club to join. Competitive youth teams (U12/U15, U17, U21) plus a community First Kick Academy (U8–U13) that scouts into U15. No public self-registration form — enquire directly.",
+  req:"Competitive bands U12/U15, U17, U21; First Kick U8–U13 feeds U15. Birth-year bands/criteria not published.",
+  trial:"No trial process/dates published — enquire directly.",
+  email:"info@geylang.football",web:"geylang.football",
   src:["geylang.football"]},
  {id:"jssl",name:"JSSL Singapore",cat:"open",region:"central",loc:"Portsdown / Woodleigh / Tampines",km:14,car:26,transit:50,
   ages:["U14","U15","U16","U17","U18"],feeMo:130,feeConf:"low",feeText:"~S$280–350/term (est); Elite 3×/wk priced higher",
@@ -306,6 +361,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Rec 1–2×/wk; Elite 3×/wk + Sunday league",
   sel:"tiered",selText:"Open recreational + trial-based Elite teams",
   alumni:"Feeder to national youth setups",conf:"med",
+  join:"Book a free first trial online, then enrol per term. For competitive play, attend the separate JSSL FC Elite Trials.",
+  req:"Ages ~7–16. Recreational 'Next Gen' is open entry; Elite teams require passing Elite Trials (train 3×/wk + Sunday league game).",
+  trial:"Free first trial. Elite entry via dedicated Elite Trials at HQ, 49 Balestier Rd.",
+  email:"admin@jssl-singapore.com",phone:"+65 9640 9047",web:"jssl-singapore.com",reg:"https://www.jssl-singapore.com/free-trial",
   src:["jssl-singapore.com","jssl-singapore7s.com"]},
  {id:"bor",name:"Borussia Academy SG",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
   ages:["U14","U16"],feeMo:210,feeConf:"high",feeText:"From S$530/term (official); varies by tier",
@@ -314,6 +373,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Technical 1×/wk; competitive 2×/wk + weekend",
   sel:"tiered",selText:"Open technical + competitive team tier",
   alumni:"Not documented",conf:"high",
+  join:"Fill the free-trial form online; they suggest a date/venue to assess placement, then you register. Join any time, fees pro-rated.",
+  req:"Ages 3–17. Non-League technical training is open; competitive Team Training needs 2×/wk to be league-eligible.",
+  trial:"Free trials throughout the term via the free-trial form.",
+  email:"info@borussiasg.com",phone:"+65 9152 8267",web:"borussia-academy-sg.com",reg:"https://borussia-academy-sg.com/free-trials",
   src:["borussia-academy-sg.com"]},
  {id:"bar",name:"Barça Academy SG",cat:"open",region:"west",loc:"Perse School (Chestnut Dr) +3",km:10,car:16,transit:42,
   ages:["U14","U15","U16"],feeMo:200,feeConf:"high",feeText:"From S$500/term (official); 90-min weekly + kit",
@@ -322,6 +385,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Training Mon–Sat; Sundays = match days",
   sel:"open",selText:"Open enrolment; internal competitive league",
   alumni:"Global Barça pathway (caps ~16)",conf:"high",
+  join:"Sign up for a free tryout online (choose a venue incl. Perse School, Chestnut Dr), then enrol; matches every alternate Sunday.",
+  req:"Ages 4–17 (born 2007–2020). Open enrolment via free tryout; no separate competitive-trial gate.",
+  trial:"Free tryout at any venue — book online.",
+  email:"hello@barcaacademy.sg",phone:"+65 8079 6531",web:"barcaacademy.sg",reg:"https://barcaacademy.sg/registration-free-tryouts/",
   src:["barcaacademy.sg"]},
  {id:"che",name:"Chelsea FC Soccer School",cat:"open",region:"central",loc:"Rainforest Hub @ Turf City",km:11,car:18,transit:52,
   ages:["U14","U15","U16","U17"],feeMo:160,feeConf:"low",feeText:"~S$320–450/term (est)",
@@ -330,6 +397,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"~1–2×/wk incl. weekend at Turf City",
   sel:"open",selText:"Open, non-selective soccer school",
   alumni:"Not documented",conf:"med",
+  join:"Register/enquire via the Singapore soccer school or by phone/email; term sessions at Turf City. (Official SG site was unreachable at research time — call to confirm.)",
+  req:"Ages 4–17. Grassroots/development using Chelsea's curriculum; no competitive-trial gate published.",
+  trial:"Trial availability not confirmed on official channels — call to confirm.",
+  email:"soccerschools@chelseafc.com",phone:"+65 6440 5503",web:"chelseafc.com/en/soccer-schools",
   src:["chelseafc.com/en/soccer-schools"]},
  {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"Jurongville / Kranji / Kent Ridge Sec",km:5,car:12,transit:30,
   ages:["U14","U15","U16"],feeMo:65,feeConf:"med",feeText:"~S$130–180/term (subsidised) — cheapest option",
@@ -338,6 +409,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"1–2×/wk per centre; weekend norm; DC+ midweek",
   sel:"tiered",selText:"Open broad-base; selective DC+ (only to U12)",
   alumni:"Feeds FAS national development",conf:"med",
+  join:"Open seasonal registration online each season (no trial/selection for the base academy). Sat/Sun sessions, 10 weeks per season at ActiveSG centres. Talented players are scouted into a Development Squad at the season-end carnival.",
+  req:"Ages 3–16. Open enrolment; Development Squad entry is by talent ID, not open registration.",
+  trial:"No trial — open seasonal programme (~S$130/season historically; verify on myactivesg). Register via the ActiveSG app or go.gov.sg/afa-register.",
+  email:"ActiveSG_Football@sport.gov.sg",web:"activesgcircle.gov.sg/academies-clubs/football",reg:"https://go.gov.sg/afa-register",
   src:["fas.org.sg/minor_team/afa","activesgcircle.gov.sg"]},
  {id:"tcfc",name:"Turf City FC",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
   ages:["U14","U15","U16"],feeMo:120,feeConf:"low",feeText:"~S$250–330/term (est)",
@@ -346,6 +421,10 @@ const CLUBS=[
   wd:true,we:true,wdDay:false,sched:"Weekend classes + some weekday sessions",
   sel:"open",selText:"Open, inclusive community club",
   alumni:"Not documented",conf:"med",
+  join:"Request a free trial via the website contact form (or phone/email), then join weekend programmes/camps.",
+  req:"Youth football; specific U-age bands not published. UEFA-licensed coaches.",
+  trial:"Free trial — book via the website contact form.",
+  email:"turfcityfc@gmail.com",phone:"+65 8607 8064",web:"tcfcsingapore.com",
   src:["tcfcsingapore.com"]}
 ];
 const META={compiled:"2026-07",note:"Figures are indicative — confirm current fees, training days & times with each club before enrolling. COE = Centre of Excellence."};
@@ -354,7 +433,9 @@ const META={compiled:"2026-07",note:"Figures are indicative — confirm current 
 const $=s=>document.querySelector(s);
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const REGION_LABEL={west:"West",central:"Central",east:"East",north:"North"};
-const state={lens:"overview",cat:"all",age:"all",dist:99,weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
+const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
+const tmins=c=>state.mode==="car"?c.car:c.transit;
+const modeLabel=()=>state.mode==="car"?"car":"transit";
 
 const LENSES=[
  {id:"overview",label:"Overview",desc:"pathway + region",v:"--accent"},
@@ -370,7 +451,8 @@ const HINTS={
  sankey:"Flow from region → club → the current lens's attribute. Ribbon width is one club-share; colour follows the lens.",
  treemap:"Clubs nested inside their region. Tile area scales with the lens metric (equal otherwise); colour follows the lens.",
  charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
- table:"Every field, sortable. Click a row for the full scouting card with sources."
+ table:"Every field, sortable. Click a row for the full scouting card with sources.",
+ pathway:"How a player climbs from an open academy into the elite pathway — the ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season)."
 };
 
 /* ----- fit + helpers ----- */
@@ -424,7 +506,7 @@ function filtered(){
  return CLUBS.filter(c=>{
   if(state.cat!=="all"&&c.cat!==state.cat)return false;
   if(state.age!=="all"){const need=state.age==="U17"?["U17","U18","U19"]:[state.age];if(!need.some(a=>c.ages.includes(a)))return false;}
-  if(state.dist!==99&&c.car>state.dist)return false;
+  if(state.dist!==99&&tmins(c)>state.dist)return false;
   if(state.weekend&&!c.we)return false;
   if(state.nowd&&c.wdDay)return false;
   if(state.west&&c.km>12)return false;
@@ -583,7 +665,7 @@ function squarify(items,rect){ // returns [{data,x,y,w,h}]
 function renderCharts(vp,clubs){
  const wrap=document.createElement("div");wrap.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:16px";
  wrap.appendChild(chartCard("Monthly fees (S$)","0 = free/subsidised · excludes not-published",feesChart(clubs)));
- wrap.appendChild(chartCard("Travel from Tengah (car, min)","green ≤20 · amber ≤30 · red >30",travelChart(clubs)));
+ wrap.appendChild(chartCard(`Travel from Tengah (${modeLabel()}, min)`,state.mode==="car"?"green ≤20 · amber ≤30 · red >30":"green ≤40 · amber ≤55 · red >55",travelChart(clubs)));
  wrap.appendChild(chartCard("Age-band coverage","filled = band offered (U14→U19)",ageMatrix(clubs)));
  wrap.appendChild(chartCard("Cost vs. distance","lower-left = cheap & close",scatterChart(clubs)));
  vp.appendChild(wrap);
@@ -602,12 +684,13 @@ function feesChart(clubs){
  return svg;
 }
 function travelChart(clubs){
- const data=clubs.slice().sort((a,b)=>a.car-b.car);const W=320,rowH=24,H=data.length*rowH+6,max=Math.max(50,...data.map(c=>c.car));
+ const g1=state.mode==="car"?20:40,g2=state.mode==="car"?30:55;
+ const data=clubs.slice().sort((a,b)=>tmins(a)-tmins(b));const W=320,rowH=24,H=data.length*rowH+6,max=Math.max(state.mode==="car"?50:80,...data.map(tmins)),x0=118,barMax=W-x0-30;
  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
- data.forEach((c,i)=>{const y=i*rowH+6,bw=(W-150)*(c.car/max);const col=cssv(c.car<=20?"--good":c.car<=30?"--warn":"--bad");
-  svg.appendChild(txt(4,y+8,c.name.length>17?c.name.slice(0,16)+"…":c.name,"start",cssv("--ink-2"),10.5,600));
-  const r=el("rect",{x:120,y,width:Math.max(3,bw),height:12,rx:3,fill:col});r.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmouseleave=hideTip;svg.appendChild(r);
-  svg.appendChild(txt(120+Math.max(3,bw)+4,y+7,c.car+"m",("start"),cssv("--ink-2"),10,700));});
+ data.forEach((c,i)=>{const v=tmins(c),y=i*rowH+6,bw=Math.max(3,barMax*(v/max));const col=cssv(v<=g1?"--good":v<=g2?"--warn":"--bad");
+  svg.appendChild(txt(4,y+8,c.name.length>16?c.name.slice(0,15)+"…":c.name,"start",cssv("--ink-2"),10.5,600));
+  const r=el("rect",{x:x0,y,width:bw,height:12,rx:3,fill:col});r.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);r.onmouseleave=hideTip;svg.appendChild(r);
+  svg.appendChild(txt(x0+bw+4,y+7,v+"m","start",cssv("--ink-2"),10,700));});
  return svg;
 }
 function ageMatrix(clubs){
@@ -620,20 +703,68 @@ function ageMatrix(clubs){
 }
 function scatterChart(clubs){
  const data=clubs.filter(c=>c.feeMo!==null);const W=320,H=240,mL=34,mB=26,mT=8,mR=8;
- const xmax=Math.max(50,...data.map(c=>c.car)),ymax=Math.max(300,...data.map(c=>c.feeMo));
+ const xmax=Math.max(state.mode==="car"?50:80,...data.map(tmins)),ymax=Math.max(300,...data.map(c=>c.feeMo));
  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`});
  const X=v=>mL+(v/xmax)*(W-mL-mR),Y=v=>H-mB-(v/ymax)*(H-mB-mT);
  [0,.5,1].forEach(t=>{const gx=X(xmax*t);svg.appendChild(el("line",{x1:gx,y1:mT,x2:gx,y2:H-mB,stroke:cssv("--line"),"stroke-width":1}));svg.appendChild(txt(gx,H-mB+11,Math.round(xmax*t)+"m","middle",cssv("--muted"),9,600));});
  [0,.5,1].forEach(t=>{const gy=Y(ymax*t);svg.appendChild(el("line",{x1:mL,y1:gy,x2:W-mR,y2:gy,stroke:cssv("--line"),"stroke-width":1}));svg.appendChild(txt(mL-4,gy+3,"$"+Math.round(ymax*t),"end",cssv("--muted"),9,600));});
- data.forEach(c=>{const cx=X(c.car),cy=Y(c.feeMo);const dot=el("circle",{cx,cy,r:c.cat==="elite"?6:5,fill:colWithA(catColor(c),.85),stroke:cssv("--surface"),"stroke-width":2});dot.style.cursor="pointer";dot.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);dot.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);dot.onmouseleave=hideTip;dot.onclick=()=>{state.sel=c.id;openDrawer(c.id);};svg.appendChild(dot);});
+ data.forEach(c=>{const cx=X(tmins(c)),cy=Y(c.feeMo);const dot=el("circle",{cx,cy,r:c.cat==="elite"?6:5,fill:colWithA(catColor(c),.85),stroke:cssv("--surface"),"stroke-width":2});dot.style.cursor="pointer";dot.onmouseenter=e=>showTip(clubTip(c),e.clientX,e.clientY);dot.onmousemove=e=>showTip(clubTip(c),e.clientX,e.clientY);dot.onmouseleave=hideTip;dot.onclick=()=>{state.sel=c.id;openDrawer(c.id);};svg.appendChild(dot);});
  return svg;
+}
+
+/* ===================== VIEW: PATHWAY ===================== */
+const LADDER=[
+ ["1","Play often — open academy + school team","Enrol in a high-volume open academy (e.g. JSSL Elite 3×/wk, ActiveSG, Barça/Borussia) and play National School Games (C Division, Sec 1–2). This is where he gets good and gets seen — NSG is a free FAS scouting ground.","--c2"],
+ ["2","Trial into an SPL Centre of Excellence","When he's ready, register for a club's open COE trial. Nearest & west: Albirex → FC Jurong and Tanjong Pagar (both Jurong East). Most COE trials are free — the barrier is ability, not access.","--c3"],
+ ["3","Play the Singapore Youth League","Selected players compete in SYL / COE U15 & U17 — the elite youth league. Every SYL player gets an individual FAS player profile that national scouts use.","--c8"],
+ ["4","Get scouted → NDC → Young Lions / overseas","FAS Talent-ID watches SYL & school games weekly and invites top players into the National Development Centre (U13–U16, invite-only), then the national youth teams — and, for a few, overseas academies.","--c5"]
+];
+const EXAMPLES=[
+ {p:"Ben Davis",from:"JSSL Singapore (grassroots/open)",to:"FAS Centre of Excellence → Fulham FC academy (England)",note:"First Singaporean to sign for a Premier League club — the open-academy-to-overseas route.",src:"en.wikipedia.org/wiki/Ben_Davis_(footballer,_born_2000)"},
+ {p:"Zikos Chua",from:"FAS academy + school football (Tanjong Katong Sec, C Division — 26 goals)",to:"Geylang International U19 → SPL first team",note:"Youngest-ever Singapore Premier League debutant (16y 2m). School football was his springboard.",src:"spl.sg"},
+ {p:"Sarrvin Raj",from:"Tasek (community programme, for at-risk youth)",to:"Lion City Sailors Elite Development — U17",note:"Promoted into an SPL club's elite academy at 15 from a community programme.",src:"lioncitysailorsfc.sg/tasek-sailors"},
+ {p:"Joel Chew",from:"JSSL Singapore (grassroots/open)",to:"Tampines Rovers (SPL) → Singapore national team",note:"JSSL junior to SPL club football and full international caps.",src:"jssl-singapore.com/jssl-hof"}
+];
+const CALENDAR=[
+ ["Now → Sep 2026","Enrol & build match sharpness","Join a high-volume open academy + your school team. Open academies take free trials any time; ActiveSG runs seasonal intakes — register at go.gov.sg/afa-register when a season opens.","--c2"],
+ ["Oct–Nov 2026","SPL Centre-of-Excellence trial season (2027 squads)","Pre-season is when SPL clubs post their U15/U17 COE trial forms. Watch FC Jurong, Tanjong Pagar & Lion City Sailors news/socials. (FC Jurong's 2026-season COE trial deadline was ~18 Nov 2025 — expect the 2027 form around Nov 2026.)","--c3"],
+ ["Dec 2026","Selection & pre-season","Trial outcomes come out; selected players start pre-season with the COE squad.","--c8"],
+ ["Feb–Mar 2027","Singapore Youth League kicks off","The SYL season begins — play, build the FAS player profile, and get scouted toward the NDC.","--c5"]
+];
+function renderPathway(vp){
+ const box=document.createElement("div");box.style.cssText="padding:16px;display:grid;gap:24px";
+ const sec=t=>`<div style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:12px">${t}</div>`;
+ // LADDER
+ let l=`<div>${sec("The ladder — open → elite")}<div style="display:grid;gap:10px">`;
+ LADDER.forEach(([n,h,d,c])=>{const col=cssv(c);l+=`<div style="display:grid;grid-template-columns:40px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--surface)">
+   <div style="width:34px;height:34px;border-radius:9px;background:${col};color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center">${n}</div>
+   <div><div style="font-weight:800;font-size:14px;margin-bottom:2px">${h}</div><div style="font-size:13px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
+ l+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">Filter <b>Pathway = Open</b> in the rail to shortlist step-1 academies; open any club's card for its <b>Selection</b> field — "open trials" = you can just sign up.</div></div>`;
+ // EXAMPLES
+ let e=`<div>${sec("Real Singapore routes (open → elite, sourced)")}<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">`;
+ EXAMPLES.forEach(x=>{e+=`<div style="border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--surface)">
+   <div style="font-weight:800;font-size:14.5px">${x.p}</div>
+   <div style="display:flex;align-items:center;gap:7px;margin:9px 0;font-size:12.5px;flex-wrap:wrap">
+     <span style="padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--c2) 15%,transparent);color:var(--c2);font-weight:700">${x.from}</span>
+     <span style="color:var(--muted)">→</span>
+     <span style="padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--c5) 15%,transparent);color:var(--c5);font-weight:700">${x.to}</span></div>
+   <div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${x.note}</div>
+   <div style="font-size:11px;color:var(--muted);margin-top:8px">Source: <a href="https://${x.src}" target="_blank" rel="noopener">${x.src.split("/")[0]}</a></div></div>`;});
+ e+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">Honest caveat: these are top-of-cohort outcomes (Ben Davis also had a family link to JSSL) — but the pathway itself is officially built by the FAS and demonstrably used.</div></div>`;
+ // CALENDAR
+ let cal=`<div>${sec("Enrolment calendar — the Oct–Dec 2026 trial window")}<div style="display:grid;gap:9px">`;
+ CALENDAR.forEach(([w,h,d,c])=>{const col=cssv(c);cal+=`<div style="display:grid;grid-template-columns:130px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
+   <div style="font-weight:800;font-size:13px;color:${col}">${w}</div>
+   <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
+ cal+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">⚠ Exact Oct–Dec 2026 trial dates aren't published yet (it's ${META.compiled}). Each club's card links its trial page/form — that's where the dates appear. Best move: contact FC Jurong & Tanjong Pagar now to be told when the 2027 COE trial opens.</div></div>`;
+ box.innerHTML=l+e+cal;vp.appendChild(box);
 }
 
 /* ===================== VIEW: TABLE ===================== */
 function renderTable(vp,clubs){
- const cols=[["name","Club"],["cat","Path"],["region","Region"],["car","Car"],["km","km"],["feeMo","Fee/mo"],["fit","Fit"],["we","Wknd"],["ages","Ages"],["tier","Coach"],["intl","Intl"],["conf","Conf"]];
+ const cols=[["name","Club"],["cat","Path"],["region","Region"],["car",state.mode==="car"?"Car":"Transit"],["km","km"],["feeMo","Fee/mo"],["fit","Fit"],["we","Wknd"],["ages","Ages"],["tier","Coach"],["intl","Intl"],["conf","Conf"]];
  const dir=state.sort.dir,key=state.sort.key;
- const val=c=>key==="fit"?fitScore(c):key==="ages"?c.ages.length:key==="feeMo"?(c.feeMo===null?9999:c.feeMo):key==="intl"?(c.intl?1:0):key==="we"?(c.we?1:0):c[key];
+ const val=c=>key==="fit"?fitScore(c):key==="ages"?c.ages.length:key==="feeMo"?(c.feeMo===null?9999:c.feeMo):key==="intl"?(c.intl?1:0):key==="we"?(c.we?1:0):key==="car"?tmins(c):c[key];
  const rows=clubs.slice().sort((a,b)=>{const x=val(a),y=val(b);return (typeof x==="string"?x.localeCompare(y):x-y)*dir;});
  const wrap=document.createElement("div");wrap.className="tablewrap";
  const t=document.createElement("table");const thead=document.createElement("thead");const tr=document.createElement("tr");
@@ -645,7 +776,7 @@ function renderTable(vp,clubs){
   r.innerHTML=`<td class="nm">${c.name}<div style="font-weight:500;color:var(--muted);font-size:11px">${c.loc}</div></td>
    <td><span class="chip ${c.cat}">${c.cat}</span></td>
    <td>${REGION_LABEL[c.region]}</td>
-   <td class="tnum">${c.car}m</td><td class="tnum">${c.km}</td>
+   <td class="tnum">${tmins(c)}m</td><td class="tnum">${c.km}</td>
    <td class="tnum">${c.feeMo===null?'<span class="chip">n/p</span>':c.feeMo===0?'<span class="chip g">free</span>':"S$"+c.feeMo}</td>
    <td><span class="chip ${f===3?"g":f===2?"w":"b"}">${f}/3</span></td>
    <td>${c.we?'<span class="chip g">yes</span>':'<span class="chip b">no</span>'}${c.wdDay?' <span class="chip w">wkday</span>':""}</td>
@@ -676,7 +807,24 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
    <div class="f"><div class="kk">Notable</div><div class="vv">${c.alumni}</div></div>
    <div class="f"><div class="kk">Data confidence</div><div class="vv"><span class="chip ${c.conf==="high"?"g":c.conf==="med"?"w":"b"}">${c.conf}</span></div></div>
   </div>
-  <div class="src">Sources: ${c.src.join(" · ")}</div>`;
+  ${joinBlock(c)}
+  <div class="src">Sources: ${c.src.map(s=>`<a href="https://${s.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">${s}</a>`).join(" · ")}</div>`;
+}
+function joinBlock(c){
+ const badge=c.cat==="elite"?"Selection-based":"Open enrolment";
+ const steps=[];
+ if(c.join)steps.push(["How to get in",c.join]);
+ if(c.req)steps.push(["Requirements",c.req]);
+ if(c.trial)steps.push(["Trial",c.trial]);
+ const acts=[];
+ if(c.reg)acts.push(`<a class="cbtn primary" href="${c.reg}" target="_blank" rel="noopener">↗ Register / trial</a>`);
+ if(c.web)acts.push(`<a class="cbtn" href="https://${c.web.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">◍ Website</a>`);
+ if(c.email)acts.push(`<a class="cbtn" href="mailto:${c.email}">✉ ${c.email}</a>`);
+ if(c.phone)acts.push(`<a class="cbtn" href="tel:${c.phone.replace(/[^+\d]/g,"")}">☎ ${c.phone}</a>`);
+ if(!steps.length&&!acts.length)return "";
+ return `<div class="join"><div class="jh">How to join <span class="badge">${badge}</span></div>
+  <div class="jbody">${steps.map(([k,v])=>`<div class="step"><div class="kk">${k}</div><div class="vv">${v}</div></div>`).join("")}</div>
+  ${acts.length?`<div class="actions">${acts.join("")}</div>`:""}</div>`;
 }
 
 /* ===================== LEGEND ===================== */
@@ -700,15 +848,15 @@ function renderLegend(){
 function renderTiles(clubs){
  const west=clubs.filter(c=>c.km<=12).length;
  const wkend=clubs.filter(c=>c.we&&!c.wdDay).length;
- const cars=clubs.map(c=>c.car).sort((a,b)=>a-b);const med=cars.length?cars[Math.floor(cars.length/2)]:0;
+ const cars=clubs.map(tmins).sort((a,b)=>a-b);const med=cars.length?cars[Math.floor(cars.length/2)]:0;
  const priced=clubs.filter(c=>c.feeMo!==null);const cheapest=priced.length?priced.reduce((a,b)=>a.feeMo<b.feeMo?a:b):null;
- const closest=clubs.length?clubs.reduce((a,b)=>a.car<b.car?a:b):null;
+ const closest=clubs.length?clubs.reduce((a,b)=>tmins(a)<tmins(b)?a:b):null;
  const T=[
   ["Clubs in view",clubs.length,`of ${CLUBS.length} tracked`],
   ["West / ≤12 km",west,"near-home options"],
   ["Weekend-friendly",wkend,"no weekday-daytime clash"],
-  ["Median travel",med+" min",'by car from Tengah'],
-  ["Closest",closest?closest.name.replace("Singapore ",""):"—",closest?closest.car+" min car":""],
+  ["Median travel",med+" min",`by ${modeLabel()} from Tengah`],
+  ["Closest",closest?closest.name.replace("Singapore ",""):"—",closest?tmins(closest)+" min "+modeLabel():""],
   ["Lowest fee",cheapest?(cheapest.feeMo===0?"Free":"S$"+cheapest.feeMo):"—",cheapest?cheapest.name.replace("Singapore ",""):""]
  ];
  $("#tiles").innerHTML=T.map(([k,v,d])=>`<div class="tile"><div class="k">${k}</div><div class="v tnum">${v}</div><div class="d">${d}</div></div>`).join("");
@@ -719,16 +867,16 @@ function render(){
  const clubs=filtered();
  renderTiles(clubs);
  $("#pill-count").textContent=clubs.length+" clubs";
- $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table"}[state.view];
+ $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",pathway:"Open → Elite pathway"}[state.view];
  $("#v-hint").textContent=HINTS[state.view];
- $("#v-count").textContent="Lens · "+LENSES.find(l=>l.id===state.lens).label;
- const showLegend=state.view!=="table"&&state.view!=="charts";
+ $("#v-count").textContent=state.view==="pathway"?"How to progress":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
+ const showLegend=state.view!=="table"&&state.view!=="charts"&&state.view!=="pathway";
  $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
  const note=$("#note");
  if(state.view==="table"||state.view==="charts"){note.classList.remove("hide");note.innerHTML="<b>Read me:</b> "+META.note;}else note.classList.add("hide");
  cancelAnim();const vp=$("#viewport");vp.innerHTML="";
  if(!clubs.length){vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">No clubs match these filters. Loosen a constraint on the left.</div>';return;}
- ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable}[state.view])(vp,clubs);
+ ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable,pathway:renderPathway}[state.view])(vp,clubs);
  if(state.sel&&!clubs.find(c=>c.id===state.sel)){/* keep drawer */}
 }
 
@@ -738,14 +886,23 @@ function buildLens(){$("#lensbox").innerHTML=LENSES.map(l=>`<button data-l="${l.
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#tabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");state.view=b.dataset.v;render();});
 function seg(id,key,cast){document.querySelectorAll(id+" button").forEach(b=>b.onclick=()=>{document.querySelectorAll(id+" button").forEach(x=>x.classList.remove("on"));b.classList.add("on");state[key]=cast?cast(b.dataset.v):b.dataset.v;render();});}
 seg("#seg-cat","cat");seg("#seg-age","age");seg("#seg-dist","dist",Number);
+// travel mode: switch car/transit, re-thresholds the distance filter
+document.querySelectorAll("#seg-mode button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("#seg-mode button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+ state.mode=b.dataset.v;state.dist=99;
+ document.querySelectorAll("#seg-dist button").forEach(x=>{x.classList.toggle("on",x.dataset.v==="99");const dv=x.dataset[state.mode];if(dv){x.dataset.v=dv;x.textContent="≤"+dv+" min";}});
+ $("#dist-h3").textContent="Max travel · "+modeLabel();
+ render();});
 function tog(id,key){const e=$(id);e.onclick=()=>{state[key]=!state[key];e.classList.toggle("on",state[key]);render();};}
 tog("#t-weekend","weekend");tog("#t-west","west");tog("#t-nowd","nowd");
 $("#themebtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");const next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);buildLens();render();if(state.sel)openDrawer(state.sel);};
 addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,180);});
 $("#foot").innerHTML=`Compiled ${META.compiled} for a personal U14 club search from Tengah · 15 clubs · data verified against club sites, FAS/SYL & local press. ${META.note} <b>Not affiliated with any club.</b>`;
 // deep-link: #view=sankey&lens=fees
-(function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens");
+(function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens"),m=h.get("mode");
  if(v&&HINTS[v]){state.view=v;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
- if(l&&LENSES.find(x=>x.id===l))state.lens=l;})();
-buildLens();render();
+ if(l&&LENSES.find(x=>x.id===l))state.lens=l;
+ if(m==="transit"){state.mode="transit";document.querySelectorAll("#seg-mode button").forEach(b=>b.classList.toggle("on",b.dataset.v==="transit"));document.querySelectorAll("#seg-dist button").forEach(x=>{const dv=x.dataset.transit;if(dv){x.dataset.v=dv;x.textContent="≤"+dv+" min";}});$("#dist-h3").textContent="Max travel · transit";}
+ const cid=h.get("club");if(cid&&CLUBS.find(x=>x.id===cid))state.sel=cid;})();
+buildLens();render();if(state.sel)openDrawer(state.sel);
 </script>

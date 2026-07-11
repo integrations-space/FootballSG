@@ -20,6 +20,9 @@ and **open enrolment** (brand & community academies) — with five ways to read 
 | **Treemap** | Clubs nested inside their region; tile area scales with the lens metric. |
 | **Charts** | Monthly fees, travel time, age-band coverage, and a cost-vs-distance map. |
 | **Table** | Every field, sortable; click a row for the full scouting card with sources. |
+| **Pathway** | The open→elite ladder, real sourced Singapore examples (Ben Davis, Zikos Chua, Sarrvin Raj, Joel Chew), and the Oct–Dec trial-season enrolment calendar. |
+
+Every scouting card includes a **"How to join"** block — requirements, trial process, and tappable **contact buttons** (register/website/email/phone).
 
 ### Focus lenses
 
@@ -28,7 +31,7 @@ A single control recolours **every** view by the dimension you care about:
 
 ### Filters (hard constraints)
 
-Weekend sessions · No weekday-daytime clash · West / ≤12 km · pathway type · age band offered · max travel time.
+Weekend sessions · No weekday-daytime clash · West / ≤12 km · pathway type · age band offered · max travel time. **Travel-by toggle** switches all timings between **car and public transit**.
 
 ## Data
 
