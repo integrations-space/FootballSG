@@ -3,3 +3,7 @@
 c.js
 pitch_check.js
 dom_out.html
+
+# Private working handoff/roadmap — repo is public; keep strategy out of it.
+# Also listed in .assetsignore so a local `wrangler deploy` can't publish it.
+NEXT.md

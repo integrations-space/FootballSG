@@ -1,6 +1,5 @@
 wrangler.jsonc
 .assetsignore
 .gitignore
-.nojekyll
-CNAME
 README.md
+NEXT.md
