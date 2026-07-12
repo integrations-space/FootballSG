@@ -1,0 +1,16 @@
+{
+  "name": "FootballSG — youth football clubs in Singapore",
+  "short_name": "FootballSG",
+  "description": "Find & compare youth football clubs and academies across Singapore, U6–U17 — fees, weekend sessions, travel and pathway, scored from your home town.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1512",
+  "theme_color": "#1f8a4c",
+  "categories": ["sports", "education", "lifestyle"],
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="FootballSG">
+  <rect width="512" height="512" rx="112" fill="#1f8a4c"/>
+  <rect width="512" height="512" rx="112" fill="url(#g)"/>
+  <defs>
+    <radialGradient id="g" cx="30%" cy="24%" r="90%">
+      <stop offset="0%" stop-color="#2fae63"/>
+      <stop offset="100%" stop-color="#125f38"/>
+    </radialGradient>
+  </defs>
+  <!-- pitch centre line + circle -->
+  <g stroke="#ffffff" stroke-opacity=".28" stroke-width="6" fill="none">
+    <line x1="256" y1="96" x2="256" y2="416"/>
+    <circle cx="256" cy="256" r="70"/>
+  </g>
+  <!-- football -->
+  <g transform="translate(256 256)">
+    <circle r="120" fill="#ffffff"/>
+    <g fill="#0f1512">
+      <path d="M0-56 46-22 28 34-28 34-46-22Z"/>
+      <path d="M0-120 34-96 20-70 0-80-20-70-34-96Z" opacity=".92"/>
+      <path d="M120 0 96 34 70 20 80 0 70-20 96-34Z" opacity=".92"/>
+      <path d="M-120 0-96-34-70-20-80 0-70 20-96 34Z" opacity=".92"/>
+      <path d="M64 92 96 66 108 96 84 120 56 112Z" opacity=".92"/>
+      <path d="M-64 92-56 112-84 120-108 96-96 66Z" opacity=".92"/>
+    </g>
+  </g>
+</svg>

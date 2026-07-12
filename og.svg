@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="FootballSG">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#125f38"/>
+      <stop offset="100%" stop-color="#0f1512"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- pitch markings -->
+  <g stroke="#ffffff" stroke-opacity=".14" stroke-width="3" fill="none">
+    <line x1="600" y1="70" x2="600" y2="560"/>
+    <circle cx="600" cy="315" r="120"/>
+    <rect x="70" y="180" width="120" height="270" rx="4"/>
+    <rect x="1010" y="180" width="120" height="270" rx="4"/>
+  </g>
+  <!-- badge -->
+  <g transform="translate(96 96)">
+    <rect width="120" height="120" rx="28" fill="#1f8a4c"/>
+    <circle cx="60" cy="60" r="34" fill="#ffffff"/>
+    <path d="M60 34 74 44 68 60 52 60 46 44Z" fill="#0f1512"/>
+  </g>
+  <text x="240" y="150" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="52" font-weight="800" fill="#ffffff">FootballSG</text>
+  <text x="240" y="196" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" fill="#9fe0b9">footballsg.cc</text>
+  <text x="96" y="340" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Find your kid's football</text>
+  <text x="96" y="424" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">club in Singapore</text>
+  <text x="96" y="500" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" fill="#cfe9d8">Grassroots to elite · U6–U17 · fees, schedule, travel &amp; pathway — scored from your home town</text>
+</svg>
