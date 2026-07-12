@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers — static assets host for footballsg.cc.
+  // The whole site is served from the repo root as static files (no build step).
+  // This Worker project is also where a future server-side API (e.g. the AI
+  // concierge holding the Claude key) would live — keeping secrets off the client.
+  "name": "footballsg",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  }
+}
