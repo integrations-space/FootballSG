@@ -8,5 +8,14 @@
   "assets": {
     "directory": ".",
     "not_found_handling": "404-page"
-  }
+  },
+  // Custom domains, declared as config rather than clicked in the dashboard so the
+  // mapping is versioned and reproducible. On deploy, Cloudflare attaches each
+  // hostname to this Worker, writes the DNS record, and issues the TLS cert.
+  // The zone is already delegated to Cloudflare (quinton/opal.ns.cloudflare.com).
+  // Do NOT also hand-create an A/CNAME for these names — these routes own them.
+  "routes": [
+    { "pattern": "footballsg.cc", "custom_domain": true },
+    { "pattern": "www.footballsg.cc", "custom_domain": true }
+  ]
 }
