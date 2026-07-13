@@ -344,8 +344,10 @@ const CLUBS=[
   trial:"Free trial via the online sign-up form (Elite/DC candidates shortlisted before being invited).",
   email:"footballschool@lcsfc.sg",phone:"+65 9002 4871",web:"lioncitysailorsfa.sg",reg:"https://www.lioncitysailorsfa.sg/p/sign-up.html",
   src:["lioncitysailorsfa.sg","lioncitysailorsfc.sg/academy"]},
- {id:"fcj",name:"Albirex → FC Jurong",cat:"elite",region:"west",loc:"238 Jurong East St 21 (primary field & trials) · Jurong East/West Stadium",km:6,car:13,transit:35,
-  ages:R("U6","U17"),feeMo:100,feeConf:"high",feeText:"COE elite: free (selection). FC Jurong grassroots: S$100/mo (1×/wk) or S$200/mo (unlimited/league) + one-time S$170 reg incl. jersey.",
+ // Rebrand, not a partnership: albirex.com.sg 301-redirects to fcjurong.com. Youth/women's teams took
+ // the FC Jurong name 1 Jan 2026, the men's team 1 Jul 2026 — the rename is complete as of Jul 2026.
+ {id:"fcj",name:"FC Jurong (formerly Albirex Niigata SG)",cat:"elite",region:"west",loc:"238 Jurong East St 21 (primary field & trials) · Jurong East/West Stadium",km:6,car:13,transit:35,
+  ages:R("U6","U17"),feeMo:100,feeConf:"med",feeText:"COE elite: free (selection). FC Jurong grassroots: S$100/mo (1×/wk) or S$200/mo (unlimited/league) + one-time S$170 reg incl. jersey. <b>Not published on the club site</b> — the soccer school lists only KIDS/U-8/U-10/U-12 + Academy tiers, with no fees. Confirm before paying.",
   feeTiers:[{label:"Grassroots (open)",ages:R("U6","U17"),mo:100,regFee:170,conf:"high",open:true,note:"S$100/mo 1×/wk · S$200/mo unlimited+league · reg incl. jersey"},
             {label:"COE Elite",ages:["U15","U17"],mo:0,conf:"high",open:false,note:"free, by selection"}],
   local:["Singapore Youth League"],intl:false,intlText:"Local & overseas friendlies; Albirex/Japan link (partial)",
@@ -357,7 +359,7 @@ const CLUBS=[
   req:"2026 COE trials were U15 (born 2011–2012), U17, U19 — a 2011/12-born fits U15. Grassroots academy open to all youth 6+, beginners welcome.",
   trial:"COE trials are free, by Google-Form with a deadline, held at the Jurong East field (238 Jurong East St 21) / Jurong East Stadium (form rotates each cycle). Grassroots: free trial/tour, then ~S$170 registration + S$100–200/mo.",
   email:"habil_hakim@fcjurong.com",web:"fa.fcjurong.com",reg:"https://fa.fcjurong.com/en/trial/",
-  src:["fcjurong.com","albirex.com.sg"]},
+  src:["fcjurong.com","school.fcjurong.com/en/"]},
  {id:"tpu",name:"Tanjong Pagar United",cat:"elite",region:"west",loc:"Jurong East Stadium",km:6,car:13,transit:35,
   ages:R("U6","U17"),feeMo:null,feeConf:"low",feeText:"COE selection-based; fees not published. Youth 'Freekicks' (ages 6–16) is the open route; fees on poster only.",
   local:["Singapore Youth League"],intl:false,intlText:"No documented youth overseas programme",
@@ -381,7 +383,7 @@ const CLUBS=[
   req:"Sec 1 intake is boys, Singapore Citizens, a set birth-year cohort. For a Sec 2 (14yo) the route is competitive MID-STREAM entry — generally needs FAS/UTR recommendation or NDC-level potential.",
   trial:"Football selection trials run in phases (2027 intake cycle now closed). Mid-stream Secondary dates aren't published — contact admissions.",
   email:"admissions@sportsschool.edu.sg",phone:"+65 6766 0100",web:"sportsschool.edu.sg/admissions/admission-to-secondary-1",
-  src:["sportsschool.edu.sg/.../football-academy"]},
+  src:["sportsschool.edu.sg/sports/sports-programmes/football-academy"]},
  {id:"tsk",name:"Tasek Sailors",cat:"elite",region:"west",loc:"West Centre — Crest Sec / Millennia Inst",km:8,car:14,transit:35,
   ages:R("U7","U17"),feeMo:0,feeConf:"med",feeText:"Charity-funded / heavily subsidised (community programme)",
   local:["Singapore Youth League","JSSL League"],intl:false,intlText:"Domestic only",
@@ -395,7 +397,7 @@ const CLUBS=[
   email:"nurhannah@tasek.org",web:"tasek.org/programmes/tasek-sailors",
   src:["lioncitysailorsfc.sg/tasek-sailors","tasek.org"]},
  {id:"ndc",name:"FAS National Dev. Centre",cat:"elite",region:"central",loc:"Kallang Football Hub",km:21,car:30,transit:55,
-  ages:R("U13","U16"),feeMo:0,feeConf:"med",feeText:"Free — national programme (Unleash The Roar); scouted, no fee",
+  ages:R("U8","U16"),feeMo:0,feeConf:"high",feeText:"Free — national programme (Unleash The Roar); no fee published. <b>Spans U8–U16</b> (separate U8–U12 and U13–U16 centres), not U13+ only. Invite-only: players are <i>scouted</i> from the Singapore Youth League and the National School Games, then invited — you cannot apply.",
   local:["Singapore Youth League (via own club)"],intl:true,intlText:"Spain tour (Atlético, Getafe); UTR overseas scholarship",
   coach:"Javier Gainza Rojas (U14, Spanish)",tier:"Elite",cred:"FAS technical dept",
   wd:true,we:false,wdDay:false,sched:"Weekday centralised training; weekends back at own club",
@@ -405,7 +407,7 @@ const CLUBS=[
   req:"Tier NDC U13–U16 (covers U14/U15). Selection by scouting/invitation on performance; no self-nomination. All SYL players enter the FAS Talent-ID database.",
   trial:"No public trial. The way in: join an FAS-accredited SYL club (see syl.sg/accredited-club), play NSG for your school, perform, and get spotted.",
   web:"unleashtheroar.com.sg/let-them-play/ndc-u13-u16",
-  src:["unleashtheroar.com.sg/.../ndc-u13-u16"]},
+  src:["unleashtheroar.com.sg/let-them-play/ndc-u13-u16","unleashtheroar.com.sg/let-them-play/ndc-u8-12"]},
  {id:"tmp",name:"Tampines Rovers",cat:"elite",region:"east",loc:"Our Tampines Hub (+JSSL venues)",km:30,car:45,transit:78,
   ages:R("U7","U16"),feeMo:196,feeConf:"high",feeText:"JSSL feeder: S$588/12-session term (~1×/wk; early-bird S$510) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST. COE squad itself is selection-based.",
   local:["Singapore Youth League","JSSL League"],intl:true,intlText:"Gothia Cup, JSSL 7s, Bangkok 7s (via JSSL)",
@@ -429,7 +431,7 @@ const CLUBS=[
   req:"Male SG citizens/PRs by birth-year band; fields a U15 COE team. Exact bands are stated in the registration posts.",
   trial:"Open COE selection trials (free/paid unknown). Book via links on the Balestier Khalsa Facebook/Instagram; historically walk-in at the office.",
   phone:"+65 6356 0049",web:"facebook.com/balestierkhalsa",
-  src:["fas.org.sg/.../balestier-khalsa","spl.sg"]},
+  src:["fas.org.sg/minor_team/balestier-khalsa-fc-u15/","spl.sg"]},
  {id:"gey",name:"Geylang International",cat:"elite",region:"east",loc:"Our Tampines Hub / Geylang TC",km:28,car:42,transit:70,
   ages:R("U8","U15").concat("U17"),feeMo:140,feeConf:"med",feeText:"First Kick: S$45/session or S$350 per 10-session pack (~S$140/mo); S$15 paid trial. Elite Excellence & club COE (U13–U15) by selection, not priced.",
   feeTiers:[{label:"First Kick (open)",ages:R("U8","U13"),mo:140,conf:"med",open:true,note:"S$45/session · S$350 per 10-session pack"},
@@ -469,9 +471,10 @@ const CLUBS=[
   email:"info@borussiasg.com",phone:"+65 9152 8267",web:"borussia-academy-sg.com",reg:"https://borussia-academy-sg.com/free-trials",
   src:["borussia-academy-sg.com"]},
  {id:"bar",name:"Barça Academy SG",cat:"open",region:"west",loc:"Perse School (Chestnut Dr) +3",km:10,car:16,transit:42,
-  ages:R("U6","U17"),feeMo:293,feeConf:"high",feeText:"12-week term (~3 mo), two options. <b>1×/wk</b>: S$880–895/term — 12 trainings, 18 sessions incl. alternate-Sunday matches (~S$293–298/mo). <b>2×/wk</b>: S$1,295/term — 24 trainings, 30 sessions (~S$432/mo). One-time registration S$125. Kit + 12-mo insurance + league matches included; free tryout.",
-  feeTiers:[{label:"1×/week (12-week term)",ages:R("U6","U17"),mo:293,regFee:125,conf:"high",open:true,note:"S$880–895/term · 12 trainings, 18 sessions incl. alternate-Sunday matches"},
-            {label:"2×/week (12-week term)",ages:R("U6","U17"),mo:432,regFee:125,conf:"high",open:true,note:"S$1,295/term · 24 trainings, 30 sessions"}],
+  ages:R("U6","U17"),feeMo:293,feeConf:"med",feeText:"<b>Barça does not publish fees</b> — their FAQ says cost \"varies\" and directs you to WhatsApp. Figures below are <b>parent-reported</b>, not club-published. 12-week term (~3 mo), two options: <b>1×/wk</b> S$880–895/term — 12 trainings, 18 sessions incl. Sunday matches (~S$293–298/mo); <b>2×/wk</b> S$1,295/term — 24 trainings, 30 sessions (~S$432/mo). One-time registration S$125 (unverified). <b>Ask whether GST is included</b> — not stated anywhere, and it's a ~9% swing. <i>Club-published inclusions (verified):</i> training kit + 12-month insurance, weekly 90-min sessions, and league matches (Barça SG Super League, JSSL, SYL, YCL, Barça Cup). Free tryout.",
+  feeTiers:[{label:"1×/week (12-week term)",ages:R("U6","U17"),mo:293,regFee:125,conf:"med",open:true,note:"S$880–895/term · 12 trainings, 18 sessions incl. alternate-Sunday matches"},
+            {label:"2×/week (12-week term)",ages:R("U6","U17"),mo:432,regFee:125,conf:"med",open:true,note:"S$1,295/term · 24 trainings, 30 sessions"}],
+  feeSrc:{kind:"community",label:"shared with us by a parent (Jul 2026) and may be revised by him. Barça publishes no fees at all — their FAQ says the cost \"varies\" and points you to WhatsApp — so no figure here can be traced to the club. Registration fee and GST treatment are unverified. Confirm on WhatsApp +65 8079 6531. (An older \"from S$500/term\" figure came from a SassyMama listicle, not from Barça — we have dropped it.)",url:null},
   local:["Barça SG Super League (Sun)"],intl:true,intlText:"Barça Academy World Cup pathway",
   coach:"Barça-appointed head coach",tier:"Elite",cred:"La Masia methodology (FCB official)",
   wd:true,we:true,wdDay:false,sched:"Training Mon–Sat; Sundays = match days",
@@ -481,7 +484,7 @@ const CLUBS=[
   req:"Ages 4–17 (born 2007–2020). Open enrolment via free tryout; no separate competitive-trial gate.",
   trial:"Free tryout at any venue — book online.",
   email:"hello@barcaacademy.sg",phone:"+65 8079 6531",web:"barcaacademy.sg",reg:"https://barcaacademy.sg/registration-free-tryouts/",
-  src:["barcaacademy.sg"]},
+  src:["barcaacademy.sg/barca-academy-programs/","barcaacademy.sg/our-locations/","barcaacademy.sg/faq/"]},
  {id:"che",name:"Chelsea FC Soccer School",cat:"open",region:"central",loc:"Rainforest Hub @ Turf City",km:11,car:18,transit:52,
   ages:R("U6","U17"),feeMo:160,feeConf:"low",feeText:"~S$320–450/term (est)",
   local:["Development sessions & friendlies"],intl:true,intlText:"Chelsea global curriculum; coach/player visits & camps",
@@ -495,7 +498,8 @@ const CLUBS=[
   email:"soccerschools@chelseafc.com",phone:"+65 6440 5503",web:"chelseafc.com/en/soccer-schools",
   src:["chelseafc.com/en/soccer-schools"]},
  {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"West venues: Jurongville, Kent Ridge, Kranji, Spectra Sec, Jurong Pioneer JC",km:5,car:12,transit:30,
-  ages:R("U6","U16"),feeMo:65,feeConf:"high",feeText:"S$130 for 19 sessions (Season 3 2026) — subsidised, cheapest option",
+  ages:R("U6","U16"),feeMo:65,feeConf:"low",feeText:"~S$65/mo is <b>our derivation, not an official figure</b> — ActiveSG publishes no fees on its Circle pages. It comes from a S$130-per-term rate (the only official figure traced is a <i>2016</i> SportSG release: \"$130 for the 14-session programme\"); third-party listings say S$130–180/term. Still almost certainly the cheapest option, but treat the number as approximate and confirm at registration.",
+  feeSrc:{kind:"estimate",label:"derived from a S$130/term rate; ActiveSG does not publish fees. Nearest official figure is a 2016 SportSG media release — treat as approximate",url:"activesgcircle.gov.sg/academies-clubs/football"},
   local:["Broad-base development"],intl:false,intlText:"National FAS pathway (no overseas tours)",
   coach:"FAS / Sport Singapore coaches",tier:"Licensed",cred:"FAS national programme",
   wd:false,we:true,wdDay:false,sched:"Saturday sessions, 90 min × 19 per season (Season 3 2026 confirmed weekend; low intensity)",
@@ -511,7 +515,7 @@ const CLUBS=[
   req:"Ages 3–16 (Youth). Open enrolment; Development Squad entry is by talent ID, not open registration.",
   trial:"No trial — just book a specific venue & Saturday slot for the season on the ActiveSG site/app.",
   email:"ActiveSG_Football@sport.gov.sg",web:"activesg.gov.sg/programmes?keywords=Football",reg:"https://activesg.gov.sg/programmes?keywords=Football&activity-ids=mlhxSk7lNvZvXXSQXD7Ea",
-  src:["activesg.gov.sg/programmes?keywords=Football","fas.org.sg/minor_team/afa"]},
+  src:["activesgcircle.gov.sg/academies-clubs/football","activesgcircle.gov.sg/academies-clubs/football/academy-centres","fas.org.sg/minor_team/afa"]},
  {id:"tcfc",name:"Turf City FC",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
   ages:R("U6","U13"),feeMo:238,feeConf:"med",feeText:"S$55 per 90-min session, up to 3×/wk (~S$238/mo at 1×), billed per term · one-time ~S$80 (S$30 reg + S$50 kit) · optional league S$250/season. Youth-skewed: oldest listed team is U13 — confirm any U14+ group.",
   local:["Community youth leagues"],intl:false,intlText:"None documented",
@@ -536,18 +540,6 @@ const CLUBS=[
   trial:"Periodic U15 open trials via Google Form (cost not stated) — confirm the next date with the club.",
   email:"enquiries@hgfc.com.sg",web:"hgfc.com.sg/coe-u15",reg:"https://www.hgfc.com.sg/coe-u15/",
   src:["hgfc.com.sg/coe-u15","fas.org.sg/minor_team/hougang-united-fc-u15"]},
- {id:"espzen",name:"ESPZEN Soccer School",cat:"open",region:"west",loc:"Lakeside (west) · Turf City (central) · Yishun (north) · HYFA Mattar (east)",km:9,car:16,transit:42,
-  ages:R("U6","U17"),feeMo:130,feeConf:"med",feeText:"~S$280–350/term (varies by age/frequency; ~S$130/mo) + one-time S$100 reg incl. kit (~S$109 w/ GST). Confirm current rate.",
-  local:["FourFourTwo J-League / ESPZEN Junior League"],intl:false,intlText:"Not documented",
-  coach:"Dennis Yomo Ikogho (AFC 'A' Licence) + UEFA/FA/AFC team",tier:"Licensed",cred:"UEFA / English FA / AFC licensed coaches",
-  wd:true,we:true,wdDay:false,sched:"Weekend + weekday-evening; Yishun Sat, Turf City Sun/Tue/Thu (venue-dependent)",
-  sel:"tiered",selText:"Open school programme; tiered academy/competition teams",
-  alumni:"Not documented",conf:"med",
-  join:"Enquire via the website form or phone; a trial/assessment is arranged, then you enrol.",
-  req:"Ages 4–18 (covers U14/U15). Open school; competition teams by placement.",
-  trial:"Trial/assessment arranged on enquiry.",
-  email:"soccerschool@espzen.com",phone:"+65 6325 9386",web:"soccerschool.espzen.com",reg:"https://soccerschool.espzen.com/enquiry.php",
-  src:["soccerschool.espzen.com","soccerschool.espzen.com/training-venues.php"]},
  {id:"mof",name:"Ministry of Football Academy",cat:"open",region:"west",loc:"Jurong West (west) · Yishun (north) · Kovan (NE)",km:8,car:15,transit:40,
   ages:R("U6","U16"),feeMo:140,feeConf:"high",feeText:"S$264–350 per 8-week (~2-month) term by centre — Yishun S$264/289 · Kovan S$280/305 · Jurong West S$350 (incl. insurance) · +one-time S$25 name jersey (1st term) · free trial.",
   local:["MOF leagues & tournaments"],intl:false,intlText:"Not documented",
@@ -585,7 +577,7 @@ const CLUBS=[
   email:"info@frmsingapore.com",phone:"+65 9176 1870",web:"frmsingapore.com/training-venues/katong",reg:"https://www.frmsingapore.com/training-venues/katong/",
   src:["frmsingapore.com/training-venues/katong"]},
  {id:"sky",name:"Sky Football Academy",cat:"open",region:"ne",loc:"Kovan (Hougang St 21) + The Cage Dempsey + Radin Mas",km:28,car:42,transit:80,
-  ages:R("U6","U16"),feeMo:null,feeConf:"low",feeText:"Free trial; fees not published — enquire",
+  ages:R("U6","U16"),feeMo:null,feeConf:"low",feeText:"Free trial; fees not published — enquire. Note: <b>established 2024</b>, so it has no track record yet next to the century-old clubs here. Site lists Grassroots / Development / Elite tiers, ages 5–17.",
   local:["JSSL & YEFC leagues (Dev)","Singapore Youth League (Elite)"],intl:false,intlText:"Not documented",
   coach:"Coaching team (not named)",tier:"Community",cred:"Local & international competition experience",
   wd:true,we:true,wdDay:false,sched:"Weekend / evening (not published)",
@@ -595,7 +587,7 @@ const CLUBS=[
   req:"Ages 4–16, three tiers (covers U14/U15). Elite team is competitive/selected.",
   trial:"Free trial — book via the website.",
   web:"skyfootballsg.com/academy",reg:"https://www.skyfootballsg.com/academy",
-  src:["skyfootballsg.com","skyfootballsg.com/academy"]},
+  src:["skyfootballsg.com/about-academy","skyfootballsg.com/free-tryout"]},
  {id:"f17",name:"F17 Football Academy",cat:"open",region:"east",loc:"SUTD Sports Centre, Changi South Ave 1 (+ Queensway, Kallang)",km:34,car:46,transit:90,
   ages:R("U6","U17"),feeMo:180,feeConf:"high",feeText:"Billed monthly: ~S$140/mo (Queensway) to ~S$220.50/mo (SUTD) for 1×/wk (2×/3× cost more) · one-time S$200 starter kit (kit + insurance + app) · trial ~S$50 (occasional free promos).",
   local:["F17 3v3 World Cup & holiday camps"],intl:false,intlText:"F17 3v3 World Cup event (tours not confirmed)",
@@ -611,7 +603,7 @@ const CLUBS=[
 ];
 // verify = the short line shown on EVERY view + each club card; note = the long form for table/charts.
 const META={compiled:"2026-07",
- verify:"Fees, schedules and trial dates change without notice. Always confirm the latest directly with the club or association before enrolling or paying — figures here are indicative and compiled from public sources.",
+ verify:"All information here is for reference only. Every club carries its source links — open a club and check the \"Sources — audit us\" field to see exactly where each figure came from, including where a fee was parent-reported rather than published. Fees, schedules and trial dates change without notice: always confirm the latest directly with the club or association before enrolling or paying.",
  note:"Figures are indicative — confirm current fees, training days & times with each club before enrolling. Age bands U6–U17 are drawn from each club's stated age range; grassroots (younger) fees can differ by programme — confirm the exact birth-year group. COE = Centre of Excellence."};
 
 /* ===================== ENGINE ===================== */
@@ -649,7 +641,7 @@ const HOME_BASES=[
  {id:"pasirris",name:"Pasir Ris",region:"east",xy:[37,14]},
  {id:"changi",name:"Changi",region:"east",xy:[41,11]}
 ];
-const CLUB_XY={lcs:[27,11],fcj:[12,11],tpu:[12,11],sss:[17,24],tsk:[11,15],ndc:[25,10],tmp:[36,11],bal:[23,16],gey:[34,10],jssl:[19,8],bor:[18,9],bar:[15,17],che:[17,13],asg:[11,15],tcfc:[18,9],hgfc:[27,16],espzen:[9,9],mof:[8,12],euroasia:[23,13],rmf:[30,6],sky:[28,16],f17:[39,9]};
+const CLUB_XY={lcs:[27,11],fcj:[12,11],tpu:[12,11],sss:[17,24],tsk:[11,15],ndc:[25,10],tmp:[36,11],bal:[23,16],gey:[34,10],jssl:[19,8],bor:[18,9],bar:[15,17],che:[17,13],asg:[11,15],tcfc:[18,9],hgfc:[27,16],mof:[8,12],euroasia:[23,13],rmf:[30,6],sky:[28,16],f17:[39,9]};
 const HOME_LL={tengah:[1.374,103.715],jurongeast:[1.333,103.742],bukitbatok:[1.349,103.750],choachukang:[1.385,103.744],bukitpanjang:[1.378,103.762],clementi:[1.315,103.765],jurongwest:[1.340,103.705],bukittimah:[1.338,103.776],queenstown:[1.294,103.786],toapayoh:[1.334,103.847],bishan:[1.351,103.848],angmokio:[1.370,103.849],kallang:[1.311,103.865],woodlands:[1.436,103.786],yishun:[1.429,103.835],sembawang:[1.449,103.820],serangoon:[1.353,103.870],hougang:[1.371,103.892],sengkang:[1.391,103.895],punggol:[1.405,103.902],marineparade:[1.302,103.905],bedok:[1.324,103.930],tampines:[1.353,103.945],pasirris:[1.373,103.949],changi:[1.352,103.988]};
 function haversine(la1,lo1,la2,lo2){const R=6371,p=Math.PI/180,dLa=(la2-la1)*p,dLo=(lo2-lo1)*p,a=Math.sin(dLa/2)**2+Math.cos(la1*p)*Math.cos(la2*p)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(a));}
 function homeBase(){return HOME_BASES.find(h=>h.id===state.home)||HOME_BASES[0];}
@@ -705,6 +697,29 @@ const HINTS={
 
 /* ----- fit + helpers ----- */
 const fitScore=c=>(c.we?1:0)+(!c.wdDay?1:0)+(kmOf(c)<=12?1:0);
+/* ----- provenance: where a figure actually came from, so users can audit it -----
+   Every fee carries a stated origin. A club may override with feeSrc; otherwise we infer it
+   from feeConf — and we say "our estimate" rather than implying the club published a number
+   it never published. An unsourced figure must LOOK unsourced. */
+const SRC_KIND={
+ club:     ["Published by the club","g"],
+ assoc:    ["Published by FAS / the association","g"],
+ community:["Parent-reported — not published by the club","w"],
+ partial:  ["Partly published — pieced together from the source below","w"],
+ estimate: ["Our estimate — the club does not publish a fee","b"]
+};
+function feeProvenance(c){
+ if(c.feeSrc)return c.feeSrc;
+ const k=c.feeConf==="high"?"club":c.feeConf==="med"?"partial":"estimate";
+ return {kind:k,url:k==="estimate"?null:(c.src&&c.src[0])||null};
+}
+const srcLink=u=>`<a href="https://${String(u).replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">${u}</a>`;
+function provHtml(c){
+ const p=feeProvenance(c),k=SRC_KIND[p.kind]||SRC_KIND.estimate;
+ return `<div style="margin-top:7px;font-size:11.5px;color:var(--muted);line-height:1.5">
+   <span class="chip ${k[1]}" style="font-size:9.5px">${k[0]}</span>
+   ${p.label?" "+p.label:""}${p.url?" · Source: "+srcLink(p.url):""}</div>`;
+}
 /* ----- fees: a club's cost varies by programme tier & age band ----- */
 // Default: one open tier derived from the legacy scalar. Multi-programme clubs override with feeTiers.
 function tiersOf(c){return c.feeTiers||[{label:"Programme",ages:c.ages,mo:c.feeMo,regFee:c.regFee||null,conf:c.feeConf,open:true,note:""}];}
@@ -1053,7 +1068,8 @@ function renderRegister(vp,clubs){
    ${fld("Location",c.loc+" · "+REGION_LABEL[c.region])}
    ${fld("Training",c.sched)}
    ${fld("How to get in",c.trial||c.selText)}
-   <div style="margin-top:6px;font-size:11px;color:var(--muted);line-height:1.4">⚠ Confirm fees, days &amp; trial dates with the club — details change.</div>
+   ${fld("Sources — audit us",c.src.map(srcLink).join(" · ")+provHtml(c))}
+   <div style="margin-top:6px;font-size:11px;color:var(--muted);line-height:1.4">⚠ Reference only — confirm fees, days &amp; trial dates with the club.</div>
    <div class="actions" style="padding:10px 0 0;margin:0">${acts||'<span style="font-size:12px;color:var(--muted)">Contact via website / socials</span>'}</div>`;
   grid.appendChild(card);
  });
@@ -1199,7 +1215,8 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
   <div class="grid">
    <div class="f"><div class="kk">Travel from ${homeName()}</div><div class="vv">${carOf(c)} min car · ${transitOf(c)} min transit · ${kmOf(c)} km</div></div>
    <div class="f"><div class="kk">Fees</div><div class="vv">${feeTierHtml(c)}${c.feeText}
-     <div style="margin-top:6px;font-size:11.5px;color:var(--muted);line-height:1.45">⚠ Indicative only — confirm the current fee, term dates &amp; what's included directly with the club before paying.</div></div></div>
+     ${provHtml(c)}
+     <div style="margin-top:6px;font-size:11.5px;color:var(--muted);line-height:1.45">⚠ Reference only — confirm the current fee, term dates &amp; what's included directly with the club before paying.</div></div></div>
    <div class="f"><div class="kk">Age groups</div><div class="vv">${ageSummary(c.ages)}</div></div>
    <div class="f"><div class="kk">Training</div><div class="vv">${c.sched}</div></div>
    <div class="f"><div class="kk">Local competition</div><div class="vv">${c.local.join(" · ")}</div></div>

@@ -13,7 +13,7 @@ weekday sessions**, **travel time**, **monthly fees by age band**, **age-group f
 
 ## What it shows
 
-22 clubs island-wide across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
+21 clubs island-wide across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
 and **open enrolment** (brand & community academies) — with six ways to read the same data:
 
 | View | What it answers |
