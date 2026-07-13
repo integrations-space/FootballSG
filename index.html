@@ -1101,6 +1101,9 @@ const PRIMARY_LADDER=[
 const PRIMARY_CALENDAR=[
  ["Jan–May","JSSL League Season 1","The bigger of the two JSSL seasons. Age bands go by birth year (\"B7\" = born 2019).","--c2"],
  ["2 Jan / 28 Feb","NSG entry deadlines","Schools enter the <b>Senior</b> division by 2 Jan and the <b>Junior</b> division by 28 Feb. This is the school's deadline, not yours — but if the school misses it, there's no team.","--c3"],
+ ["P4 Sem 2 (school)","JSA nomination — easy to miss","MOE's Junior Sports Academy, P4 Sem 2 → P6 Sem 1, <b>by selection only</b> via parent/teacher nomination through the school. Jurongville's football DSA <b>requires</b> JSA or school-team membership — so this quiet, unglamorous step is a hard gate two years later.","--c5"],
+ ["P6 · Feb–May (school)","Sports School application","Separate e-form — <b>not</b> the DSA portal. Football entry requires already being in FAS's NDC (U13+).","--c8"],
+ ["⭐ P6 · early May – early Jun","DSA-Sec application window","The 2026 window was <b>6 May – 2 Jun</b>. Up to 3 choices; accepting is <b>binding</b> (no S1 Posting, no transfer after PSLE). Trials Jul–Aug, outcomes late Aug, allocation late Nov.","--c5"],
  ["Feb onwards","SYL season kicks off","U8 / U10 / U12 divisions run alongside the older bands.","--c2"],
  ["2–5 Apr 2026","JSSL 7s","Asia's big youth tournament — 400+ teams, 17 countries, U6–U16. Easter weekend.","--c3"],
  ["~June","FAS announces the November trials","Watch for it. Registration is online-only and closes roughly two weeks before.","--c8"],
@@ -1119,6 +1122,24 @@ const LADDER=[
  ["2","Trial into an SPL Centre of Excellence","When he's ready, register for a club's open COE trial. Nearest & west: Albirex → FC Jurong and Tanjong Pagar (both Jurong East). Most COE trials are free — the barrier is ability, not access.","--c3"],
  ["3","Play the Singapore Youth League","Selected players compete in SYL / COE U15 & U17 — the elite youth league. Every SYL player gets an individual FAS player profile that national scouts use.","--c8"],
  ["4","Get scouted → NDC → Young Lions / overseas","FAS Talent-ID watches SYL & school games weekly and invites top players into the National Development Centre (U13–U16, invite-only), then the national youth teams — and, for a few, overseas academies.","--c5"]
+];
+/* ---- The school route: DSA, JSA and the SFA schools ----
+   Tested the hypothesis "primary football is really a race to win DSA into a football secondary".
+   Verdict: PARTIALLY. DSA is a school-placement lever, not a talent-pathway gate — because
+   (a) an SFA school's football CCA *is* the SFA, and you trial into it at Sec 1 whether you
+   arrived by DSA or ordinary PSLE posting, and (b) Sports School gates its football intake on
+   already being in FAS's NDC (U13+). The elite arrow runs club → NDC → school, not school → NDC.
+   Sources: moe.gov.sg/secondary/dsa · moe.gov.sg/education-in-sg/our-programmes/junior-sports-academy
+   · sportsschool.edu.sg/admissions · jurongvillesec.moe.edu.sg · assumptionenglish.moe.edu.sg */
+const DSA_ROUTE=[
+ ["P4 · from Sem 2","Get nominated for JSA","MOE's <b>Junior Sports Academy</b> runs from Sem 2 of P4 to Sem 1 of P6 and is <b>by selection only</b> — your child is nominated by a parent or teacher, through the school. Quietly important: <b>Jurongville's football DSA requires JSA <i>or</i> school-team membership</b>, and MOE notes \"a good number of JSA participants go on to apply for DSA\".","--c2"],
+ ["P4 → P6","Build the record the schools ask for","Two things count: the <b>school team</b> (National School Games, from ~P4) and <b>league football</b> (SYL / JSSL). Do both if you can — they are the two platforms FAS names as its scouting grounds, and they are also what DSA panels look at.","--c3"],
+ ["P6 · Feb–May","Sports School — a separate track, and it's gated","<b>Do not use the DSA portal</b> — Sports School has its own e-form. And you cannot trial your way in: Sec 1 football entrants must be \"recommended by FAS and UTR coaches and be part of FAS's <b>NDC programme starting at the U13 age group</b>\". You essentially need to already be in the national pathway. That's why club football comes first.","--c5"],
+ ["P6 · early May – early June","⭐ DSA-Sec application — the hard deadline","One centralised MOE portal (parent's Singpass), free. <b>Up to 3 choices</b>, max 2 at the same school. The <b>2026 window was 6 May – 2 Jun</b>; trials Jul–Aug, outcomes by late Aug, preferences ranked Oct, allocation late Nov. <b>Accepting is binding</b> — no S1 Posting, no transfer after PSLE. Roughly 11% of the cohort enters secondary school this way.","--c8"]
+];
+const DSA_SCHOOLS=[
+ {s:"Jurongville Secondary",r:"West · Jurong",g:"HARD GATE",gt:"b",d:"Calls itself \"one of the premier football programmes in the West\". Its DSA criteria are the strictest we found anywhere: applicants <b>must</b> have \"experience and competed in NSG or other NSA/IF sanctioned age group competition\" <b>and</b> be \"a member of Junior Sports Academy (JSA) or school team\". Performance task + interview.",src:"jurongvillesec.moe.edu.sg/parents-information/dsa/"},
+ {s:"Assumption English School",r:"West · Bukit Batok",g:"OPEN DOOR",gt:"g",d:"An endorsed <b>School Football Academy (SFA)</b> under Unleash The Roar. Criteria are far softer than Jurongville's: \"demonstrated sporting potential… active participation in sports\", with NSG/club experience \"considered but <b>not necessary</b>\". Skills evaluation + same-day interview.",src:"assumptionenglish.moe.edu.sg/useful-resources/direct-school-admission-dsa/"}
 ];
 const EXAMPLES=[
  {p:"Ben Davis",from:"JSSL Singapore (grassroots/open)",to:"FAS Centre of Excellence → Fulham FC academy (England)",note:"First Singaporean to sign for a Premier League club — the open-academy-to-overseas route.",src:"en.wikipedia.org/wiki/Ben_Davis_(footballer,_born_2000)"},
@@ -1145,7 +1166,7 @@ function renderPathway(vp){
  const goalPrimary=`<div style="border:1px solid var(--accent);border-radius:12px;padding:14px 15px;background:color-mix(in srgb,var(--accent) 7%,var(--surface))">
    <div style="font-weight:800;font-size:16px">Primary-school pathway (U6–U12) — the goal is to be <i>seen</i></div>
    <div style="font-size:12.5px;color:var(--ink-2);margin:4px 0 12px;line-height:1.5">
-     There is <b>no elite club academy to trial for at this age</b> — SPL club academies start at <b>U13</b>. But there <i>is</i> an FAS league: the <b>SYL runs U8, U10 and U12</b> divisions (it's the <i>Centre-of-Excellence</i> League that's U15/U17-only — a different competition). So at primary age the job isn't to win a selection. It's to <b>play enough competitive football, in a league, to be scouted</b> — because that is literally how the national programme finds players.</div>
+     There is <b>no elite club academy to trial for at this age</b> — SPL club academies start at <b>U13</b>. But there <i>is</i> an FAS league: the <b>SYL runs U8, U10 and U12</b> divisions (it's the <i>Centre-of-Excellence</i> League that's U15/U17-only — a different competition). So primary football isn't about winning a selection. It has <b>two jobs</b>: <b>(1)</b> play enough league football to be <b>scouted</b> — that is literally how the national programme finds players — and <b>(2)</b> build the record that wins <b>DSA into a football secondary school</b> at P6. See <i>the school route</i> below; the deadline is earlier than most parents realise.</div>
    <div style="display:grid;gap:9px">${rowsOf(PRIMARY_ROADMAP,"170px")}</div>
    <div style="font-size:12px;color:var(--muted);margin-top:11px">Best west options for this age: <b>ActiveSG Football Academy</b> (Jurongville, Kent Ridge, Kranji, Dunearn — cheapest, open, and the actual national feeder) and <b>FC Jurong Soccer School</b> (Jurong East Stadium; explicit U-8 / U-10 / U-12 classes by P-level). Filter the rail to <b>U6–U9</b> or <b>U10–U13</b> to shortlist.</div></div>`;
  // GOAL — elite (U14+)
@@ -1180,7 +1201,31 @@ function renderPathway(vp){
    <div style="font-weight:800;font-size:13px;color:${col}">${w}</div>
    <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
  cal+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">${primary?"⚠ The November FAS/UTR trial pattern (one day per birth year, Kallang Football Hub) is confirmed for 2023 &amp; 2024; the 2026 dates were not published as of "+META.compiled+". FAS announces around June — <b>confirm directly with FAS</b>. Note the trial is the back door: FAS says it \"mainly serves\" children <i>not</i> already playing in SYL/JSSL clubs.":"⚠ Exact Oct–Dec 2026 trial dates aren't published yet (it's "+META.compiled+"). Each club's card links its trial page/form — that's where the dates appear. Best move: contact FC Jurong &amp; Tanjong Pagar now to be told when the 2027 COE trial opens."}</div></div>`;
- box.innerHTML=goal+l+e+cal;vp.appendChild(box);
+ // SCHOOL ROUTE (DSA / JSA / SFA) — primary-age only. This is where the school system and the
+ // football system meet, and where the honest verdict belongs.
+ let dsa="";
+ if(primary){
+  let steps="";
+  DSA_ROUTE.forEach(([w,h,d,c])=>{const col=cssv(c);steps+=`<div style="display:grid;grid-template-columns:165px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
+    <div style="font-weight:800;font-size:12.5px;color:${col}">${w}</div>
+    <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
+  let schools="";
+  DSA_SCHOOLS.forEach(x=>{schools+=`<div style="border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--surface)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+      <div><div style="font-weight:800;font-size:14.5px">${x.s}</div><div style="font-size:11.5px;color:var(--muted);margin-top:1px">${x.r}</div></div>
+      <span class="chip ${x.gt}">${x.g}</span></div>
+    <div style="font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:8px">${x.d}</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px">Source: ${srcLink(x.src)}</div></div>`;});
+  dsa=`<div>${sec("The school route — DSA, JSA and the football schools")}
+   <div style="border:1px solid var(--warn);border-radius:12px;padding:13px 14px;background:color-mix(in srgb,var(--warn) 8%,var(--surface));margin-bottom:13px;font-size:12.5px;color:var(--ink-2);line-height:1.55">
+     <b>The honest verdict: DSA gets you a better school. Club football gets you the pathway.</b> It's tempting to treat Direct School Admission as the prize primary football is playing for — but it's a <b>school-placement lever, not a talent gate</b>. Two reasons. <b>(1)</b> At a School Football Academy school, the football CCA <i>is</i> the SFA — you trial into it at Sec 1 orientation whether you arrived by DSA <b>or by ordinary PSLE posting</b>. The posted kid and the DSA kid end up in the same squad. <b>(2)</b> Sports School, the apex, gates its football intake on <b>already being in FAS's NDC (U13+)</b> — you cannot trial in from nowhere. The elite arrow runs <b>club → NDC → school</b>, not school → NDC.
+     <div style="margin-top:8px">So: <b>do both if you can.</b> If you must choose one, the club/SYL route is the one that touches the national pathway — a DSA kid who never plays club football is <i>less</i> likely to be scouted than a club kid at an ordinary school, because scouting happens in the leagues.</div></div>
+   <div style="display:grid;gap:9px">${steps}</div>
+   <div style="font-size:12px;color:var(--muted);margin:13px 0 9px"><b>The two west football schools — note how far apart their gates are:</b></div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">${schools}</div>
+   <div style="font-size:12px;color:var(--muted);margin-top:10px">⚠ <b>The 2026 DSA window closed on 2 June 2026</b> (it's ${META.compiled}) — a current P6 has missed this cycle; a current P5 applies around <b>May 2027</b>. Football DSA is offered at ~39 secondary schools; always confirm on <a href="https://www.moe.gov.sg/schoolfinder" target="_blank" rel="noopener">MOE SchoolFinder</a>, which is the authoritative list. No official master list of SFA schools is published — confirm SFA status with the school directly.</div></div>`;
+ }
+ box.innerHTML=goal+l+dsa+e+cal;vp.appendChild(box);
 }
 
 /* ===================== VIEW: TABLE ===================== */
