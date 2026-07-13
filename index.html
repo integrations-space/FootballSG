@@ -606,7 +606,13 @@ const CLUBS=[
   src:["f17academy.com/about-us","f17academy.com/timetable"]}
 ];
 // verify = the short line shown on EVERY view + each club card; note = the long form for table/charts.
+// policy = our public promise to the clubs. It draws one line deliberately: a fee a club already
+// publishes is not confidential and we won't hide it (we'd only be making the comparison worse for
+// parents while the number sits one click away on the club's own site) — but any figure WE produced,
+// an estimate or a parent-reported number, comes down on request, no questions asked. See feeHold.
 const META={compiled:"2026-07",
+ contact:"hello@footballsg.cc",
+ policy:"<b>For clubs — corrections &amp; withholding.</b> If a figure here is wrong, tell us and we'll fix it. If we've published a fee <b>you don't publish yourself</b> — our estimate, or one a parent reported to us — and you'd rather it weren't here, say so and we'll take it down, no questions asked. We'd much rather publish <b>your</b> real figure than our guess, so that offer stands too. What we won't do is hide a fee you already publish on your own site: it isn't confidential, and hiding it only makes the comparison worse for parents. We're not affiliated with any club and take no money from them.",
  verify:"All information here is for reference only. Every club carries its source links — open a club and check the \"Sources — audit us\" field to see exactly where each figure came from, including where a fee was parent-reported rather than published. Fees, schedules and trial dates change without notice: always confirm the latest directly with the club or association before enrolling or paying.",
  note:"Figures are indicative — confirm current fees, training days & times with each club before enrolling. Age bands U6–U17 are drawn from each club's stated age range; grassroots (younger) fees can differ by programme — confirm the exact birth-year group. COE = Centre of Excellence."};
 
@@ -707,16 +713,22 @@ const fitScore=c=>(c.we?1:0)+(!c.wdDay?1:0)+(kmOf(c)<=12?1:0);
    it never published. An unsourced figure must LOOK unsourced. */
 const SRC_KIND={
  club:     ["Published by the club","g"],
+ withheld: ["Withheld at the club's request","w"],
  assoc:    ["Published by FAS / the association","g"],
  community:["Parent-reported — not published by the club","w"],
  partial:  ["Partly published — pieced together from the source below","w"],
  estimate: ["Our estimate — the club does not publish a fee","b"]
 };
 function feeProvenance(c){
+ if(held(c))return {kind:"withheld",label:(c.feeHold.why||"")+" Ask the club directly — they'll give you the current figure.",url:(c.src&&c.src[0])||null};
  if(c.feeSrc)return c.feeSrc;
  const k=c.feeConf==="high"?"club":c.feeConf==="med"?"partial":"estimate";
  return {kind:k,url:k==="estimate"?null:(c.src&&c.src[0])||null};
 }
+// The club's own words replace our figure entirely — we don't leave the old number in the DOM.
+const feeTextOf=c=>held(c)
+ ? "<b>Fees withheld at the club's request</b>"+(c.feeHold.since?" (since "+c.feeHold.since+")":"")+". We had no figure published by the club — ours was an estimate or was reported to us by a parent — so when they asked us to take it down, we did. <b>The club is the right source for its own price:</b> contact them below. If they'd prefer we publish their real figure instead, we'll do that gladly."
+ : c.feeText;
 const srcLink=u=>`<a href="https://${String(u).replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">${u}</a>`;
 function provHtml(c){
  const p=feeProvenance(c),k=SRC_KIND[p.kind]||SRC_KIND.estimate;
@@ -726,7 +738,20 @@ function provHtml(c){
 }
 /* ----- fees: a club's cost varies by programme tier & age band ----- */
 // Default: one open tier derived from the legacy scalar. Multi-programme clubs override with feeTiers.
-function tiersOf(c){return c.feeTiers||[{label:"Programme",ages:c.ages,mo:c.feeMo,regFee:c.regFee||null,conf:c.feeConf,open:true,note:""}];}
+/* ----- fee withhold: a club can ask us to take its price down -----
+   The rule we hold ourselves to, and state publicly:
+     · If the club PUBLISHES the fee on its own site, we keep it and cite it. A figure already
+       public is not confidential, and hiding it would only make the comparison worse for parents.
+       We will always fix an inaccuracy.
+     · If WE produced the figure — our estimate, or a parent-reported number the club never
+       published — the club can have it withheld on request, no questions asked.
+   Set feeHold:{on:true, since:"YYYY-MM", why:"..."} and the club stays listed, but every fee
+   figure disappears: fmo() returns null, so the lenses/Sankey/tiles treat it as "not published"
+   through the existing null path. We'd rather show an honest blank than a number a club disputes.
+   Better still, we offer the club the alternative: give us the real figure and we'll publish that. */
+const held=c=>!!(c.feeHold&&c.feeHold.on);
+function tiersOf(c){if(held(c))return [{label:"Fees withheld at the club's request",ages:c.ages,mo:null,regFee:null,conf:"low",open:true,note:""}];
+ return c.feeTiers||[{label:"Programme",ages:c.ages,mo:c.feeMo,regFee:c.regFee||null,conf:c.feeConf,open:true,note:""}];}
 // AGES bands selected by the age filter ("all", a single band, or an "A-B" range key).
 function selectedBands(){const k=state.age;if(k==="all")return AGES.slice();if(k.indexOf("-")>=0){const p=k.split("-");return AGES.slice(AGES.indexOf(p[0]),AGES.indexOf(p[1])+1);}return [k];}
 // Tiers whose age range overlaps the current filter (all tiers when no age filter, or none matches).
@@ -1329,7 +1354,7 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
    <button class="themebtn" onclick="state.sel=null;openDrawer(null)">✕ close</button></div>
   <div class="grid">
    <div class="f"><div class="kk">Travel from ${homeName()}</div><div class="vv">${carOf(c)} min car · ${transitOf(c)} min transit · ${kmOf(c)} km</div></div>
-   <div class="f"><div class="kk">Fees</div><div class="vv">${feeTierHtml(c)}${c.feeText}
+   <div class="f"><div class="kk">Fees</div><div class="vv">${feeTierHtml(c)}${feeTextOf(c)}
      ${provHtml(c)}
      <div style="margin-top:6px;font-size:11.5px;color:var(--muted);line-height:1.45">⚠ Reference only — confirm the current fee, term dates &amp; what's included directly with the club before paying.</div></div></div>
    <div class="f"><div class="kk">Age groups</div><div class="vv">${ageSummary(c.ages)}</div></div>
@@ -1486,7 +1511,9 @@ addEventListener("orientationchange",()=>{clearTimeout(window._rz);window._rz=se
  const set=v=>{rail.classList.toggle("collapsed",v);chev.textContent=v?"▸":"▾";tog.setAttribute("aria-expanded",String(!v));};
  tog.onclick=()=>set(!rail.classList.contains("collapsed"));
  if(innerWidth<=920)set(true);})();
-$("#foot").innerHTML=`Compiled ${META.compiled} · ${CLUBS.length} clubs island-wide (U6–U17) · data verified against club sites, FAS/SYL & local press. ${META.note} <b>Not affiliated with any club.</b>`;
+$("#foot").innerHTML=`Compiled ${META.compiled} · ${CLUBS.length} clubs island-wide (U6–U17) · every figure carries its source — open a club and read <b>“Sources — audit us”</b>. ${META.note}
+ <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--line)">${META.policy} Reach us at <a href="mailto:${META.contact}">${META.contact}</a>.</div>
+ <div style="margin-top:7px">We collect <b>no personal data</b>: no accounts, no cookies, no tracking. Visitor stats are cookieless and aggregate. Any enquiry email you draft here is built <b>in your own browser</b> and sent from your own mail app — we never see it. <b>Not affiliated with any club.</b></div>`;
 // deep-link: #view=sankey&lens=fees
 (function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens"),m=h.get("mode");
  if(v&&HINTS[v]){state.view=v;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
