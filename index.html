@@ -693,7 +693,7 @@ const HINTS={
  charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
  table:"Every field, sortable. Click a row for the full scouting card with sources.",
  register:"Where and how to sign up — location, training schedule, weekend fit, and tappable register / call / email for every club. Sorted best-fit & nearest first.",
- pathway:"The goal: reach the Singapore Youth League. Your U15→U17 roadmap, the open→elite ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season)."
+ pathway:"The goal: reach the SYL's elite tier — the Centre-of-Excellence League, which runs at U15 and U17. The U15→U17 roadmap, the open→elite ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season). Switch the age band to U6–U9 or U10–U13 for the primary-school pathway."
 };
 
 /* ----- fit + helpers ----- */
@@ -1078,7 +1078,37 @@ function renderRegister(vp,clubs){
  updateEnq(); // wrap now in DOM — populate the live preview & send link
 }
 
-/* ===================== VIEW: PATHWAY ===================== */
+/* ===================== VIEW: PATHWAY =====================
+   Two different ladders, NOT one ladder at two heights. The pathway view switches on the
+   age band already chosen in the rail (state.age).
+
+   Fact we had wrong until Jul 2026: the SYL is NOT a U15+ league. It runs U8, U10, U12, U13,
+   U15 and U17 (fas.org.sg/youth · syl.sg). It is the *Centre-of-Excellence League* that exists
+   only at U15/U17 — a different competition. So primary-age kids DO have an FAS-sanctioned
+   league, and the primary-age ladder is a real, documented thing. */
+const PRIMARY_ROADMAP=[
+ ["Now — enrol (no trial)","Get into a league. That's the whole game.","FAS says it plainly: kids playing in the SYL or JSSL leagues are \"watched and potentially identified on a <b>weekly basis</b>\" by national scouts. A child doing private training but <b>no league football is invisible</b> to the system. Cheapest route in is <b>ActiveSG Football Academy</b> — open enrolment, first-come-first-served, <b>no trial</b>, and it fields SYL teams.","--c2"],
+ ["Ages 8–12 · climb inside AFA","Grassroots → Grassroots+ → DC+","ActiveSG has its own internal ladder: <b>Grassroots</b> (open, Sat &amp; Sun at your local centre) → <b>Grassroots+</b> (the best from each centre) → <b>DC+</b> (the best from every centre, Thursdays at St Wilfred Field, at U8/U10/U12). It was built specifically to bridge the gap up to the national squads.","--c3"],
+ ["Ages 8–12 · the national squad","JNDC — merit-based, invite-only","The <b>Junior Development Centre</b> (U8–U12; UTR's site calls it \"NDC U8–12\", FAS calls it JNDC — same thing, three names). You <b>cannot apply</b>: players are scouted from the SYL and the National School Games, then invited. The one back door is the FAS open trial each November.","--c8"],
+ ["Age 13 → the hard gate","SPL club academies begin at U13","This is the real cliff. <b>Tanjong Pagar, Balestier and Geylang do not run U8–U12 academies at all</b> — their SYL U8/U10/U12 teams are ActiveSG squads paired to the club badge. Chasing an \"SPL club academy\" before U13 is chasing something that does not exist.","--c5"]
+];
+const PRIMARY_LADDER=[
+ ["1","Play in a league — SYL or JSSL","<b>SYL</b> (FAS-run) has U8, U10 and U12 divisions — ~6,000 kids averaging <b>~30 competitive matches a year</b>. <b>JSSL</b> is the volume engine: U6–U17, 420 teams, 60 divisions, two seasons a year (Jan–May, Sep–Dec), with divisions from elite down to recreational so a child plays at their level. Many kids do both. To play SYL the <i>club</i> must be FAS-accredited — the gate is the club, not the kid.","--c2"],
+ ["2","Add school football — but only from P4","National School Games football is <b>Junior Division (born 2015–17, ~P4–P5)</b> and <b>Senior (born 2013–15, ~P6)</b>. <b>There is no NSG football below ~P4</b> — a P1–P3 child has no school competition at all. And football is expressly excluded from NSG's age-dispensation rule, so a strong P5 <b>cannot</b> play up into Senior. It's a genuine scouting platform, but it's secondary to club football, and only if the school even has a football CCA.","--c3"],
+ ["3","Get scouted — or take the November trial","Scouting is continuous: FAS coaches watch club, academy and school games weekly. The <b>FAS/UTR national ID trials</b> run in the <b>November school holidays</b> at Kallang Football Hub, one day per birth year (U7–U11), ~60 players per slot, <b>online registration only</b>. FAS is candid that the trial \"mainly serves\" kids <i>not</i> already in SYL/JSSL clubs — it's a safety net, not the main door.","--c8"],
+ ["4","U13 → SPL Centre of Excellence → NDC","At U13 the club academies open up and the ladder rejoins the elite route: SPL COE → NDC (U13–U16) → SYL/COE U15 &amp; U17. From here, see the U14+ pathway.","--c5"]
+];
+const PRIMARY_CALENDAR=[
+ ["Jan–May","JSSL League Season 1","The bigger of the two JSSL seasons. Age bands go by birth year (\"B7\" = born 2019).","--c2"],
+ ["2 Jan / 28 Feb","NSG entry deadlines","Schools enter the <b>Senior</b> division by 2 Jan and the <b>Junior</b> division by 28 Feb. This is the school's deadline, not yours — but if the school misses it, there's no team.","--c3"],
+ ["Feb onwards","SYL season kicks off","U8 / U10 / U12 divisions run alongside the older bands.","--c2"],
+ ["2–5 Apr 2026","JSSL 7s","Asia's big youth tournament — 400+ teams, 17 countries, U6–U16. Easter weekend.","--c3"],
+ ["~June","FAS announces the November trials","Watch for it. Registration is online-only and closes roughly two weeks before.","--c8"],
+ ["~July","SYL Cup","Knockout cup for U8–U12 SYL teams.","--c2"],
+ ["29/30 Aug 2026","JSSL League Season 2 kicks off","Second bite if you missed Season 1.","--c3"],
+ ["⭐ November","FAS/UTR national ID trials (U7–U11)","One day per birth year, Kallang Football Hub. Feeds the JNDC intake for the <i>following</i> January. <b>Miss it and you wait a full year.</b> (Pattern confirmed for 2023 &amp; 2024 — confirm this year's dates with FAS.)","--c5"],
+ ["1 Dec","SYL entry deadline — for CLUBS","Your club must have entered. Worth asking a club whether it's in the SYL before you sign up.","--c8"]
+];
 const SYL_ROADMAP=[
  ["2026 · now — U15 band","Enrol & trial","A 2012-born is already in the U15 band. Trial straight into a club Centre-of-Excellence U15 squad — FC Jurong, Tanjong Pagar, Lion City Sailors or Balestier. Not ready yet? Build volume at ActiveSG + school football (NSG C Division) + a competitive academy (JSSL), then re-trial at the Oct–Nov window.","--c2"],
  ["2027 · age 15 — U15","Feature in SYL U15","Play the FAS Centre-of-Excellence U15 League. Earn regular game time, get a FAS player profile, and stay on the scouts' radar.","--c3"],
@@ -1105,22 +1135,33 @@ const CALENDAR=[
 function renderPathway(vp){
  const box=document.createElement("div");box.style.cssText="padding:16px;display:grid;gap:24px";
  const sec=t=>`<div style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:12px">${t}</div>`;
- // GOAL: Singapore Youth League roadmap
- let goalSteps="";
- SYL_ROADMAP.forEach(([w,h,d,c])=>{const col=cssv(c);goalSteps+=`<div style="display:grid;grid-template-columns:150px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
-   <div style="font-weight:800;font-size:12.5px;color:${col}">${w}</div>
-   <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
- const goal=`<div style="border:1px solid var(--accent);border-radius:12px;padding:14px 15px;background:color-mix(in srgb,var(--accent) 7%,var(--surface))">
+ // Primary-age bands get a different ladder entirely. "Any" shows the primary one first, since
+ // the elite roadmap below it is written for U14+.
+ const primary=state.age==="U6-U9"||state.age==="U10-U13";
+ const rowsOf=(arr,w)=>arr.map(([a,h,d,c])=>{const col=cssv(c);return `<div style="display:grid;grid-template-columns:${w} 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
+   <div style="font-weight:800;font-size:12.5px;color:${col}">${a}</div>
+   <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;}).join("");
+ // GOAL — primary-age (U6–U12)
+ const goalPrimary=`<div style="border:1px solid var(--accent);border-radius:12px;padding:14px 15px;background:color-mix(in srgb,var(--accent) 7%,var(--surface))">
+   <div style="font-weight:800;font-size:16px">Primary-school pathway (U6–U12) — the goal is to be <i>seen</i></div>
+   <div style="font-size:12.5px;color:var(--ink-2);margin:4px 0 12px;line-height:1.5">
+     There is <b>no elite club academy to trial for at this age</b> — SPL club academies start at <b>U13</b>. But there <i>is</i> an FAS league: the <b>SYL runs U8, U10 and U12</b> divisions (it's the <i>Centre-of-Excellence</i> League that's U15/U17-only — a different competition). So at primary age the job isn't to win a selection. It's to <b>play enough competitive football, in a league, to be scouted</b> — because that is literally how the national programme finds players.</div>
+   <div style="display:grid;gap:9px">${rowsOf(PRIMARY_ROADMAP,"170px")}</div>
+   <div style="font-size:12px;color:var(--muted);margin-top:11px">Best west options for this age: <b>ActiveSG Football Academy</b> (Jurongville, Kent Ridge, Kranji, Dunearn — cheapest, open, and the actual national feeder) and <b>FC Jurong Soccer School</b> (Jurong East Stadium; explicit U-8 / U-10 / U-12 classes by P-level). Filter the rail to <b>U6–U9</b> or <b>U10–U13</b> to shortlist.</div></div>`;
+ // GOAL — elite (U14+)
+ const goalElite=`<div style="border:1px solid var(--accent);border-radius:12px;padding:14px 15px;background:color-mix(in srgb,var(--accent) 7%,var(--surface))">
    <div style="font-weight:800;font-size:16px">Goal — reach the Singapore Youth League (SYL)</div>
-   <div style="font-size:12.5px;color:var(--ink-2);margin:4px 0 12px;line-height:1.5">SYL is the elite club league, run at <b>U15 and U17</b> bands (there is no standalone U14 or U16). A <b>2012-born is already U15</b>, so the ladder is: <b>enrol/trial now → feature in U15 → step up to U17</b>. Confirm his birth <b>month</b> — bands go by birth year.</div>
-   <div style="display:grid;gap:9px">${goalSteps}</div>
-   <div style="font-size:12px;color:var(--muted);margin-top:11px">SYL clubs to target near Tengah: <b>Albirex → FC Jurong</b> &amp; <b>Tanjong Pagar</b> (Jurong East, ~13 min), plus <b>Lion City Sailors</b> and <b>Balestier</b>. The fastest route in is a <b>COE U15 trial now</b> — ActiveSG &amp; school football are the feeder if he needs more development first.</div></div>`;
- // LADDER
- let l=`<div>${sec("The ladder — open → elite")}<div style="display:grid;gap:10px">`;
- LADDER.forEach(([n,h,d,c])=>{const col=cssv(c);l+=`<div style="display:grid;grid-template-columns:40px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--surface)">
+   <div style="font-size:12.5px;color:var(--ink-2);margin:4px 0 12px;line-height:1.5">The <b>SYL runs U8, U10, U12, U13, U15 and U17</b>. What exists only at <b>U15 and U17</b> is the <b>Centre-of-Excellence (COE) League</b> — the elite tier, and the level FAS scouts watch most closely. Bands go by <b>birth year</b>, so a 2012-born is already U15: the ladder is <b>enrol/trial now → feature in U15 → step up to U17</b>.</div>
+   <div style="display:grid;gap:9px">${rowsOf(SYL_ROADMAP,"150px")}</div>
+   <div style="font-size:12px;color:var(--muted);margin-top:11px">COE clubs to target near Tengah: <b>FC Jurong</b> (formerly Albirex) &amp; <b>Tanjong Pagar</b> (Jurong East, ~13 min), plus <b>Lion City Sailors</b> and <b>Balestier</b>. The fastest route in is a <b>COE U15 trial</b> — ActiveSG &amp; school football are the feeder if he needs more development first.</div></div>`;
+ const goal=primary?goalPrimary:(state.age==="all"?goalPrimary+goalElite:goalElite);
+ // LADDER — primary-age bands get their own rungs
+ const ladderRows=primary?PRIMARY_LADDER:LADDER;
+ let l=`<div>${sec(primary?"The ladder — primary age (U6–U12)":"The ladder — open → elite")}<div style="display:grid;gap:10px">`;
+ ladderRows.forEach(([n,h,d,c])=>{const col=cssv(c);l+=`<div style="display:grid;grid-template-columns:40px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--surface)">
    <div style="width:34px;height:34px;border-radius:9px;background:${col};color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center">${n}</div>
    <div><div style="font-weight:800;font-size:14px;margin-bottom:2px">${h}</div><div style="font-size:13px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
- l+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">Filter <b>Pathway = Open</b> in the rail to shortlist step-1 academies; open any club's card for its <b>Selection</b> field — "open trials" = you can just sign up.</div></div>`;
+ l+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">${primary?"Filter the age band to <b>U6–U9</b> or <b>U10–U13</b> in the rail to shortlist clubs that actually take this age. Cheapest real feeder is <b>ActiveSG</b> — open enrolment, no trial.":"Filter <b>Pathway = Open</b> in the rail to shortlist step-1 academies; open any club's card for its <b>Selection</b> field — \"open trials\" = you can just sign up."}</div></div>`;
  // EXAMPLES
  let e=`<div>${sec("Real Singapore routes (open → elite, sourced)")}<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">`;
  EXAMPLES.forEach(x=>{e+=`<div style="border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--surface)">
@@ -1132,12 +1173,13 @@ function renderPathway(vp){
    <div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${x.note}</div>
    <div style="font-size:11px;color:var(--muted);margin-top:8px">Source: <a href="https://${x.src}" target="_blank" rel="noopener">${x.src.split("/")[0]}</a></div></div>`;});
  e+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">Honest caveat: these are top-of-cohort outcomes (Ben Davis also had a family link to JSSL) — but the pathway itself is officially built by the FAS and demonstrably used.</div></div>`;
- // CALENDAR
- let cal=`<div>${sec("Enrolment calendar — the Oct–Dec 2026 trial window")}<div style="display:grid;gap:9px">`;
- CALENDAR.forEach(([w,h,d,c])=>{const col=cssv(c);cal+=`<div style="display:grid;grid-template-columns:130px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
+ // CALENDAR — the primary-age year runs on completely different windows
+ const calRows=primary?PRIMARY_CALENDAR:CALENDAR;
+ let cal=`<div>${sec(primary?"The primary-age year — when things actually open":"Enrolment calendar — the Oct–Dec 2026 trial window")}<div style="display:grid;gap:9px">`;
+ calRows.forEach(([w,h,d,c])=>{const col=cssv(c);cal+=`<div style="display:grid;grid-template-columns:130px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
    <div style="font-weight:800;font-size:13px;color:${col}">${w}</div>
    <div><div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${h}</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.5">${d}</div></div></div>`;});
- cal+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">⚠ Exact Oct–Dec 2026 trial dates aren't published yet (it's ${META.compiled}). Each club's card links its trial page/form — that's where the dates appear. Best move: contact FC Jurong & Tanjong Pagar now to be told when the 2027 COE trial opens.</div></div>`;
+ cal+=`</div><div style="font-size:12px;color:var(--muted);margin-top:9px">${primary?"⚠ The November FAS/UTR trial pattern (one day per birth year, Kallang Football Hub) is confirmed for 2023 &amp; 2024; the 2026 dates were not published as of "+META.compiled+". FAS announces around June — <b>confirm directly with FAS</b>. Note the trial is the back door: FAS says it \"mainly serves\" children <i>not</i> already playing in SYL/JSSL clubs.":"⚠ Exact Oct–Dec 2026 trial dates aren't published yet (it's "+META.compiled+"). Each club's card links its trial page/form — that's where the dates appear. Best move: contact FC Jurong &amp; Tanjong Pagar now to be told when the 2027 COE trial opens."}</div></div>`;
  box.innerHTML=goal+l+e+cal;vp.appendChild(box);
 }
 
@@ -1329,8 +1371,13 @@ function render(){
  const clubs=filtered();
  renderTiles(clubs);
  $("#pill-count").textContent=clubs.length+" clubs";
- $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",register:"Register & contact",pathway:"Open → Elite pathway"}[state.view];
- $("#v-hint").textContent=HINTS[state.view];
+ // The pathway view is age-aware: primary-age families get a different ladder, so retitle it.
+ const primaryAge=state.age==="U6-U9"||state.age==="U10-U13";
+ $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",register:"Register & contact",
+   pathway:primaryAge?"Primary-school pathway (U6–U12)":"Open → Elite pathway"}[state.view];
+ $("#v-hint").textContent=state.view==="pathway"&&primaryAge
+   ?"No club academy takes this age — SPL academies start at U13. But the SYL does run U8/U10/U12, so the job is to get into a league and be scouted. The ladder, the November trial, and the year's real deadlines."
+   :HINTS[state.view];
  $("#v-count").textContent=state.view==="pathway"?"How to progress":state.view==="register"?"How to sign up":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
  const showLegend=!["table","charts","pathway","register"].includes(state.view);
  $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
