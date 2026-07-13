@@ -469,7 +469,9 @@ const CLUBS=[
   email:"info@borussiasg.com",phone:"+65 9152 8267",web:"borussia-academy-sg.com",reg:"https://borussia-academy-sg.com/free-trials",
   src:["borussia-academy-sg.com"]},
  {id:"bar",name:"Barça Academy SG",cat:"open",region:"west",loc:"Perse School (Chestnut Dr) +3",km:10,car:16,transit:42,
-  ages:R("U6","U17"),feeMo:167,feeConf:"high",feeText:"From S$500/term (~S$167/mo) for 1×/wk (12 trainings + 6 matches, 90-min) — kit + 12-mo insurance + league matches included; free tryout. 2×/wk tier costs more; GST/reg not published.",
+  ages:R("U6","U17"),feeMo:293,feeConf:"high",feeText:"12-week term (~3 mo), two options. <b>1×/wk</b>: S$880–895/term — 12 trainings, 18 sessions incl. alternate-Sunday matches (~S$293–298/mo). <b>2×/wk</b>: S$1,295/term — 24 trainings, 30 sessions (~S$432/mo). One-time registration S$125. Kit + 12-mo insurance + league matches included; free tryout.",
+  feeTiers:[{label:"1×/week (12-week term)",ages:R("U6","U17"),mo:293,regFee:125,conf:"high",open:true,note:"S$880–895/term · 12 trainings, 18 sessions incl. alternate-Sunday matches"},
+            {label:"2×/week (12-week term)",ages:R("U6","U17"),mo:432,regFee:125,conf:"high",open:true,note:"S$1,295/term · 24 trainings, 30 sessions"}],
   local:["Barça SG Super League (Sun)"],intl:true,intlText:"Barça Academy World Cup pathway",
   coach:"Barça-appointed head coach",tier:"Elite",cred:"La Masia methodology (FCB official)",
   wd:true,we:true,wdDay:false,sched:"Training Mon–Sat; Sundays = match days",
@@ -607,7 +609,10 @@ const CLUBS=[
   phone:"+65 9729 9217",web:"f17academy.com",reg:"https://f17academy.com/timetable",
   src:["f17academy.com/about-us","f17academy.com/timetable"]}
 ];
-const META={compiled:"2026-07",note:"Figures are indicative — confirm current fees, training days & times with each club before enrolling. Age bands U6–U17 are drawn from each club's stated age range; grassroots (younger) fees can differ by programme — confirm the exact birth-year group. COE = Centre of Excellence."};
+// verify = the short line shown on EVERY view + each club card; note = the long form for table/charts.
+const META={compiled:"2026-07",
+ verify:"Fees, schedules and trial dates change without notice. Always confirm the latest directly with the club or association before enrolling or paying — figures here are indicative and compiled from public sources.",
+ note:"Figures are indicative — confirm current fees, training days & times with each club before enrolling. Age bands U6–U17 are drawn from each club's stated age range; grassroots (younger) fees can differ by programme — confirm the exact birth-year group. COE = Centre of Excellence."};
 
 /* ===================== ENGINE ===================== */
 const $=s=>document.querySelector(s);
@@ -1048,6 +1053,7 @@ function renderRegister(vp,clubs){
    ${fld("Location",c.loc+" · "+REGION_LABEL[c.region])}
    ${fld("Training",c.sched)}
    ${fld("How to get in",c.trial||c.selText)}
+   <div style="margin-top:6px;font-size:11px;color:var(--muted);line-height:1.4">⚠ Confirm fees, days &amp; trial dates with the club — details change.</div>
    <div class="actions" style="padding:10px 0 0;margin:0">${acts||'<span style="font-size:12px;color:var(--muted)">Contact via website / socials</span>'}</div>`;
   grid.appendChild(card);
  });
@@ -1192,7 +1198,8 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
    <button class="themebtn" onclick="state.sel=null;openDrawer(null)">✕ close</button></div>
   <div class="grid">
    <div class="f"><div class="kk">Travel from ${homeName()}</div><div class="vv">${carOf(c)} min car · ${transitOf(c)} min transit · ${kmOf(c)} km</div></div>
-   <div class="f"><div class="kk">Fees</div><div class="vv">${feeTierHtml(c)}${c.feeText}</div></div>
+   <div class="f"><div class="kk">Fees</div><div class="vv">${feeTierHtml(c)}${c.feeText}
+     <div style="margin-top:6px;font-size:11.5px;color:var(--muted);line-height:1.45">⚠ Indicative only — confirm the current fee, term dates &amp; what's included directly with the club before paying.</div></div></div>
    <div class="f"><div class="kk">Age groups</div><div class="vv">${ageSummary(c.ages)}</div></div>
    <div class="f"><div class="kk">Training</div><div class="vv">${c.sched}</div></div>
    <div class="f"><div class="kk">Local competition</div><div class="vv">${c.local.join(" · ")}</div></div>
@@ -1309,8 +1316,10 @@ function render(){
  $("#v-count").textContent=state.view==="pathway"?"How to progress":state.view==="register"?"How to sign up":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
  const showLegend=!["table","charts","pathway","register"].includes(state.view);
  $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
- const note=$("#note");
- if(state.view==="table"||state.view==="charts"){note.classList.remove("hide");note.innerHTML="<b>Read me:</b> "+META.note;}else note.classList.add("hide");
+ // The verify line shows on every view; table/charts additionally get the long-form note.
+ const note=$("#note");note.classList.remove("hide");
+ note.innerHTML="<b>⚠ Always confirm with the club:</b> "+META.verify+
+   ((state.view==="table"||state.view==="charts")?" <b>Read me:</b> "+META.note:"");
  cancelAnim();const vp=$("#viewport");vp.innerHTML="";
  if(!clubs.length){vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">No clubs match these filters. Loosen a constraint on the left.</div>';return;}
  ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable,register:renderRegister,pathway:renderPathway}[state.view])(vp,clubs);
