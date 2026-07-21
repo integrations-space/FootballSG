@@ -15,17 +15,23 @@
 <meta property="og:title" content="FootballSG — find your kid's football club in Singapore">
 <meta property="og:description" content="Compare youth football clubs & academies across Singapore (U6–U17): fees by age band, weekend sessions, travel from your home town, and the open→elite pathway.">
 <meta property="og:url" content="https://footballsg.cc/">
-<meta property="og:image" content="https://footballsg.cc/og.svg">
+<meta property="og:image" content="https://footballsg.cc/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="FootballSG — youth football clubs in Singapore (U6–U17)">
 <meta name="twitter:description" content="Find & compare clubs and academies, scored from your home town. Fees, schedule, travel, pathway.">
-<meta name="twitter:image" content="https://footballsg.cc/og.svg">
+<meta name="twitter:image" content="https://footballsg.cc/og.png">
 <!-- PWA / icons -->
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<!-- iOS does not accept an SVG apple-touch-icon; without a PNG it invents one from a screenshot. -->
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="FootballSG">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 /* ============ TOKENS ============ */
 :root{
@@ -239,6 +245,9 @@ tbody tr:hover td{background:var(--surface-2)}
       <button class="themebtn" id="locBtn" type="button" title="Use my location to pick the nearest town" style="padding:6px 10px">⌖ Locate</button>
       <span class="pill" id="pill-count">— clubs</span>
       <button class="themebtn" id="themebtn">◐ Theme</button>
+      <!-- Revealed only when the browser fires beforeinstallprompt, or on iOS Safari in a tab. -->
+      <button class="themebtn" id="installBtn" type="button" hidden
+              title="Install FootballSG as an app on this device">⤓ Install app</button>
     </div>
   </header>
 
@@ -1534,4 +1543,27 @@ function locateMe(){const btn=$("#locBtn");if(!navigator.geolocation){toast("Loc
 buildLens();buildHome();{const _lb=$("#locBtn");if(_lb)_lb.onclick=locateMe;}render();if(state.sel)openDrawer(state.sel);
 // PWA: register the service worker (installable + offline). No-op if unsupported or on file://.
 if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}
+/* ===================== INSTALL ===================== */
+// Chrome/Edge/Android fire beforeinstallprompt and let us defer it behind our own button.
+// iOS Safari fires nothing and has no programmatic install — there we can only tell the user
+// where the Share-sheet item is. Both paths stay hidden once the app is already installed.
+(function(){
+ const btn=$("#installBtn");if(!btn)return;
+ const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+ if(standalone())return; // already installed — never nag
+ const iOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||
+           (navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1); // iPadOS reports as Mac
+ let deferred=null;
+ addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;btn.hidden=false;});
+ addEventListener("appinstalled",()=>{deferred=null;btn.hidden=true;toast("Installed — FootballSG is on your home screen.");});
+ if(iOS&&/safari/i.test(navigator.userAgent)&&!/crios|fxios|edgios/i.test(navigator.userAgent))btn.hidden=false;
+ btn.onclick=async()=>{
+  if(deferred){const e=deferred;deferred=null;e.prompt();
+   const {outcome}=await e.userChoice.catch(()=>({outcome:"dismissed"}));
+   if(outcome==="accepted")btn.hidden=true;else toast("No problem — the ⤓ Install button stays here if you change your mind.");
+   return;}
+  if(iOS){toast("On iPhone/iPad: tap Share ⬆︎, then “Add to Home Screen”.");return;}
+  toast("Your browser installs from its own menu — look for “Install” or “Add to Home screen”.");
+ };
+})();
 </script>

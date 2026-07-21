@@ -1,16 +1,58 @@
 {
+  "id": "/",
   "name": "FootballSG — youth football clubs in Singapore",
   "short_name": "FootballSG",
   "description": "Find & compare youth football clubs and academies across Singapore, U6–U17 — fees, weekend sessions, travel and pathway, scored from your home town.",
-  "start_url": "/",
+  "lang": "en-SG",
+  "dir": "ltr",
+  "start_url": "/?src=pwa",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "any",
   "background_color": "#0f1512",
   "theme_color": "#1f8a4c",
   "categories": ["sports", "education", "lifestyle"],
   "icons": [
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "412x915",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Clubs scored from your home town — fees, travel and weekend fit at a glance"
+    },
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Knowledge graph of every club, recoloured by the focus lens you choose"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Compare fees",
+      "short_name": "Fees",
+      "description": "Every club's monthly cost, by age band",
+      "url": "/#view=table&lens=fees"
+    },
+    {
+      "name": "Register & contact",
+      "short_name": "Register",
+      "description": "Sign-up links, phone and email for every club",
+      "url": "/#view=register"
+    },
+    {
+      "name": "Pathway",
+      "short_name": "Pathway",
+      "description": "The open → elite ladder and the trial calendar",
+      "url": "/#view=pathway"
+    }
   ]
 }
