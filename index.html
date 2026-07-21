@@ -497,18 +497,12 @@ const CLUBS=[
   trial:"Free tryout at any venue — book online.",
   email:"hello@barcaacademy.sg",phone:"+65 8079 6531",web:"barcaacademy.sg",reg:"https://barcaacademy.sg/registration-free-tryouts/",
   src:["barcaacademy.sg/barca-academy-programs/","barcaacademy.sg/our-locations/","barcaacademy.sg/faq/"]},
- {id:"che",name:"Chelsea FC Soccer School",cat:"open",region:"central",loc:"Rainforest Hub @ Turf City",km:11,car:18,transit:52,
-  ages:R("U6","U17"),feeMo:160,feeConf:"low",feeText:"~S$320–450/term (est)",
-  local:["Development sessions & friendlies"],intl:true,intlText:"Chelsea global curriculum; coach/player visits & camps",
-  coach:"FA/UEFA-certified staff",tier:"Licensed",cred:"Chelsea FC Foundation (since 2013)",
-  wd:true,we:true,wdDay:false,sched:"~1–2×/wk incl. weekend at Turf City",
-  sel:"open",selText:"Open, non-selective soccer school",
-  alumni:"Not documented",conf:"med",
-  join:"Register/enquire via the Singapore soccer school or by phone/email; term sessions at Turf City. (Official SG site was unreachable at research time — call to confirm.)",
-  req:"Ages 4–17. Grassroots/development using Chelsea's curriculum; no competitive-trial gate published.",
-  trial:"Trial availability not confirmed on official channels — call to confirm.",
-  email:"soccerschools@chelseafc.com",phone:"+65 6440 5503",web:"chelseafc.com/en/soccer-schools",
-  src:["chelseafc.com/en/soccer-schools"]},
+ // Chelsea FC Soccer School removed Jul 2026: it does not operate in Singapore. The Turf City
+ // school's site (chelseafcsssg.com) has not resolved since ~2018, chelseafc.com/cfcidc-sg 404s,
+ // Chelsea's own Singapore page now redirects to a generic foundation homepage with no mention of
+ // Singapore, and the separate Chelsea Foundation/UWCSEA development centre also appears wound down.
+ // The ~S$320-450/term we used to show traced to a content farm that gave Chelsea the same phone
+ // number and website it gave a Borussia Dortmund entry. We only list clubs that actually run here.
  {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"West venues: Jurongville, Kent Ridge, Kranji, Spectra Sec, Jurong Pioneer JC",km:5,car:12,transit:30,
   ages:R("U6","U16"),feeMo:65,feeConf:"low",feeText:"~S$65/mo is <b>our derivation, not an official figure</b> — ActiveSG publishes no fees on its Circle pages. It comes from a S$130-per-term rate (the only official figure traced is a <i>2016</i> SportSG release: \"$130 for the 14-session programme\"); third-party listings say S$130–180/term. Still almost certainly the cheapest option, but treat the number as approximate and confirm at registration.",
   feeSrc:{kind:"estimate",label:"derived from a S$130/term rate; ActiveSG does not publish fees. Nearest official figure is a 2016 SportSG media release — treat as approximate",url:"activesgcircle.gov.sg/academies-clubs/football"},
@@ -660,7 +654,7 @@ const HOME_BASES=[
  {id:"pasirris",name:"Pasir Ris",region:"east",xy:[37,14]},
  {id:"changi",name:"Changi",region:"east",xy:[41,11]}
 ];
-const CLUB_XY={lcs:[27,11],fcj:[12,11],tpu:[12,11],sss:[17,24],tsk:[11,15],ndc:[25,10],tmp:[36,11],bal:[23,16],gey:[34,10],jssl:[19,8],bor:[18,9],bar:[15,17],che:[17,13],asg:[11,15],tcfc:[18,9],hgfc:[27,16],mof:[8,12],euroasia:[23,13],rmf:[30,6],sky:[28,16],f17:[39,9]};
+const CLUB_XY={lcs:[27,11],fcj:[12,11],tpu:[12,11],sss:[17,24],tsk:[11,15],ndc:[25,10],tmp:[36,11],bal:[23,16],gey:[34,10],jssl:[19,8],bor:[18,9],bar:[15,17],asg:[11,15],tcfc:[18,9],hgfc:[27,16],mof:[8,12],euroasia:[23,13],rmf:[30,6],sky:[28,16],f17:[39,9]};
 const HOME_LL={tengah:[1.374,103.715],jurongeast:[1.333,103.742],bukitbatok:[1.349,103.750],choachukang:[1.385,103.744],bukitpanjang:[1.378,103.762],clementi:[1.315,103.765],jurongwest:[1.340,103.705],bukittimah:[1.338,103.776],queenstown:[1.294,103.786],toapayoh:[1.334,103.847],bishan:[1.351,103.848],angmokio:[1.370,103.849],kallang:[1.311,103.865],woodlands:[1.436,103.786],yishun:[1.429,103.835],sembawang:[1.449,103.820],serangoon:[1.353,103.870],hougang:[1.371,103.892],sengkang:[1.391,103.895],punggol:[1.405,103.902],marineparade:[1.302,103.905],bedok:[1.324,103.930],tampines:[1.353,103.945],pasirris:[1.373,103.949],changi:[1.352,103.988]};
 function haversine(la1,lo1,la2,lo2){const R=6371,p=Math.PI/180,dLa=(la2-la1)*p,dLo=(lo2-lo1)*p,a=Math.sin(dLa/2)**2+Math.cos(la1*p)*Math.cos(la2*p)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(a));}
 function homeBase(){return HOME_BASES.find(h=>h.id===state.home)||HOME_BASES[0];}

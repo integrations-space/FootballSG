@@ -13,7 +13,7 @@ weekday sessions**, **travel time**, **monthly fees by age band**, **age-group f
 
 ## What it shows
 
-21 clubs island-wide across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
+20 clubs island-wide across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
 and **open enrolment** (brand & community academies) — with six ways to read the same data:
 
 | View | What it answers |
@@ -62,7 +62,10 @@ League, and local press. Each club carries a **confidence** rating and its **sou
 (U6–U17) are drawn from each club's **stated age range**; fees and exact training days/times are
 **indicative** — confirm directly with each club before enrolling. Notable notes: Albirex Niigata's
 youth setup **rebranded to FC Jurong** from Jan 2026; the "Borussia" academy is
-**Mönchengladbach**, not Dortmund; there is **no standing Man Utd academy** in Singapore.
+**Mönchengladbach**, not Dortmund; there is **no standing Man Utd academy** in Singapore; and the
+**Chelsea FC Soccer School was removed** in Jul 2026 — it no longer operates here (its site has been
+dead since ~2018 and Chelsea's own Singapore pages 404 or redirect away). We only list clubs that
+actually run in Singapore.
 
 ## Deep links
 
