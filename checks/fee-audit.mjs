@@ -182,6 +182,15 @@ for (const c of CLUBS) {
         if (![...candidates].some((v) => v === exp))
           warn(id, `annual fee ${m[0]} implies ~S$${exp}/mo but modelled monthlies are {${[...candidates].join(", ")}}`);
       }
+      /* a one-time registration fee stated in prose must be modelled in regFee —
+         otherwise the "true cost of joining" is understated everywhere the tier renders.
+         Matches "S$120 reg", "one-time S$30</b> registration"; not "S$90 deposit"/"S$25 name jersey". */
+      const regFees = new Set([c.regFee, ...(c.feeTiers || []).map((t) => t.regFee)].filter((v) => typeof v === "number"));
+      for (const m of text.matchAll(/S\$([\d,]+)(?:<\/b>)?\s+reg(?:istration)?\b/gi)) {
+        const v = num(m[1]);
+        if (![...regFees].some((r) => r === v))
+          warn(id, `prose states a one-time ${m[0].replace(/<\/b>/, "")} fee but modelled regFees are {${[...regFees].join(", ") || "none"}}`);
+      }
       /* "~S$183/mo" or "~S$185–210/mo" quoted in prose must contain a modelled monthly.
          A leading "+" marks an add-on on top of the fee (e.g. "+~S$80/mo lunch") — skip those. */
       for (const m of text.matchAll(/(\+\s*~?)?S\$([\d,]+(?:\.\d+)?)(?:[–-]([\d,]+(?:\.\d+)?))?\/mo/gi)) {

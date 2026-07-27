@@ -1,0 +1,19 @@
+# Monthly freshness sentinel. --strict promotes audit warnings to failures, and
+# the audit warns once META.compiled is >6 months old — so this workflow starts
+# failing (and emailing the maintainer) when the fee data is due a re-verification
+# pass, even if nobody has pushed a commit in months.
+name: data-freshness
+on:
+  schedule:
+    - cron: "17 2 3 * *" # 03rd of each month, 02:17 UTC — off the whole-hour rush
+  workflow_dispatch:
+
+jobs:
+  strict-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node checks/fee-audit.mjs --strict

@@ -50,7 +50,10 @@ visits**, unlocks a **★ shortlist** (star clubs from the scouting card or the 
 filter to "★ My shortlist only"), and **prefills the enquiry-email builder** with your details.
 Sign out keeps the profile on the device without applying it; **Delete profile** erases every
 trace. Shared deep links always win over saved preferences, so a link you send a friend looks
-the same for them.
+the same for them. Members also get a **★ column in the Table view**, a live count on the
+shortlist filter, and **Export / Import**: since no server holds your profile, moving devices
+is a JSON file you carry yourself — export here, import there (imports are whitelist-validated,
+and a malformed file is rejected without touching the existing profile).
 
 ### Home base
 
@@ -86,8 +89,13 @@ the invariants we used to re-check by hand: the headline fee must equal the **ch
 openly-enrollable published tier**, term/annual arithmetic must reproduce the stated monthly
 (a 12-session term ≈ 3 months; clubs with odd season lengths carry `termMonths`), every
 high-confidence fee must carry a source, and provenance/withhold records must be well-formed.
-It runs in CI on every push (`.github/workflows/data-checks.yml`) — a fee that doesn't add up
-can't deploy. In Jul 2026 the audit's first run caught four real errors: JSSL's monthly was
+It also cross-checks one-time registration fees stated in prose against the modelled `regFee`,
+so the true cost of joining can't be understated. It runs in CI on every push
+(`.github/workflows/data-checks.yml`) — a fee that doesn't add up can't deploy — and a monthly
+scheduled run (`data-freshness.yml`) executes it with `--strict`, which starts failing once the
+compiled date is more than 6 months old: the repo itself nags for a re-verification pass. The
+app does the same for readers — once the data is >6 months old by the viewer's clock, every
+view carries a banner saying how stale the figures are. In Jul 2026 the audit's first run caught four real errors: JSSL's monthly was
 S$195 against its own S$588/3-month term (= S$196), F17's headline was a S$180 midpoint
 instead of its cheapest venue (S$140), FC Jurong's S$200/mo unlimited package was unmodelled,
 and ActiveSG's ~S$65/mo derivation double-counted the season length (corrected to ~S$30/mo,

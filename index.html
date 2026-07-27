@@ -433,7 +433,7 @@ const CLUBS=[
   web:"unleashtheroar.com.sg/let-them-play/ndc-u13-u16",
   src:["unleashtheroar.com.sg/let-them-play/ndc-u13-u16","unleashtheroar.com.sg/let-them-play/ndc-u8-12"]},
  {id:"tmp",name:"Tampines Rovers",cat:"elite",region:"east",loc:"Our Tampines Hub (+JSSL venues)",km:30,car:45,transit:78,
-  ages:R("U7","U16"),feeMo:196,feeConf:"high",feeText:"JSSL feeder: S$588/12-session term (~1×/wk; early-bird S$510) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST. COE squad itself is selection-based.",
+  ages:R("U7","U16"),feeMo:196,regFee:120,feeConf:"high",feeText:"JSSL feeder: S$588/12-session term (~1×/wk; early-bird S$510) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST. COE squad itself is selection-based.",
   local:["Singapore Youth League","JSSL League"],intl:true,intlText:"Gothia Cup, JSSL 7s, Bangkok 7s (via JSSL)",
   coach:"COE staff (youth head not named)",tier:"Unlisted",cred:"FAS-licensed COE",
   wd:true,we:true,wdDay:false,sched:"Weekday-eve training + weekend matches",
@@ -471,7 +471,7 @@ const CLUBS=[
   email:"info@geylang.football",web:"geylang.football",
   src:["geylang.football"]},
  {id:"jssl",name:"JSSL Singapore",cat:"open",region:"central",loc:"Portsdown / Woodleigh / Tampines",km:14,car:26,transit:50,
-  ages:R("U7","U16"),feeMo:196,feeConf:"high",feeText:"S$588/12-session term (~1×/wk; S$588 ÷ 3 months ≈ S$196/mo) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST · free trial.",
+  ages:R("U7","U16"),feeMo:196,regFee:120,feeConf:"high",feeText:"S$588/12-session term (~1×/wk; S$588 ÷ 3 months ≈ S$196/mo) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST · free trial.",
   local:["JSSL League (Sun)","Singapore Youth League"],intl:true,intlText:"JSSL Singapore 7s (Asia's largest), overseas tours",
   coach:"Paul Parker (ex-England / Man Utd)",tier:"Elite",cred:"Official Arsenal Soccer School partner",
   wd:true,we:true,wdDay:false,sched:"Rec 1–2×/wk; Elite 3×/wk + Sunday league",
@@ -540,7 +540,7 @@ const CLUBS=[
   email:"ActiveSG_Football@sport.gov.sg",web:"activesg.gov.sg/programmes?keywords=Football",reg:"https://activesg.gov.sg/programmes?keywords=Football&activity-ids=mlhxSk7lNvZvXXSQXD7Ea",
   src:["activesgcircle.gov.sg/academies-clubs/football","activesgcircle.gov.sg/academies-clubs/football/academy-centres","fas.org.sg/minor_team/afa"]},
  {id:"tcfc",name:"Turf City FC",cat:"open",region:"central",loc:"SkyPark @ Holland (Ulu Pandan)",km:12,car:22,transit:50,
-  ages:R("U6","U13"),feeMo:238,feeConf:"med",feeText:"From the club's own 2026 deck: <b>S$55</b> per 90-min outdoor training · one-time <b>S$30</b> registration + <b>S$50</b> kit · optional <b>league S$250</b>/season · 10% sibling discount · 3 terms/year. <b>⚠ The deck never says whether S$55 is per-session or per-package</b> — per-session is the coherent reading (and is what our ~S$238/mo at 1×/wk assumes), but the unit is unverified, so the monthly figure could be well off. Ask before committing. Oldest team is U13 — confirm any U14+ group.",
+  ages:R("U6","U13"),feeMo:238,regFee:30,feeConf:"med",feeText:"From the club's own 2026 deck: <b>S$55</b> per 90-min outdoor training · one-time <b>S$30</b> registration + <b>S$50</b> kit · optional <b>league S$250</b>/season · 10% sibling discount · 3 terms/year. <b>⚠ The deck never says whether S$55 is per-session or per-package</b> — per-session is the coherent reading (and is what our ~S$238/mo at 1×/wk assumes), but the unit is unverified, so the monthly figure could be well off. Ask before committing. Oldest team is U13 — confirm any U14+ group.",
   local:["Community youth leagues"],intl:false,intlText:"None documented",
   coach:"Coach Tomas + TCFC team",tier:"Community",cred:"Independent community club (est. 2011)",
   wd:true,we:true,wdDay:false,sched:"Mon 5–6:30pm · Thu 5–6:30pm · Sat 9–10:30am (up to 3×/wk) — same slots for every age band",
@@ -728,11 +728,11 @@ function toggleShortlist(id){
  member.shortlist=member.shortlist||[];
  const i=member.shortlist.indexOf(id);
  if(i>=0)member.shortlist.splice(i,1);else member.shortlist.push(id);
- saveMember();render();if(state.sel)openDrawer(state.sel);
+ saveMember();syncMemberUI();render();if(state.sel)openDrawer(state.sel);
 }
 function starBtn(id,compact){
  const on=inShortlist(id);
- return `<button class="themebtn${on?" star-on":""}" type="button" style="${compact?"padding:4px 9px;":""}white-space:nowrap" title="${on?"Remove from":"Add to"} my shortlist" onclick="toggleShortlist('${id}')">${on?"★":"☆"}${compact?"":on?" Shortlisted":" Shortlist"}</button>`;
+ return `<button class="themebtn${on?" star-on":""}" type="button" style="${compact?"padding:4px 9px;":""}white-space:nowrap" title="${on?"Remove from":"Add to"} my shortlist" onclick="event.stopPropagation();toggleShortlist('${id}')">${on?"★":"☆"}${compact?"":on?" Shortlisted":" Shortlist"}</button>`;
 }
 // Saved prefs → state. Runs before the URL-hash reader, so an explicit deep link still wins.
 function applyMemberPrefs(){
@@ -749,9 +749,18 @@ function applyMemberPrefs(){
 // Age keys arrive from storage, so validate against the same grammar the rail uses.
 function selectedBandsFor(k){if(k.indexOf("-")>=0){const p=k.split("-");if(AGES.indexOf(p[0])<0||AGES.indexOf(p[1])<0)return[];return AGES.slice(AGES.indexOf(p[0]),AGES.indexOf(p[1])+1);}return AGES.includes(k)?[k]:[];}
 function persistMemberPrefs(){if(!signedIn())return;member.prefs={home:state.home,mode:state.mode,age:state.age};saveMember();}
+// Reflect restored/imported prefs into the rail & header controls (state alone doesn't repaint them).
+function syncPrefControls(){
+ const hs=$("#homeSel");if(hs)hs.value=state.home;
+ document.querySelectorAll("#seg-age button").forEach(b=>b.classList.toggle("on",b.dataset.v===state.age));
+ document.querySelectorAll("#seg-mode button").forEach(b=>b.classList.toggle("on",b.dataset.v===state.mode));
+ document.querySelectorAll("#seg-dist button").forEach(x=>{const dv=x.dataset[state.mode];if(dv){x.dataset.v=dv;x.textContent="≤"+dv+" min";}});
+ const dh=$("#dist-h3");if(dh)dh.textContent="Max travel · "+modeLabel();
+}
 function syncMemberUI(){
  const b=$("#memberBtn");if(b)b.textContent=signedIn()?"☺ "+((member.name||"Member").trim().split(/\s+/)[0]):"☺ Sign in";
- const t=$("#t-short");if(t){t.classList.toggle("hide",!signedIn());if(!signedIn()&&state.short){state.short=false;t.classList.remove("on");}}
+ const t=$("#t-short");if(t){t.classList.toggle("hide",!signedIn());if(!signedIn()&&state.short){state.short=false;t.classList.remove("on");}
+  const n=shortlist().length;t.querySelector("span").textContent="★ My shortlist only"+(n?` (${n})`:"");}
 }
 function closeMemberModal(){$("#memberModal").classList.remove("on");}
 function openMemberModal(){
@@ -783,7 +792,15 @@ function openMemberModal(){
     <button class="cbtn primary" type="button" id="mm-save">${has?"Save & sign in":"Create profile — sign in"}</button>
     ${signedIn()?'<button class="cbtn" type="button" id="mm-out">Sign out</button>':""}
     ${has?'<button class="cbtn" type="button" id="mm-del">Delete profile</button>':""}
-  </div>`;
+  </div>
+  <div style="margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.45">
+    Moving devices? Since we hold nothing on any server, transfer is a file you carry yourself:
+    <b>Export</b> downloads this profile as JSON; <b>Import</b> it on the other device.
+    <div class="actions" style="padding:7px 0 0;margin:0">
+      ${has?'<button class="cbtn" type="button" id="mm-export">⇩ Export profile</button>':""}
+      <button class="cbtn" type="button" id="mm-import">⇪ Import profile</button>
+      <input type="file" id="mm-import-file" accept="application/json,.json" hidden>
+    </div></div>`;
  bg.classList.add("on");
  bg.onclick=e=>{if(e.target===bg)closeMemberModal();};
  $("#mm-close").onclick=closeMemberModal;
@@ -806,6 +823,29 @@ function openMemberModal(){
   if(!confirm("Delete your member profile and shortlist from this device? This cannot be undone."))return;
   member=null;saveMember();state.short=false;syncMemberUI();closeMemberModal();render();
   toast("Profile deleted — nothing about you remains on this device or anywhere else.");
+ };
+ const ex=$("#mm-export");if(ex)ex.onclick=()=>{
+  const blob=new Blob([JSON.stringify(member,null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="footballsg-member.json";
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast("Profile exported. Move the file to your other device and use Import there.");
+ };
+ $("#mm-import").onclick=()=>$("#mm-import-file").click();
+ $("#mm-import-file").onchange=e=>{
+  const f=e.target.files&&e.target.files[0];e.target.value="";if(!f)return;
+  f.text().then(t=>{
+   let m;try{m=JSON.parse(t);}catch(_){m=null;}
+   if(!m||m.v!==1){toast("That file isn't a FootballSG member profile.");return;}
+   // Rebuild from whitelisted fields — never trust a file's shape wholesale.
+   member={v:1,created:typeof m.created==="string"?m.created:new Date().toISOString().slice(0,10),
+    name:String(m.name||""),child:m.child==="daughter"?"daughter":"son",
+    born:String(m.born||""),phone:String(m.phone||""),signedIn:true,
+    shortlist:Array.isArray(m.shortlist)?m.shortlist.filter(x=>CLUBS.some(c=>c.id===x)):[],
+    prefs:(m.prefs&&typeof m.prefs==="object")?m.prefs:{}};
+   saveMember();applyMemberPrefs();syncPrefControls();syncMemberUI();
+   openMemberModal();render();
+   toast("Profile imported — signed in as "+(member.name||"Member")+" on this device.");
+  });
  };
 }
 addEventListener("keydown",e=>{if(e.key==="Escape")closeMemberModal();});
@@ -831,6 +871,8 @@ const HINTS={
 
 /* ----- fit + helpers ----- */
 const fitScore=c=>(c.we?1:0)+(!c.wdDay?1:0)+(kmOf(c)<=12?1:0);
+// Whole months between META.compiled and the viewer's clock (0 if unparseable).
+function dataAgeMonths(){const m=/^(\d{4})-(\d{2})$/.exec(META.compiled||"");if(!m)return 0;const d=new Date();return Math.max(0,(d.getFullYear()-+m[1])*12+(d.getMonth()+1-+m[2]));}
 /* ----- provenance: where a figure actually came from, so users can audit it -----
    Every fee carries a stated origin. A club may override with feeSrc; otherwise we infer it
    from feeConf — and we say "our estimate" rather than implying the club published a number
@@ -1408,9 +1450,10 @@ function renderPathway(vp){
 
 /* ===================== VIEW: TABLE ===================== */
 function renderTable(vp,clubs){
- const cols=[["name","Club"],["cat","Path"],["region","Region"],["car",state.mode==="car"?"Car":"Transit"],["km","km"],["feeMo","Fee/mo"],["fit","Fit"],["we","Wknd"],["ages","Ages"],["tier","Coach"],["intl","Intl"],["conf","Conf"]];
+ // Members get a leading ★ column (sortable) so the shortlist is workable from the table too.
+ const cols=[...(signedIn()?[["short","★"]]:[]),["name","Club"],["cat","Path"],["region","Region"],["car",state.mode==="car"?"Car":"Transit"],["km","km"],["feeMo","Fee/mo"],["fit","Fit"],["we","Wknd"],["ages","Ages"],["tier","Coach"],["intl","Intl"],["conf","Conf"]];
  const dir=state.sort.dir,key=state.sort.key;
- const val=c=>key==="fit"?fitScore(c):key==="ages"?c.ages.length:key==="feeMo"?(fmo(c)===null?9999:fmo(c)):key==="intl"?(c.intl?1:0):key==="we"?(c.we?1:0):key==="car"?tmins(c):c[key];
+ const val=c=>key==="short"?(inShortlist(c.id)?1:0):key==="fit"?fitScore(c):key==="ages"?c.ages.length:key==="feeMo"?(fmo(c)===null?9999:fmo(c)):key==="intl"?(c.intl?1:0):key==="we"?(c.we?1:0):key==="car"?tmins(c):c[key];
  const rows=clubs.slice().sort((a,b)=>{const x=val(a),y=val(b);return (typeof x==="string"?x.localeCompare(y):x-y)*dir;});
  const wrap=document.createElement("div");wrap.className="tablewrap";
  const t=document.createElement("table");const thead=document.createElement("thead");const tr=document.createElement("tr");
@@ -1419,7 +1462,7 @@ function renderTable(vp,clubs){
  const tb=document.createElement("tbody");
  rows.forEach(c=>{const r=document.createElement("tr");r.style.cursor="pointer";r.onclick=()=>{state.sel=state.sel===c.id?null:c.id;openDrawer(state.sel);};
   const f=fitScore(c);
-  r.innerHTML=`<td class="nm">${c.name}<div style="font-weight:500;color:var(--muted);font-size:11px">${c.loc}</div></td>
+  r.innerHTML=`${signedIn()?`<td>${starBtn(c.id,true)}</td>`:""}<td class="nm">${c.name}<div style="font-weight:500;color:var(--muted);font-size:11px">${c.loc}</div></td>
    <td><span class="chip ${c.cat}">${c.cat}</span></td>
    <td>${REGION_LABEL[c.region]}</td>
    <td class="tnum">${tmins(c)}m</td><td class="tnum">${kmOf(c)}</td>
@@ -1606,8 +1649,12 @@ function render(){
  const showLegend=!["table","charts","pathway","register"].includes(state.view);
  $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
  // The verify line shows on every view; table/charts additionally get the long-form note.
+ // If the viewer's clock says the data is >6 months old, say so up front — an honest site
+ // ages out loud rather than presenting last year's fees as current.
  const note=$("#note");note.classList.remove("hide");
- note.innerHTML="<b>⚠ Always confirm with the club:</b> "+META.verify+
+ const age=dataAgeMonths();
+ note.innerHTML=(age>6?`<b>⚠ This data is ${age} months old</b> (compiled ${META.compiled}). Fees, schedules and trial dates will have moved since — treat every figure as historical and confirm with the club. `:"")+
+   "<b>⚠ Always confirm with the club:</b> "+META.verify+
    ((state.view==="table"||state.view==="charts")?" <b>Read me:</b> "+META.note:"");
  cancelAnim();const vp=$("#viewport");vp.innerHTML="";
  if(!clubs.length){vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">No clubs match these filters. Loosen a constraint on the left.</div>';return;}
@@ -1645,12 +1692,7 @@ $("#foot").innerHTML=`Compiled ${META.compiled} · ${CLUBS.length} clubs island-
 // A returning signed-in member gets their saved home/mode/age back — then the
 // URL hash (below) still overrides, so shared deep links behave identically for everyone.
 applyMemberPrefs();
-if(signedIn()){
- document.querySelectorAll("#seg-age button").forEach(b=>b.classList.toggle("on",b.dataset.v===state.age));
- if(state.mode==="transit"){document.querySelectorAll("#seg-mode button").forEach(b=>b.classList.toggle("on",b.dataset.v==="transit"));
-  document.querySelectorAll("#seg-dist button").forEach(x=>{const dv=x.dataset.transit;if(dv){x.dataset.v=dv;x.textContent="≤"+dv+" min";}});
-  $("#dist-h3").textContent="Max travel · transit";}
-}
+if(signedIn())syncPrefControls();
 // deep-link: #view=sankey&lens=fees
 (function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens"),m=h.get("mode");
  if(v&&HINTS[v]){state.view=v;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
