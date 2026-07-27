@@ -193,6 +193,15 @@ tbody tr:hover td{background:var(--surface-2)}
 .drawer .src{font-size:11px;color:var(--muted);margin-top:12px;word-break:break-word}
 .foot{max-width:1260px;margin:22px auto 44px;padding:0 20px;font-size:11.5px;color:var(--muted)}
 .hide{display:none!important}
+/* member modal — the profile lives only in localStorage; this is its one UI */
+.modal-bg{position:fixed;inset:0;background:rgba(8,14,22,.52);z-index:70;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-bg.on{display:flex}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:14px;max-width:440px;width:100%;padding:17px 17px 14px;max-height:92vh;overflow:auto;box-shadow:0 18px 50px rgba(0,0,0,.32)}
+.modal h3{margin:0;font-size:16px}
+.mm-grid{display:grid;gap:8px;margin:12px 0 4px}
+.mm-grid select,.mm-grid input{width:100%;padding:8px 10px;border:1px solid var(--line-2);border-radius:8px;background:var(--ground);color:var(--ink);font-family:inherit;font-size:13px}
+.mm-grid select:focus,.mm-grid input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+.star-on{color:var(--warn)!important;border-color:var(--warn)!important}
 #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(10px);background:var(--ink);color:var(--ground);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 12px 34px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:80;max-width:88vw;text-align:center;border:1px solid var(--ring)}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .rail-toggle{display:none;width:100%;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:9px;padding:11px 13px;font-size:13.5px;font-weight:700;color:var(--ink);cursor:pointer;margin-bottom:2px}
@@ -245,6 +254,8 @@ tbody tr:hover td{background:var(--surface-2)}
       <button class="themebtn" id="locBtn" type="button" title="Use my location to pick the nearest town" style="padding:6px 10px">⌖ Locate</button>
       <span class="pill" id="pill-count">— clubs</span>
       <button class="themebtn" id="themebtn">◐ Theme</button>
+      <!-- Member profile lives only in this browser's localStorage — no server, no account database. -->
+      <button class="themebtn" id="memberBtn" type="button" title="Member profile — stored only on this device, never sent anywhere">☺ Sign in</button>
       <!-- Revealed only when the browser fires beforeinstallprompt, or on iOS Safari in a tab. -->
       <button class="themebtn" id="installBtn" type="button" hidden
               title="Install FootballSG as an app on this device">⤓ Install app</button>
@@ -265,6 +276,8 @@ tbody tr:hover td{background:var(--surface-2)}
         <div class="toggle" id="t-weekend"><span>Weekend sessions</span><span class="sw"></span></div>
         <div class="toggle" id="t-nowd"><span>No weekday-daytime clash</span><span class="sw"></span></div>
         <div class="toggle" id="t-west"><span>Near home ≤12 km</span><span class="sw"></span></div>
+        <!-- Visible only to signed-in members (see syncMemberUI) -->
+        <div class="toggle hide" id="t-short"><span>★ My shortlist only</span><span class="sw"></span></div>
       </section>
       <section>
         <h3>Pathway type</h3>
@@ -329,6 +342,7 @@ tbody tr:hover td{background:var(--surface-2)}
 </div>
 
 <div class="foot" id="foot"></div>
+<div class="modal-bg" id="memberModal" role="dialog" aria-modal="true" aria-labelledby="mm-title"></div>
 <div class="tip" id="tip"></div>
 
 <script>
@@ -358,7 +372,7 @@ const CLUBS=[
  {id:"fcj",name:"FC Jurong (formerly Albirex Niigata SG)",cat:"elite",region:"west",loc:"238 Jurong East St 21 (primary field & trials) · Jurong East/West Stadium",km:6,car:13,transit:35,
   ages:R("U6","U17"),feeMo:100,feeConf:"med",feeText:"COE elite: free (selection). FC Jurong grassroots: S$100/mo (1×/wk) or S$200/mo (unlimited/league) + one-time S$170 reg incl. jersey. <b>Not published on the club site</b> — the soccer school lists only KIDS/U-8/U-10/U-12 + Academy tiers, with no fees. Confirm before paying.",
   feeTiers:[{label:"Grassroots 1×/wk (open)",ages:R("U6","U17"),mo:100,regFee:170,conf:"high",open:true,note:"reg incl. jersey"},
-            {label:"Grassroots unlimited + league (open)",ages:R("U6","U17"),mo:200,regFee:170,conf:"high",open:true,note:"S$200/mo · unlimited sessions incl. league play"},
+            {label:"Grassroots unlimited + league (open)",ages:R("U6","U17"),mo:200,regFee:170,conf:"high",open:true,note:"unlimited sessions incl. league play"},
             {label:"COE Elite",ages:["U15","U17"],mo:0,conf:"high",open:false,note:"free, by selection"}],
   local:["Singapore Youth League"],intl:false,intlText:"Local & overseas friendlies; Albirex/Japan link (partial)",
   coach:"Habil Hakim (Academy Director)",tier:"Licensed",cred:"AFC 'C' Licence",
@@ -629,7 +643,7 @@ const $=s=>document.querySelector(s);
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const REGION_LABEL={west:"West",central:"Central",north:"North",ne:"North-East",east:"East"};
 const REGION_ORDER=["west","central","north","ne","east"];
-const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
+const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,short:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
 // Home-base picker: pick any SG town; travel is estimated from an approx km-grid.
 // Tengah keeps its researched car/transit/km figures; other bases are straight-line estimates.
 const HOME_BASES=[
@@ -693,6 +707,108 @@ const enq={club:"",child:"son",born:"",name:"",phone:"",replyBy:"",q:new Set(QUE
 const applyPron=(t,child)=>{const he=child==="daughter"?"she":"he",him=child==="daughter"?"her":"him";return t.replace(/he\/she/g,he).replace(/him\/her/g,him);};
 function fmtDate(v){if(!v)return "[DATE]";const d=new Date(v+"T00:00:00");return isNaN(d)?v:d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});}
 function mailtoStr(to,s,b){return `mailto:${to||""}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;}
+
+/* ===================== MEMBERS (device-local) =====================
+   "Sign in" without a server: the profile is a single localStorage record on THIS
+   device. Nothing is transmitted anywhere — there is no backend to send it to —
+   which is the only login model compatible with the no-tracking promise in the
+   footer. What membership buys: home base / travel mode / age band persist
+   between visits, a ★ shortlist of clubs, and a prefilled enquiry-email builder.
+   Sign out keeps the record but stops applying/saving it; Delete erases it. */
+const MEMBER_KEY="fsg.member.v1";
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+let member=null;
+try{const raw=localStorage.getItem(MEMBER_KEY);if(raw){const m=JSON.parse(raw);if(m&&m.v===1)member=m;}}catch(e){/* private mode / storage off — the app just runs memberless */}
+function saveMember(){try{if(member)localStorage.setItem(MEMBER_KEY,JSON.stringify(member));else localStorage.removeItem(MEMBER_KEY);}catch(e){}}
+const signedIn=()=>!!(member&&member.signedIn);
+const shortlist=()=>(signedIn()&&member.shortlist)||[];
+const inShortlist=id=>shortlist().includes(id);
+function toggleShortlist(id){
+ if(!signedIn()){openMemberModal();toast("Create your member profile first — it stays on this device only.");return;}
+ member.shortlist=member.shortlist||[];
+ const i=member.shortlist.indexOf(id);
+ if(i>=0)member.shortlist.splice(i,1);else member.shortlist.push(id);
+ saveMember();render();if(state.sel)openDrawer(state.sel);
+}
+function starBtn(id,compact){
+ const on=inShortlist(id);
+ return `<button class="themebtn${on?" star-on":""}" type="button" style="${compact?"padding:4px 9px;":""}white-space:nowrap" title="${on?"Remove from":"Add to"} my shortlist" onclick="toggleShortlist('${id}')">${on?"★":"☆"}${compact?"":on?" Shortlisted":" Shortlist"}</button>`;
+}
+// Saved prefs → state. Runs before the URL-hash reader, so an explicit deep link still wins.
+function applyMemberPrefs(){
+ if(!signedIn())return;
+ const p=member.prefs||{};
+ if(p.home&&HOME_BASES.find(h=>h.id===p.home))state.home=p.home;
+ if(p.age&&(p.age==="all"||selectedBandsFor(p.age).length))state.age=p.age;
+ if(p.mode==="transit")state.mode="transit";
+ if(member.name)enq.name=member.name;
+ if(member.child)enq.child=member.child;
+ if(member.born)enq.born=member.born;
+ if(member.phone)enq.phone=member.phone;
+}
+// Age keys arrive from storage, so validate against the same grammar the rail uses.
+function selectedBandsFor(k){if(k.indexOf("-")>=0){const p=k.split("-");if(AGES.indexOf(p[0])<0||AGES.indexOf(p[1])<0)return[];return AGES.slice(AGES.indexOf(p[0]),AGES.indexOf(p[1])+1);}return AGES.includes(k)?[k]:[];}
+function persistMemberPrefs(){if(!signedIn())return;member.prefs={home:state.home,mode:state.mode,age:state.age};saveMember();}
+function syncMemberUI(){
+ const b=$("#memberBtn");if(b)b.textContent=signedIn()?"☺ "+((member.name||"Member").trim().split(/\s+/)[0]):"☺ Sign in";
+ const t=$("#t-short");if(t){t.classList.toggle("hide",!signedIn());if(!signedIn()&&state.short){state.short=false;t.classList.remove("on");}}
+}
+function closeMemberModal(){$("#memberModal").classList.remove("on");}
+function openMemberModal(){
+ const bg=$("#memberModal"),has=!!member;
+ const curHome=(member&&member.prefs&&member.prefs.home)||state.home;
+ let homeOpts="";REGION_ORDER.forEach(r=>{const bs=HOME_BASES.filter(h=>h.region===r);if(!bs.length)return;
+  homeOpts+=`<optgroup label="${REGION_LABEL[r]}">`+bs.map(h=>`<option value="${h.id}"${h.id===curHome?" selected":""}>${h.name}</option>`).join("")+"</optgroup>";});
+ const sl=shortlist().map(id=>CLUBS.find(c=>c.id===id)).filter(Boolean);
+ bg.innerHTML=`<div class="modal">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+    <h3 id="mm-title">☺ Member profile</h3>
+    <button class="themebtn" type="button" id="mm-close">✕ close</button></div>
+  <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px">
+    Stored <b>only in this browser, on this device</b> — we run no servers and no account
+    database, so nothing you type here can leave your device. It powers your saved home base
+    &amp; filters, the ★ shortlist, and prefills the enquiry-email builder.
+    <b>Delete profile</b> erases every trace.</div>
+  <div class="mm-grid">
+    <input id="mm-name" placeholder="Your name" autocomplete="off" value="${esc(member&&member.name)}">
+    <select id="mm-child" aria-label="Parent of">
+      <option value="son"${!member||member.child!=="daughter"?" selected":""}>Parent of a son</option>
+      <option value="daughter"${member&&member.child==="daughter"?" selected":""}>Parent of a daughter</option></select>
+    <input id="mm-born" placeholder="Child born e.g. 03/2012 (optional)" autocomplete="off" value="${esc(member&&member.born)}">
+    <input id="mm-phone" placeholder="Your phone (optional — only for email drafts)" autocomplete="off" value="${esc(member&&member.phone)}">
+    <select id="mm-home" aria-label="Home base">${homeOpts}</select>
+  </div>
+  ${sl.length?`<div style="margin:9px 0 2px;font-size:12.5px"><b>★ Shortlist</b> — ${sl.length} club${sl.length===1?"":"s"}<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${sl.map(c=>`<span class="chip" style="cursor:pointer" title="Remove from shortlist" onclick="toggleShortlist('${c.id}');openMemberModal()">${esc(c.name)} ✕</span>`).join("")}</div></div>`:""}
+  <div class="actions" style="padding:12px 0 0;margin:0">
+    <button class="cbtn primary" type="button" id="mm-save">${has?"Save & sign in":"Create profile — sign in"}</button>
+    ${signedIn()?'<button class="cbtn" type="button" id="mm-out">Sign out</button>':""}
+    ${has?'<button class="cbtn" type="button" id="mm-del">Delete profile</button>':""}
+  </div>`;
+ bg.classList.add("on");
+ bg.onclick=e=>{if(e.target===bg)closeMemberModal();};
+ $("#mm-close").onclick=closeMemberModal;
+ $("#mm-save").onclick=()=>{
+  const name=$("#mm-name").value.trim();
+  member=member||{v:1,created:new Date().toISOString().slice(0,10),shortlist:[]};
+  member.v=1;member.name=name;member.child=$("#mm-child").value;
+  member.born=$("#mm-born").value.trim();member.phone=$("#mm-phone").value.trim();
+  member.signedIn=true;
+  state.home=$("#mm-home").value;const hs=$("#homeSel");if(hs)hs.value=state.home;
+  enq.name=member.name;enq.child=member.child;enq.born=member.born;enq.phone=member.phone;
+  persistMemberPrefs();syncMemberUI();closeMemberModal();render();if(state.sel)openDrawer(state.sel);
+  toast("Signed in — saved on this device only. Your home base, filters and ★ shortlist now stick.");
+ };
+ const out=$("#mm-out");if(out)out.onclick=()=>{
+  member.signedIn=false;saveMember();syncMemberUI();closeMemberModal();render();
+  toast("Signed out. Your profile stays on this device until you delete it.");
+ };
+ const del=$("#mm-del");if(del)del.onclick=()=>{
+  if(!confirm("Delete your member profile and shortlist from this device? This cannot be undone."))return;
+  member=null;saveMember();state.short=false;syncMemberUI();closeMemberModal();render();
+  toast("Profile deleted — nothing about you remains on this device or anywhere else.");
+ };
+}
+addEventListener("keydown",e=>{if(e.key==="Escape")closeMemberModal();});
 
 const LENSES=[
  {id:"overview",label:"Overview",desc:"pathway + region",v:"--accent"},
@@ -826,6 +942,7 @@ function filtered(){
   if(state.weekend&&!c.we)return false;
   if(state.nowd&&c.wdDay)return false;
   if(state.west&&kmOf(c)>12)return false;
+  if(state.short&&!inShortlist(c.id))return false;
   return true;
  });
 }
@@ -1097,7 +1214,8 @@ function renderRegister(vp,clubs){
   const fld=(k,v)=>`<div style="margin-top:5px"><span style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:800">${k}</span><div style="font-size:12.5px;color:var(--ink);line-height:1.45">${v}</div></div>`;
   const card=document.createElement("div");card.style.cssText="border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--surface);display:flex;flex-direction:column;gap:2px";
   card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
-     <div style="font-weight:800;font-size:14.5px;line-height:1.2">${c.name}</div><span class="chip ${c.cat}">${c.cat}</span></div>
+     <div style="font-weight:800;font-size:14.5px;line-height:1.2">${c.name}</div>
+     <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">${starBtn(c.id,true)}<span class="chip ${c.cat}">${c.cat}</span></div></div>
    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:7px">
      <span class="chip ${fitBadge[1]}">${fitBadge[0]}</span>
      <span class="chip">${tmins(c)} min ${modeLabel()}</span>
@@ -1359,7 +1477,7 @@ function openDrawer(id){const d=$("#drawer");if(!id){d.className="drawer";d.inne
  d.className="drawer on";
  d.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
    <div><h3>${c.name}</h3><div class="subh">${c.loc} · ${REGION_LABEL[c.region]} · <span class="chip ${c.cat}">${c.cat==="elite"?"Elite pathway":"Open enrolment"}</span> · fit ${f}/3</div></div>
-   <button class="themebtn" onclick="state.sel=null;openDrawer(null)">✕ close</button></div>
+   <div style="display:flex;gap:6px;flex-shrink:0">${starBtn(c.id)}<button class="themebtn" onclick="state.sel=null;openDrawer(null)">✕ close</button></div></div>
   <div class="grid">
    <div class="f"><div class="kk">Travel from ${homeName()}</div><div class="vv">${carOf(c)} min car · ${transitOf(c)} min transit · ${kmOf(c)} km</div></div>
    <div class="f"><div class="kk">Fees</div><div class="vv">${feeTierHtml(c)}${feeTextOf(c)}
@@ -1473,6 +1591,7 @@ function renderTiles(clubs){
 
 /* ===================== RENDER DISPATCH ===================== */
 function render(){
+ persistMemberPrefs(); // a signed-in member's home/mode/age survive the visit
  const clubs=filtered();
  renderTiles(clubs);
  $("#pill-count").textContent=clubs.length+" clubs";
@@ -1510,7 +1629,8 @@ document.querySelectorAll("#seg-mode button").forEach(b=>b.onclick=()=>{
  $("#dist-h3").textContent="Max travel · "+modeLabel();
  render();});
 function tog(id,key){const e=$(id);e.onclick=()=>{state[key]=!state[key];e.classList.toggle("on",state[key]);render();};}
-tog("#t-weekend","weekend");tog("#t-west","west");tog("#t-nowd","nowd");
+tog("#t-weekend","weekend");tog("#t-west","west");tog("#t-nowd","nowd");tog("#t-short","short");
+$("#memberBtn").onclick=openMemberModal;
 $("#themebtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");const next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);buildLens();render();if(state.sel)openDrawer(state.sel);};
 addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,180);});
 addEventListener("orientationchange",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,260);});
@@ -1521,7 +1641,16 @@ addEventListener("orientationchange",()=>{clearTimeout(window._rz);window._rz=se
  if(innerWidth<=920)set(true);})();
 $("#foot").innerHTML=`Compiled ${META.compiled} · ${CLUBS.length} clubs island-wide (U6–U17) · every figure carries its source — open a club and read <b>“Sources — audit us”</b>. ${META.note}
  <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--line)">${META.policy} Reach us at <a href="mailto:${META.contact}">${META.contact}</a>.</div>
- <div style="margin-top:7px">We collect <b>no personal data</b>: no accounts, no cookies, no tracking. Visitor stats are cookieless and aggregate. Any enquiry email you draft here is built <b>in your own browser</b> and sent from your own mail app — we never see it. <b>Not affiliated with any club.</b></div>`;
+ <div style="margin-top:7px">We collect <b>no personal data</b>: no server accounts, no cookies, no tracking. The optional <b>☺ member profile</b> is stored only in your browser on this device — there is no backend it could be sent to; we never see it, and <b>Delete profile</b> erases it completely. Visitor stats are cookieless and aggregate. Any enquiry email you draft here is built <b>in your own browser</b> and sent from your own mail app — we never see it. <b>Not affiliated with any club.</b></div>`;
+// A returning signed-in member gets their saved home/mode/age back — then the
+// URL hash (below) still overrides, so shared deep links behave identically for everyone.
+applyMemberPrefs();
+if(signedIn()){
+ document.querySelectorAll("#seg-age button").forEach(b=>b.classList.toggle("on",b.dataset.v===state.age));
+ if(state.mode==="transit"){document.querySelectorAll("#seg-mode button").forEach(b=>b.classList.toggle("on",b.dataset.v==="transit"));
+  document.querySelectorAll("#seg-dist button").forEach(x=>{const dv=x.dataset.transit;if(dv){x.dataset.v=dv;x.textContent="≤"+dv+" min";}});
+  $("#dist-h3").textContent="Max travel · transit";}
+}
 // deep-link: #view=sankey&lens=fees
 (function initHash(){const h=new URLSearchParams(location.hash.slice(1));const v=h.get("view"),l=h.get("lens"),m=h.get("mode");
  if(v&&HINTS[v]){state.view=v;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
@@ -1539,7 +1668,7 @@ function locateMe(){const btn=$("#locBtn");if(!navigator.geolocation){toast("Loc
   if(best){state.home=best.id;const sel=$("#homeSel");if(sel)sel.value=best.id;render();if(state.sel)openDrawer(state.sel);toast("Home set to "+best.name+" — your nearest listed town (~"+bd.toFixed(1)+" km away).");}
   else toast("Couldn't match a nearby town.");
  },err=>{if(btn)btn.textContent="⌖ Locate";toast(err&&err.code===1?"Location permission denied — pick your town from the menu.":"Couldn't get your location — pick your town from the menu.");},{timeout:9000,maximumAge:600000,enableHighAccuracy:false});}
-buildLens();buildHome();{const _lb=$("#locBtn");if(_lb)_lb.onclick=locateMe;}render();if(state.sel)openDrawer(state.sel);
+buildLens();buildHome();syncMemberUI();{const _lb=$("#locBtn");if(_lb)_lb.onclick=locateMe;}render();if(state.sel)openDrawer(state.sel);
 // PWA: register the service worker (installable + offline). No-op if unsupported or on file://.
 if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}
 /* ===================== INSTALL ===================== */

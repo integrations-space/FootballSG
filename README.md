@@ -40,6 +40,18 @@ Weekend sessions · No weekday-daytime clash · Near home ≤12 km · pathway ty
 (U6–U9 · U10–U13 · U14–U15 · U16–U17)** · max travel time. **Travel-by toggle** switches all
 timings between **car and public transit**.
 
+### Member sign-in (device-local)
+
+**☺ Sign in** creates an optional member profile — parent name, son/daughter + birth month,
+phone, home town — that lives **only in your browser's localStorage**. There is no server, no
+account database and nothing to transmit, so this stays compatible with the site's no-tracking
+promise. Being signed in makes your **home base, travel mode and age band persist between
+visits**, unlocks a **★ shortlist** (star clubs from the scouting card or the Register tab, then
+filter to "★ My shortlist only"), and **prefills the enquiry-email builder** with your details.
+Sign out keeps the profile on the device without applying it; **Delete profile** erases every
+trace. Shared deep links always win over saved preferences, so a link you send a friend looks
+the same for them.
+
 ### Home base
 
 A **home-base picker** (25 Singapore towns across all regions) recomputes every distance, travel
