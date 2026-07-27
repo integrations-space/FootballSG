@@ -17,3 +17,4 @@ jobs:
         with:
           node-version: "22"
       - run: node checks/fee-audit.mjs --strict
+      - run: node checks/news-audit.mjs --strict

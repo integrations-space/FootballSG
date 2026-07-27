@@ -14,7 +14,7 @@ weekday sessions**, **travel time**, **monthly fees by age band**, **age-group f
 ## What it shows
 
 20 clubs island-wide across two pathways — **elite** (Singapore Youth League / Centre-of-Excellence)
-and **open enrolment** (brand & community academies) — with six ways to read the same data:
+and **open enrolment** (brand & community academies) — with seven ways to read the same data:
 
 | View | What it answers |
 |------|-----------------|
@@ -24,6 +24,7 @@ and **open enrolment** (brand & community academies) — with six ways to read t
 | **Charts** | Monthly fees, travel time, age-band coverage (U6→U17), and a cost-vs-distance map. |
 | **Table** | Every field, sortable; click a row for the full scouting card with sources. |
 | **Register & pathway** | The open→elite ladder, real sourced Singapore examples (Ben Davis, Zikos Chua, Sarrvin Raj, Joel Chew), the Oct–Dec trial-season calendar, and tappable **register / call / email** for every club. |
+| **News archive** | Dated, sourced record of what has changed — fees, pathways, FAS policy, SPL and the wider game. Lives in `news.json` (append-only, machine-writable, escaped as untrusted input); every item carries a real source URL, times only when the source states one. |
 
 Every scouting card includes a **"How to join"** block and a **fee breakdown by programme tier** —
 because a club's cost depends on the programme and age band (an open grassroots squad and a
@@ -95,7 +96,13 @@ so the true cost of joining can't be understated. It runs in CI on every push
 scheduled run (`data-freshness.yml`) executes it with `--strict`, which starts failing once the
 compiled date is more than 6 months old: the repo itself nags for a re-verification pass. The
 app does the same for readers — once the data is >6 months old by the viewer's clock, every
-view carries a banner saying how stale the figures are. In Jul 2026 the audit's first run caught four real errors: JSSL's monthly was
+view carries a banner saying how stale the figures are.
+
+The news archive has its own gate, `checks/news-audit.mjs`, run in the same CI jobs: real
+calendar dates (taken from article bodies — listing pages mis-attribute), no future-dating
+(Singapore clock), times only in HH:MM and only when the source states one, declared categories,
+club references that exist in `index.html`, and an absolute https source on every item — an
+unsourced item cannot ship. In Jul 2026 the audit's first run caught four real errors: JSSL's monthly was
 S$195 against its own S$588/3-month term (= S$196), F17's headline was a S$180 midpoint
 instead of its cheapest venue (S$140), FC Jurong's S$200/mo unlimited package was unmodelled,
 and ActiveSG's ~S$65/mo derivation double-counted the season length (corrected to ~S$30/mo,

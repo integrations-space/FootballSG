@@ -1652,6 +1652,7 @@ function newsDate(d){const t=new Date(d+"T00:00:00Z");if(Number.isNaN(t.getTime(
  return t.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});}
 function renderNews(vp){
  const tok=++newsTok;
+ if(NEWS_ERR&&!NEWS)NEWS_ERR=null; // a failed fetch is not a verdict — retry on every tab entry
  vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">Loading the archive…</div>';
  loadNews().then(()=>{if(tok!==newsTok||state.view!=="news")return;drawNews(vp);});
 }
@@ -1665,7 +1666,7 @@ function drawNews(vp){
  const catOf=id=>cats.find(c=>c.id===id);
  const all=(Array.isArray(NEWS.items)?NEWS.items:[]).slice()
    .sort((a,b)=>((b.date||"")+"T"+(b.time||"")).localeCompare((a.date||"")+"T"+(a.time||""))); // newest first
- if(!cats.some(c=>c.id===state.newsCat))state.newsCat=state.newsCat==="all"?"all":"all";
+ if(state.newsCat!=="all"&&!cats.some(c=>c.id===state.newsCat))state.newsCat="all";
  const items=state.newsCat==="all"?all:all.filter(i=>i.cat===state.newsCat);
  const box=document.createElement("div");box.style.cssText="padding:16px;display:grid;gap:18px";
  // category filter — counts come from the whole archive, so an empty category reads as empty
@@ -1690,6 +1691,9 @@ function drawNews(vp){
     html+=`<div style="display:flex;align-items:center;gap:10px;margin:6px 0 2px">
       <div style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800">${esc(newsDate(it.date))}</div>
       <div style="flex:1;height:1px;background:var(--line)"></div></div>`;}
+   // CI already rejects non-https sources; this guard is defense-in-depth for a file that
+   // reaches the browser without passing CI (hand-edited, or served stale).
+   const safeSrc=/^https:\/\//.test(it.src||"")?it.src:null;
    const host=(()=>{try{return new URL(it.src).hostname.replace(/^www\./,"");}catch{return it.src||"";}})();
    const clubs=(it.clubs||[]).map(id=>{const cl=CLUBS.find(x=>x.id===id);return cl?`<button data-club="${esc(id)}" style="cursor:pointer;font:inherit;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink-2)">${esc(cl.name)}</button>`:"";}).join(" ");
    html+=`<div style="display:grid;grid-template-columns:62px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
@@ -1702,7 +1706,7 @@ function drawNews(vp){
        <div style="font-weight:700;font-size:14px;margin-bottom:3px">${esc(it.title)}</div>
        <div style="font-size:12.5px;color:var(--ink-2);line-height:1.55">${esc(it.summary)}</div>
        <div style="font-size:11px;color:var(--muted);margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
-         <span>Source: <a href="${esc(it.src)}" target="_blank" rel="noopener">${esc(host)}</a></span>${clubs?`<span>·</span>${clubs}`:""}
+         <span>Source: ${safeSrc?`<a href="${esc(safeSrc)}" target="_blank" rel="noopener">${esc(host)}</a>`:esc(host||"(malformed link)")}</span>${clubs?`<span>·</span>${clubs}`:""}
        </div>
      </div></div>`;});
   box.innerHTML+=`<div style="display:grid;gap:10px">${html}</div>`;
@@ -1712,7 +1716,9 @@ function drawNews(vp){
    Every item links its source; we publish nothing here we can't point at. Corrections: <a href="mailto:${esc(META.contact)}">${esc(META.contact)}</a>.</div>`;
  vp.innerHTML="";vp.appendChild(box);
  box.querySelectorAll("button[data-nc]").forEach(b=>b.onclick=()=>{state.newsCat=b.dataset.nc;drawNews(vp);});
- box.querySelectorAll("button[data-club]").forEach(b=>b.onclick=()=>openDrawer(b.dataset.club));
+ // Set state.sel like every other drawer-opening path — without it, the drawer won't
+ // repaint on shortlist toggles and won't survive re-renders.
+ box.querySelectorAll("button[data-club]").forEach(b=>b.onclick=()=>{state.sel=b.dataset.club;openDrawer(state.sel);});
 }
 
 /* ===================== RENDER DISPATCH ===================== */
