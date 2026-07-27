@@ -1693,7 +1693,7 @@ function drawNews(vp){
    const host=(()=>{try{return new URL(it.src).hostname.replace(/^www\./,"");}catch{return it.src||"";}})();
    const clubs=(it.clubs||[]).map(id=>{const cl=CLUBS.find(x=>x.id===id);return cl?`<button data-club="${esc(id)}" style="cursor:pointer;font:inherit;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink-2)">${esc(cl.name)}</button>`:"";}).join(" ");
    html+=`<div style="display:grid;grid-template-columns:62px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
-     <div style="font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;color:${col}">${esc(it.time||"")}</div>
+     <div style="font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;color:${it.time?col:"var(--muted)"}" title="${it.time?"Filed "+esc(it.time)+" SGT":"The source published a date but no time"}">${it.time?esc(it.time):"—"}</div>
      <div>
        <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:4px">
          <span style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,${col} 15%,transparent);color:${col}">${esc(c.label)}</span>
