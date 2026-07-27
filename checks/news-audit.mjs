@@ -10,7 +10,7 @@
      ERRORS (exit 1):
        · malformed archive shape, unknown/duplicate category ids
        · duplicate item ids, missing required fields
-       · date not YYYY-MM-DD or not a real calendar date; time not HH:MM (24h)
+       · date not YYYY-MM-DD or not a real calendar date; time present but not HH:MM (24h)
        · a date in the future (Singapore time) — the archive records what happened
        · category not declared in categories[]
        · source missing, not absolute https, or lacking a hostname
@@ -104,8 +104,11 @@ for (const [i, it] of items.entries()) {
     else if (it.date > sgNow) err(w, `date "${it.date}" is in the future (SG today is ${sgNow})`);
   }
 
-  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(it.time || ""))
-    err(w, `time must be HH:MM 24-hour, got ${JSON.stringify(it.time)}`);
+  /* time is OPTIONAL by design. Most outlets publish a date and no clock time; demanding one
+     would force whoever fills the archive to invent it, which is exactly the fabrication this
+     project refuses elsewhere. State it when the source states it, omit it otherwise. */
+  if (it.time !== undefined && it.time !== null && !/^([01]\d|2[0-3]):[0-5]\d$/.test(it.time))
+    err(w, `time, when given, must be HH:MM 24-hour — got ${JSON.stringify(it.time)}`);
 
   if (!it.cat) err(w, "cat missing");
   else if (!catIds.has(it.cat)) err(w, `cat "${it.cat}" is not declared in categories[]`);

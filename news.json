@@ -1,5 +1,5 @@
 {
-  "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Times are Asia/Singapore. Validated by checks/news-audit.mjs on every push.",
+  "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
   "updated": "2026-07-27",
   "tz": "Asia/Singapore",
   "categories": [
@@ -9,5 +9,24 @@
     { "id": "spl", "label": "SPL & Lions", "desc": "Singapore Premier League and national team", "v": "--c1" },
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
+      "date": "2026-07-20",
+      "cat": "spl",
+      "title": "Gavin Lee names a 25-man Lions squad for the ASEAN Hyundai Cup 2026",
+      "summary": "Head coach Gavin Lee confirmed the 25 players representing Singapore at the ASEAN Championship Hyundai Cup 2026, which runs from 24 July to 26 August. The Lions open their Group A campaign away to Cambodia in Phnom Penh on Friday 24 July, return home to face Timor-Leste on 27 July, then travel to defending champions Vietnam on 31 July.",
+      "src": "https://fas.org.sg/gavin-lee-names-25-man-squad-for-asean-championship-hyundai-cup-2026/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-07-20-hyundai-cup-tickets-jalan-besar",
+      "date": "2026-07-20",
+      "cat": "spl",
+      "title": "Tickets released for Singapore's ASEAN Hyundai Cup home fixtures at Jalan Besar Stadium",
+      "summary": "FAS put tickets for the Lions' home Group A fixture against Timor-Leste on sale at 11am, with tickets for the 7 August home fixture against Indonesia following on Wednesday 22 July, also at 11am. Both fixtures are at Jalan Besar Stadium.",
+      "src": "https://fas.org.sg/tickets-on-sale-for-asean-hyundai-cup-2026-group-stage-fixtures-at-jalan-besar-stadium/",
+      "status": "confirmed"
+    }
+  ]
 }
