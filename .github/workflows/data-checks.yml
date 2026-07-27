@@ -1,0 +1,17 @@
+# Cost-accuracy gate: every push must keep the CLUBS dataset internally
+# consistent (see checks/fee-audit.mjs for the invariants). The site's whole
+# promise is auditable figures — this stops a broken fee from ever deploying.
+name: data-checks
+on:
+  push:
+  pull_request:
+
+jobs:
+  fee-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node checks/fee-audit.mjs

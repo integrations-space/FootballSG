@@ -357,7 +357,8 @@ const CLUBS=[
  // the FC Jurong name 1 Jan 2026, the men's team 1 Jul 2026 — the rename is complete as of Jul 2026.
  {id:"fcj",name:"FC Jurong (formerly Albirex Niigata SG)",cat:"elite",region:"west",loc:"238 Jurong East St 21 (primary field & trials) · Jurong East/West Stadium",km:6,car:13,transit:35,
   ages:R("U6","U17"),feeMo:100,feeConf:"med",feeText:"COE elite: free (selection). FC Jurong grassroots: S$100/mo (1×/wk) or S$200/mo (unlimited/league) + one-time S$170 reg incl. jersey. <b>Not published on the club site</b> — the soccer school lists only KIDS/U-8/U-10/U-12 + Academy tiers, with no fees. Confirm before paying.",
-  feeTiers:[{label:"Grassroots (open)",ages:R("U6","U17"),mo:100,regFee:170,conf:"high",open:true,note:"S$100/mo 1×/wk · S$200/mo unlimited+league · reg incl. jersey"},
+  feeTiers:[{label:"Grassroots 1×/wk (open)",ages:R("U6","U17"),mo:100,regFee:170,conf:"high",open:true,note:"reg incl. jersey"},
+            {label:"Grassroots unlimited + league (open)",ages:R("U6","U17"),mo:200,regFee:170,conf:"high",open:true,note:"S$200/mo · unlimited sessions incl. league play"},
             {label:"COE Elite",ages:["U15","U17"],mo:0,conf:"high",open:false,note:"free, by selection"}],
   local:["Singapore Youth League"],intl:false,intlText:"Local & overseas friendlies; Albirex/Japan link (partial)",
   coach:"Habil Hakim (Academy Director)",tier:"Licensed",cred:"AFC 'C' Licence",
@@ -456,7 +457,7 @@ const CLUBS=[
   email:"info@geylang.football",web:"geylang.football",
   src:["geylang.football"]},
  {id:"jssl",name:"JSSL Singapore",cat:"open",region:"central",loc:"Portsdown / Woodleigh / Tampines",km:14,car:26,transit:50,
-  ages:R("U7","U16"),feeMo:195,feeConf:"high",feeText:"S$588/12-session term (~1×/wk; ~S$185–210/mo) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST · free trial.",
+  ages:R("U7","U16"),feeMo:196,feeConf:"high",feeText:"S$588/12-session term (~1×/wk; S$588 ÷ 3 months ≈ S$196/mo) · one-time S$120 reg (incl. kit) + S$90 deposit · league S$200–280/season · excl. 9% GST · free trial.",
   local:["JSSL League (Sun)","Singapore Youth League"],intl:true,intlText:"JSSL Singapore 7s (Asia's largest), overseas tours",
   coach:"Paul Parker (ex-England / Man Utd)",tier:"Elite",cred:"Official Arsenal Soccer School partner",
   wd:true,we:true,wdDay:false,sched:"Rec 1–2×/wk; Elite 3×/wk + Sunday league",
@@ -504,8 +505,10 @@ const CLUBS=[
  // The ~S$320-450/term we used to show traced to a content farm that gave Chelsea the same phone
  // number and website it gave a Borussia Dortmund entry. We only list clubs that actually run here.
  {id:"asg",name:"ActiveSG Football Academy",cat:"open",region:"west",loc:"West venues: Jurongville, Kent Ridge, Kranji, Spectra Sec, Jurong Pioneer JC",km:5,car:12,transit:30,
-  ages:R("U6","U16"),feeMo:65,feeConf:"low",feeText:"~S$65/mo is <b>our derivation, not an official figure</b> — ActiveSG publishes no fees on its Circle pages. It comes from a S$130-per-term rate (the only official figure traced is a <i>2016</i> SportSG release: \"$130 for the 14-session programme\"); third-party listings say S$130–180/term. Still almost certainly the cheapest option, but treat the number as approximate and confirm at registration.",
-  feeSrc:{kind:"estimate",label:"derived from a S$130/term rate; ActiveSG does not publish fees. Nearest official figure is a 2016 SportSG media release — treat as approximate",url:"activesgcircle.gov.sg/academies-clubs/football"},
+  ages:R("U6","U16"),feeMo:30,feeConf:"low",feeText:"~S$30/mo is <b>our derivation, not an official figure</b> — ActiveSG publishes no fees on its Circle pages. It comes from the Season 3 2026 rate we verified when compiling the venue list: <b>S$130 for 19 weekly Saturday sessions</b> (~4½ months → ~S$30/mo, ~S$7/session — which matches the ~S$6–7/session parents report). An earlier 2016 SportSG release priced 14 sessions at the same S$130; third-party listings say S$130–180/season. Until Jul 2026 we showed roughly double this (~S$65 a month) — that assumed a 2-month term and overstated the cost; corrected. Treat as approximate and confirm at registration.",
+  feeSrc:{kind:"estimate",label:"derived from the S$130 / 19-session Season 3 2026 rate; ActiveSG does not publish fees on its pages — treat as approximate",url:"activesgcircle.gov.sg/academies-clubs/football"},
+  termMonths:4.4, // an ActiveSG "season" = 19 weekly sessions ≈ 4.4 months, not the usual 3-month/12-session term
+
   local:["Broad-base development"],intl:false,intlText:"National FAS pathway (no overseas tours)",
   coach:"FAS / Sport Singapore coaches",tier:"Licensed",cred:"FAS national programme",
   wd:false,we:true,wdDay:false,sched:"Saturday sessions, 90 min × 19 per season (Season 3 2026 confirmed weekend; low intensity)",
@@ -596,7 +599,9 @@ const CLUBS=[
   web:"skyfootballsg.com/academy",reg:"https://www.skyfootballsg.com/academy",
   src:["skyfootballsg.com/about-academy","skyfootballsg.com/free-tryout"]},
  {id:"f17",name:"F17 Football Academy",cat:"open",region:"east",loc:"SUTD Sports Centre, Changi South Ave 1 (+ Queensway, Kallang)",km:34,car:46,transit:90,
-  ages:R("U6","U17"),feeMo:180,feeConf:"high",feeText:"Billed monthly: ~S$140/mo (Queensway) to ~S$220.50/mo (SUTD) for 1×/wk (2×/3× cost more) · one-time S$200 starter kit (kit + insurance + app) · trial ~S$50 (occasional free promos).",
+  ages:R("U6","U17"),feeMo:140,feeConf:"high",feeText:"Billed monthly, priced per venue: ~S$140/mo (Queensway) to ~S$220.50/mo (SUTD) for 1×/wk (2×/3× cost more) · one-time S$200 starter kit (kit + insurance + app) · trial ~S$50 (occasional free promos). The headline figure is the cheapest venue — SUTD costs ~S$80 more per month.",
+  feeTiers:[{label:"Queensway venue (open)",ages:R("U6","U17"),mo:140,regFee:200,conf:"high",open:true,note:"1×/wk · cheapest venue"},
+            {label:"SUTD venue (open)",ages:R("U6","U17"),mo:221,regFee:200,conf:"high",open:true,note:"~S$220.50/mo · 1×/wk"}],
   local:["F17 3v3 World Cup & holiday camps"],intl:false,intlText:"F17 3v3 World Cup event (tours not confirmed)",
   coach:"Founded by Fandi Ahmad; Academy Director Arif Rahman",tier:"Licensed",cred:"Founded 2011 by SG legend Fandi Ahmad",
   wd:true,we:true,wdDay:false,sched:"Weekday-evening + weekend (see timetable)",

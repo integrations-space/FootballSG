@@ -67,6 +67,20 @@ youth setup **rebranded to FC Jurong** from Jan 2026; the "Borussia" academy is
 dead since ~2018 and Chelsea's own Singapore pages 404 or redirect away). We only list clubs that
 actually run in Singapore.
 
+### Automated cost-accuracy checks
+
+`node checks/fee-audit.mjs` extracts the club dataset straight out of `index.html` and enforces
+the invariants we used to re-check by hand: the headline fee must equal the **cheapest
+openly-enrollable published tier**, term/annual arithmetic must reproduce the stated monthly
+(a 12-session term ≈ 3 months; clubs with odd season lengths carry `termMonths`), every
+high-confidence fee must carry a source, and provenance/withhold records must be well-formed.
+It runs in CI on every push (`.github/workflows/data-checks.yml`) — a fee that doesn't add up
+can't deploy. In Jul 2026 the audit's first run caught four real errors: JSSL's monthly was
+S$195 against its own S$588/3-month term (= S$196), F17's headline was a S$180 midpoint
+instead of its cheapest venue (S$140), FC Jurong's S$200/mo unlimited package was unmodelled,
+and ActiveSG's ~S$65/mo derivation double-counted the season length (corrected to ~S$30/mo,
+matching the S$6–7/session parents report).
+
 ## Deep links
 
 Share a specific view/lens via the URL hash, e.g.
