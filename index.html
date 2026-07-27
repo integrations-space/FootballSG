@@ -323,6 +323,7 @@ tbody tr:hover td{background:var(--surface-2)}
         <button data-v="table">☰ Table</button>
         <button data-v="register">✎ Register &amp; contact</button>
         <button data-v="pathway">↗ Pathway</button>
+        <button data-v="news">◷ News archive</button>
       </div>
       <div class="panel">
         <div class="panel-head">
@@ -643,7 +644,7 @@ const $=s=>document.querySelector(s);
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const REGION_LABEL={west:"West",central:"Central",north:"North",ne:"North-East",east:"East"};
 const REGION_ORDER=["west","central","north","ne","east"];
-const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,short:false,view:"graph",sel:null,sort:{key:"fit",dir:-1}};
+const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,short:false,view:"graph",sel:null,sort:{key:"fit",dir:-1},newsCat:"all"};
 // Home-base picker: pick any SG town; travel is estimated from an approx km-grid.
 // Tengah keeps its researched car/transit/km figures; other bases are straight-line estimates.
 const HOME_BASES=[
@@ -866,7 +867,8 @@ const HINTS={
  charts:"Fees, travel time, age-band coverage and a cost-vs-distance map — all obey the filters on the left.",
  table:"Every field, sortable. Click a row for the full scouting card with sources.",
  register:"Where and how to sign up — location, training schedule, weekend fit, and tappable register / call / email for every club. Sorted best-fit & nearest first.",
- pathway:"The goal: reach the SYL's elite tier — the Centre-of-Excellence League, which runs at U15 and U17. The U15→U17 roadmap, the open→elite ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season). Switch the age band to U6–U9 or U10–U13 for the primary-school pathway."
+ pathway:"The goal: reach the SYL's elite tier — the Centre-of-Excellence League, which runs at U15 and U17. The U15→U17 roadmap, the open→elite ladder, real Singapore examples, and when to enrol (the Oct–Dec trial season). Switch the age band to U6–U9 or U10–U13 for the primary-school pathway.",
+ news:"Dated archive of what has changed — fees, pathways, FAS policy, and the wider game. Newest first, each item timestamped Singapore time and carrying its source. Filter by category; nothing here is unsourced."
 };
 
 /* ----- fit + helpers ----- */
@@ -1632,6 +1634,87 @@ function renderTiles(clubs){
  $("#tiles").innerHTML=T.map(([k,v,d])=>`<div class="tile"><div class="k">${k}</div><div class="v tnum">${v}</div><div class="d">${d}</div></div>`).join("");
 }
 
+/* ===================== VIEW: NEWS ARCHIVE =====================
+   The archive lives in news.json, not inline, for two reasons: it is append-only history that
+   grows without bound, and it is written by an automated agent — keeping it out of index.html
+   means a bad append can never break the app itself, only its own view. Everything rendered here
+   is escaped: the file is machine-written, so it is treated as untrusted input.
+   Shape and integrity are enforced by checks/news-audit.mjs in CI. */
+let NEWS=null,NEWS_ERR=null,newsTok=0;
+function loadNews(){
+ if(NEWS||NEWS_ERR)return Promise.resolve();
+ // Cache-busted by the SW's network-first strategy; no-store keeps a stale archive off screen.
+ return fetch("news.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+  .then(j=>{NEWS=j;}).catch(e=>{NEWS_ERR=e&&e.message||"unavailable";});
+}
+// "2026-07-27" → "Mon 27 Jul 2026". Parsed as UTC so the label can't shift by a day.
+function newsDate(d){const t=new Date(d+"T00:00:00Z");if(Number.isNaN(t.getTime()))return d;
+ return t.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});}
+function renderNews(vp){
+ const tok=++newsTok;
+ vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">Loading the archive…</div>';
+ loadNews().then(()=>{if(tok!==newsTok||state.view!=="news")return;drawNews(vp);});
+}
+function drawNews(vp){
+ if(NEWS_ERR||!NEWS){
+  vp.innerHTML=`<div style="padding:44px 16px;text-align:center;color:var(--muted)">
+    <div style="font-weight:800;color:var(--ink-2);margin-bottom:6px">The archive couldn't be loaded</div>
+    <div style="font-size:12.5px">${esc(NEWS_ERR||"unknown error")} — it lives in <code>news.json</code> beside the app. If you opened this file directly from disk, your browser blocks that read; serve it over http instead.</div></div>`;
+  return;}
+ const cats=Array.isArray(NEWS.categories)?NEWS.categories:[];
+ const catOf=id=>cats.find(c=>c.id===id);
+ const all=(Array.isArray(NEWS.items)?NEWS.items:[]).slice()
+   .sort((a,b)=>((b.date||"")+"T"+(b.time||"")).localeCompare((a.date||"")+"T"+(a.time||""))); // newest first
+ if(!cats.some(c=>c.id===state.newsCat))state.newsCat=state.newsCat==="all"?"all":"all";
+ const items=state.newsCat==="all"?all:all.filter(i=>i.cat===state.newsCat);
+ const box=document.createElement("div");box.style.cssText="padding:16px;display:grid;gap:18px";
+ // category filter — counts come from the whole archive, so an empty category reads as empty
+ const chip=(id,label,n,col)=>`<button data-nc="${esc(id)}" style="cursor:pointer;font:inherit;padding:5px 11px;border-radius:999px;border:1px solid ${id===state.newsCat?col:"var(--line)"};background:${id===state.newsCat?`color-mix(in srgb,${col} 16%,transparent)`:"var(--surface)"};color:${id===state.newsCat?col:"var(--ink-2)"};font-size:12.5px;font-weight:700">${esc(label)} <span style="opacity:.7;font-weight:600">${n}</span></button>`;
+ let chips=`<div style="display:flex;flex-wrap:wrap;gap:7px">`+chip("all","All",all.length,cssv("--accent"));
+ cats.forEach(c=>{chips+=chip(c.id,c.label,all.filter(i=>i.cat===c.id).length,cssv(c.v||"--accent"));});
+ chips+=`</div>`;
+ box.innerHTML=chips;
+ if(!all.length){
+  box.innerHTML+=`<div style="padding:38px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px">
+    <div style="font-weight:800;color:var(--ink-2);margin-bottom:6px">Nothing archived yet</div>
+    <div style="font-size:12.5px;max-width:52ch;margin:0 auto;line-height:1.55">This is where dated, sourced updates land — fee changes at listed clubs, SYL and DSA deadlines, FAS policy, and the wider game. Entries appear newest first with the time they were filed. Nothing is written here without a source link.</div></div>`;
+ } else if(!items.length){
+  box.innerHTML+=`<div style="padding:34px 16px;text-align:center;color:var(--muted)">No items in <b>${esc((catOf(state.newsCat)||{}).label||state.newsCat)}</b> yet. Pick <b>All</b> to see the rest of the archive.</div>`;
+ } else {
+  // group by day so the date is stated once and each item carries only its time
+  let html="",lastDate=null;
+  items.forEach(it=>{
+   const c=catOf(it.cat)||{label:it.cat,v:"--accent"},col=cssv(c.v||"--accent");
+   if(it.date!==lastDate){
+    lastDate=it.date;
+    html+=`<div style="display:flex;align-items:center;gap:10px;margin:6px 0 2px">
+      <div style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800">${esc(newsDate(it.date))}</div>
+      <div style="flex:1;height:1px;background:var(--line)"></div></div>`;}
+   const host=(()=>{try{return new URL(it.src).hostname.replace(/^www\./,"");}catch{return it.src||"";}})();
+   const clubs=(it.clubs||[]).map(id=>{const cl=CLUBS.find(x=>x.id===id);return cl?`<button data-club="${esc(id)}" style="cursor:pointer;font:inherit;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink-2)">${esc(cl.name)}</button>`:"";}).join(" ");
+   html+=`<div style="display:grid;grid-template-columns:62px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-left:4px solid ${col};border-radius:10px;padding:11px 13px;background:var(--surface)">
+     <div style="font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;color:${col}">${esc(it.time||"")}</div>
+     <div>
+       <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:4px">
+         <span style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,${col} 15%,transparent);color:${col}">${esc(c.label)}</span>
+         ${it.status==="rumoured"?`<span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;border:1px dashed var(--muted);color:var(--muted)">Rumoured — unconfirmed</span>`:""}
+       </div>
+       <div style="font-weight:700;font-size:14px;margin-bottom:3px">${esc(it.title)}</div>
+       <div style="font-size:12.5px;color:var(--ink-2);line-height:1.55">${esc(it.summary)}</div>
+       <div style="font-size:11px;color:var(--muted);margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+         <span>Source: <a href="${esc(it.src)}" target="_blank" rel="noopener">${esc(host)}</a></span>${clubs?`<span>·</span>${clubs}`:""}
+       </div>
+     </div></div>`;});
+  box.innerHTML+=`<div style="display:grid;gap:10px">${html}</div>`;
+ }
+ box.innerHTML+=`<div style="font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px">
+   Archive of ${all.length} item${all.length===1?"":"s"}${NEWS.updated?` · last updated ${esc(NEWS.updated)}`:""} · times are ${esc(NEWS.tz||"Asia/Singapore")}.
+   Every item links its source; we publish nothing here we can't point at. Corrections: <a href="mailto:${esc(META.contact)}">${esc(META.contact)}</a>.</div>`;
+ vp.innerHTML="";vp.appendChild(box);
+ box.querySelectorAll("button[data-nc]").forEach(b=>b.onclick=()=>{state.newsCat=b.dataset.nc;drawNews(vp);});
+ box.querySelectorAll("button[data-club]").forEach(b=>b.onclick=()=>openDrawer(b.dataset.club));
+}
+
 /* ===================== RENDER DISPATCH ===================== */
 function render(){
  persistMemberPrefs(); // a signed-in member's home/mode/age survive the visit
@@ -1640,23 +1723,26 @@ function render(){
  $("#pill-count").textContent=clubs.length+" clubs";
  // The pathway view is age-aware: primary-age families get a different ladder, so retitle it.
  const primaryAge=state.age==="U6-U9"||state.age==="U10-U13";
- $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",register:"Register & contact",
+ $("#v-title").textContent={graph:"Knowledge graph",sankey:"Sankey flow",treemap:"Treemap",charts:"Charts",table:"Comparison table",register:"Register & contact",news:"News archive",
    pathway:primaryAge?"Primary-school pathway (U6–U12)":"Open → Elite pathway"}[state.view];
  $("#v-hint").textContent=state.view==="pathway"&&primaryAge
    ?"No club academy takes this age — SPL academies start at U13. But the SYL does run U8/U10/U12, so the job is to get into a league and be scouted. The ladder, the November trial, and the year's real deadlines."
    :HINTS[state.view];
- $("#v-count").textContent=state.view==="pathway"?"How to progress":state.view==="register"?"How to sign up":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
- const showLegend=!["table","charts","pathway","register"].includes(state.view);
+ $("#v-count").textContent=state.view==="pathway"?"How to progress":state.view==="register"?"How to sign up":state.view==="news"?"Dated & sourced":"Lens · "+LENSES.find(l=>l.id===state.lens).label;
+ const showLegend=!["table","charts","pathway","register","news"].includes(state.view);
  $("#legend").classList.toggle("hide",!showLegend);if(showLegend)renderLegend();
  // The verify line shows on every view; table/charts additionally get the long-form note.
  // If the viewer's clock says the data is >6 months old, say so up front — an honest site
  // ages out loud rather than presenting last year's fees as current.
- const note=$("#note");note.classList.remove("hide");
+ // The club-data caveat belongs to club views; the archive carries its own sourcing line instead.
+ const note=$("#note");note.classList.toggle("hide",state.view==="news");
  const age=dataAgeMonths();
  note.innerHTML=(age>6?`<b>⚠ This data is ${age} months old</b> (compiled ${META.compiled}). Fees, schedules and trial dates will have moved since — treat every figure as historical and confirm with the club. `:"")+
    "<b>⚠ Always confirm with the club:</b> "+META.verify+
    ((state.view==="table"||state.view==="charts")?" <b>Read me:</b> "+META.note:"");
  cancelAnim();const vp=$("#viewport");vp.innerHTML="";
+ // The archive is independent of the club filters — it must still render when they match nothing.
+ if(state.view==="news"){renderNews(vp);return;}
  if(!clubs.length){vp.innerHTML='<div style="padding:50px 16px;text-align:center;color:var(--muted)">No clubs match these filters. Loosen a constraint on the left.</div>';return;}
  ({graph:renderGraph,sankey:renderSankey,treemap:renderTreemap,charts:renderCharts,table:renderTable,register:renderRegister,pathway:renderPathway}[state.view])(vp,clubs);
  if(state.sel&&!clubs.find(c=>c.id===state.sel)){/* keep drawer */}

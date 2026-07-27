@@ -1,12 +1,15 @@
 /* FootballSG service worker — network-first for fresh data, cache fallback for offline.
    No build step: bump CACHE by hand whenever the shell list or index.html changes materially. */
-const CACHE = "footballsg-v3";
+const CACHE = "footballsg-v4";
 
 // Everything needed to render the app with no network. index.html carries the club data
-// inline, so the shell alone is a fully working offline app.
+// inline, so the shell alone is a fully working offline app. news.json is the one piece of
+// data held outside index.html (append-only archive), so it is precached too — otherwise the
+// News tab would be the only view that breaks offline.
 const SHELL = [
   "/",
   "/index.html",
+  "/news.json",
   "/manifest.webmanifest",
   "/icon.svg",
   "/icon-192.png",
