@@ -106,7 +106,9 @@ header.top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;justify-con
 .rail h3{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;font-weight:700}
 .rail section{padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
 .rail section:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
-.lens{display:flex;flex-direction:column;gap:4px}
+ .search{width:100%;padding:8px 11px;border:1px solid var(--line-2);border-radius:9px;background:var(--ground);color:var(--ink);font-family:inherit;font-size:13px;font-weight:600}
+ .search:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+ .lens{display:flex;flex-direction:column;gap:4px}
 .lens button{display:flex;align-items:center;gap:9px;text-align:left;width:100%;background:transparent;border:1px solid transparent;border-radius:9px;padding:8px 10px;cursor:pointer;color:var(--ink-2);font-size:13.5px;font-weight:600}
 .lens button .dot{width:11px;height:11px;border-radius:3px;flex:0 0 auto;background:var(--muted)}
 .lens button small{color:var(--muted);font-weight:500;font-size:11px}
@@ -268,6 +270,10 @@ tbody tr:hover td{background:var(--surface-2)}
     <aside class="rail" id="rail">
       <button class="rail-toggle" id="railToggle" type="button" aria-expanded="true"><span>☰ Filters &amp; focus lens</span><span id="railChev">▾</span></button>
       <section>
+        <h3>Find a club</h3>
+        <input class="search" id="q" type="search" placeholder="Search by name — try “Albirex”" aria-label="Search clubs by name" autocomplete="off">
+      </section>
+      <section>
         <h3>Focus lens</h3>
         <div class="lens" id="lensbox"></div>
       </section>
@@ -370,7 +376,7 @@ const CLUBS=[
   src:["lioncitysailorsfa.sg","lioncitysailorsfc.sg/academy"]},
  // Rebrand, not a partnership: albirex.com.sg 301-redirects to fcjurong.com. Youth/women's teams took
  // the FC Jurong name 1 Jan 2026, the men's team 1 Jul 2026 — the rename is complete as of Jul 2026.
- {id:"fcj",name:"FC Jurong (formerly Albirex Niigata SG)",cat:"elite",region:"west",loc:"238 Jurong East St 21 (primary field & trials) · Jurong East/West Stadium",km:6,car:13,transit:35,
+ {id:"fcj",name:"FC Jurong (formerly Albirex Niigata SG)",aliases:["Albirex","Albirex Niigata","Albirex Niigata Singapore","Albirex FC","FC Jurong","Jurong Soccer School"],cat:"elite",region:"west",loc:"238 Jurong East St 21 (primary field & trials) · Jurong East/West Stadium",km:6,car:13,transit:35,
   ages:R("U6","U17"),feeMo:100,feeConf:"med",feeText:"COE elite: free (selection). FC Jurong grassroots: S$100/mo (1×/wk) or S$200/mo (unlimited/league) + one-time S$170 reg incl. jersey. <b>Not published on the club site</b> — the soccer school lists only KIDS/U-8/U-10/U-12 + Academy tiers, with no fees. Confirm before paying.",
   feeTiers:[{label:"Grassroots 1×/wk (open)",ages:R("U6","U17"),mo:100,regFee:170,conf:"high",open:true,note:"reg incl. jersey"},
             {label:"Grassroots unlimited + league (open)",ages:R("U6","U17"),mo:200,regFee:170,conf:"high",open:true,note:"unlimited sessions incl. league play"},
@@ -644,7 +650,7 @@ const $=s=>document.querySelector(s);
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const REGION_LABEL={west:"West",central:"Central",north:"North",ne:"North-East",east:"East"};
 const REGION_ORDER=["west","central","north","ne","east"];
-const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,short:false,view:"graph",sel:null,sort:{key:"fit",dir:-1},newsCat:"all"};
+const state={lens:"overview",cat:"all",age:"all",dist:99,mode:"car",home:"tengah",weekend:false,west:false,nowd:false,short:false,q:"",view:"graph",sel:null,sort:{key:"fit",dir:-1},newsCat:"all"};
 // Home-base picker: pick any SG town; travel is estimated from an approx km-grid.
 // Tengah keeps its researched car/transit/km figures; other bases are straight-line estimates.
 const HOME_BASES=[
@@ -978,8 +984,15 @@ function attrColor(name){
 }
 
 /* ----- filtering ----- */
+const clubSearch=c=>{
+ const q=(state.q||"").trim().toLowerCase();
+ if(!q)return true;
+ const hay=[c.name,(c.aliases||[]).join(" "),c.loc].join(" ").toLowerCase();
+ return q.split(/\s+/).every(w=>hay.includes(w));
+};
 function filtered(){
  return CLUBS.filter(c=>{
+  if(state.q&&!clubSearch(c))return false;
   if(state.cat!=="all"&&c.cat!==state.cat)return false;
   if(state.age!=="all"){const sel=selectedBands();if(!sel.some(a=>c.ages.includes(a)))return false;}
   if(state.dist!==99&&tmins(c)>state.dist)return false;
@@ -1763,6 +1776,7 @@ document.querySelectorAll("#seg-mode button").forEach(b=>b.onclick=()=>{
  render();});
 function tog(id,key){const e=$(id);e.onclick=()=>{state[key]=!state[key];e.classList.toggle("on",state[key]);render();};}
 tog("#t-weekend","weekend");tog("#t-west","west");tog("#t-nowd","nowd");tog("#t-short","short");
+(function(){const q=$("#q");if(!q)return;q.value=state.q;q.addEventListener("input",()=>{state.q=q.value;render();});})();
 $("#memberBtn").onclick=openMemberModal;
 $("#themebtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");const next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);buildLens();render();if(state.sel)openDrawer(state.sel);};
 addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(render,180);});
