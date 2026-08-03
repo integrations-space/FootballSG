@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-08-03",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,24 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-07-31-lions-draw-vietnam-hyundai-cup",
+      "date": "2026-07-31",
+      "cat": "spl",
+      "title": "Lions hold defending champions Vietnam to a battling 0-0 draw in Hanoi",
+      "summary": "Singapore produced a disciplined, resilient display to hold defending champions Vietnam scoreless in front of 31,569 spectators at My Dinh National Stadium. The point keeps Gavin Lee's side in contention for the ASEAN Championship Hyundai Cup 2026 semi-finals, with a decisive Group A meeting against Indonesia up next.",
+      "src": "https://fas.org.sg/lions-hold-defending-champions-vietnam-to-battling-draw/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-07-27-lions-beat-timor-leste-hyundai-cup",
+      "date": "2026-07-27",
+      "cat": "spl",
+      "title": "Lions beat Timor-Leste 2-0 at Jalan Besar to stay perfect in Hyundai Cup Group A",
+      "summary": "Headed goals from Ilhan Fandi and Song Ui-young either side of half-time gave Singapore a 2-0 win over Timor-Leste in front of 4,665 fans at Jalan Besar Stadium. The result moved Gavin Lee's side top of Group A in the ASEAN Championship Hyundai Cup 2026 with two wins from two.",
+      "src": "https://fas.org.sg/lions-overcome-timor-leste-to-maintain-perfect-start",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
