@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-08-10",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,24 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-08-07-lions-book-hyundai-cup-semis",
+      "date": "2026-08-07",
+      "cat": "spl",
+      "title": "Lions draw 1-1 with Indonesia, book ASEAN Hyundai Cup semi-final spot",
+      "summary": "Ilhan Fandi's 66th-minute equaliser earned Gavin Lee's side a 1-1 draw with Indonesia at Jalan Besar Stadium, enough for Singapore to finish second in Group A behind Vietnam and advance — Indonesia, who led through Ragnar Oratmangoen in the 47th minute, needed a win to progress and didn't get it. Singapore host the Group B winners in the first leg of the semi-finals on 15 August as they bid for a fifth ASEAN title.",
+      "src": "https://www.aseanfootball.org/v3/singapore-pip-indonesia-for-spot-in-asean-hyundai-cup-2026-semifinals/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-01-fas-adidas-kit-sponsor",
+      "date": "2026-08-01",
+      "cat": "spl",
+      "title": "FAS ends 19-year Nike deal, adidas becomes new Lions kit sponsor",
+      "summary": "FAS and adidas announced a multi-year partnership making adidas Singapore's official kit maker from 1 August, ending a 19-year deal with Nike that ran through 31 July. The new home and away kits debuted in the Lions' 7 August ASEAN Hyundai Cup fixture against Indonesia; replica jerseys retail at S$99 and authentic on-field jerseys at S$169. The deal also makes adidas the official match ball supplier for the Singapore Premier League and Singapore Cup.",
+      "src": "https://www.espn.com/soccer/story/_/id/49518314/singapore-parade-new-kit-vs-indonesia-mid-asean-championship-switch",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
