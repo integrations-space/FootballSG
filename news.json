@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-08-17",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,70 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-08-16-rodri-barcelona-transfer",
+      "date": "2026-08-16",
+      "cat": "intl",
+      "title": "Manchester City agree to sell Rodri to Barcelona",
+      "summary": "Manchester City accepted an offer from Barcelona for World Cup-winning midfielder Rodri, reported at around €76.5m, after talks with Real Madrid broke down. Rodri was set to travel to Barcelona for a medical and to sign a four-year contract in the following days. As of this report the deal was agreed between clubs but not yet finalised.",
+      "src": "https://www.washingtonpost.com/sports/soccer/2026/08/16/rodri-barcelona-man-city/197efa06-99ad-11f1-9cc4-2dc9b46e2d5c_story.html",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-16-community-shield-arsenal-man-city",
+      "date": "2026-08-16",
+      "cat": "intl",
+      "title": "Arsenal thrash Manchester City 3-0 to win the FA Community Shield",
+      "summary": "Arsenal routed FA Cup holders Manchester City 3-0 at the Principality Stadium in Cardiff in England's traditional season curtain-raiser, with Riccardo Calafiori, Kai Havertz and Martin Ødegaard on the scoresheet. It was Manchester City's first competitive match under new manager Enzo Maresca.",
+      "src": "https://www.arsenal.com/news/community-shield-highlights-arsenal-3-0-man-city-aiIrQ8s57JHl",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-15-lions-thailand-hyundai-cup-semi-first-leg",
+      "date": "2026-08-15",
+      "cat": "spl",
+      "title": "Lions fall 3-1 to Thailand in ASEAN Hyundai Cup semi-final first leg",
+      "summary": "Singapore lost 3-1 to seven-time champions Thailand at Jalan Besar Stadium in the first leg of their ASEAN Hyundai Cup 2026 semi-final. Teerasak Poeiphimai scored twice and Seksan Ratree added a third before Ilhan Fandi's late goal — the first Thailand had conceded in the tournament — gave the Lions something to build on ahead of the second leg in Bangkok on 18 August.",
+      "src": "https://fas.org.sg/singapore-take-hope-into-second-leg-despite-defeat-to-thailand/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-15-la-liga-2026-27-season-opens",
+      "date": "2026-08-15",
+      "cat": "intl",
+      "title": "La Liga 2026-27 season kicks off with wins for Alavés and Sevilla",
+      "summary": "Spain's top flight opened its new season as Deportivo Alavés beat 10-man Getafe 3-0 in Vitoria after Kiko Femenia's first-half red card, with Mariano Díaz among the scorers. Sevilla later completed a 2-1 comeback win over Rayo Vallecano on the same opening weekend.",
+      "src": "https://www.washingtonpost.com/sports/soccer/2026/08/15/laliga-sevilla-rayo-vallecano-getafe-alaves/75338432-98e2-11f1-9ef9-1be722184483_story.html",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-13-fas-launches-singapore-premier-youth-league",
+      "date": "2026-08-13",
+      "cat": "pathways",
+      "title": "FAS launches new Singapore Premier Youth League, replacing the Elite Youth League",
+      "summary": "The Football Association of Singapore announced the Singapore Premier Youth League (SPYL), a new high-performance youth competition under the Unleash The Roar! programme that replaces the adidas Elite Youth League previously run by Lion City Sailors. The inaugural season features 57 teams across seven age categories from U10 to U19 — SPL club youth teams, private academies, National Development Centre teams, Singapore Sports School and invited Malaysian club Johor Darul Ta'zim — running 15 August to 22 November 2026.",
+      "src": "https://fas.org.sg/singapore-premier-youth-league-to-kick-off-providing-a-new-competitive-platform-for-singapores-leading-young-players/",
+      "clubs": ["ndc", "sss", "lcs"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-12-psg-win-uefa-super-cup",
+      "date": "2026-08-12",
+      "cat": "intl",
+      "title": "PSG beat Aston Villa 2-1 to retain the UEFA Super Cup",
+      "summary": "Paris Saint-Germain won the UEFA Super Cup for a second straight year, beating Europa League champions Aston Villa 2-1 in Salzburg. Khvicha Kvaratskhelia put PSG ahead, Villa debutant Brian Madjo equalised, before Désiré Doué's 61st-minute winner — confirmed on VAR review after being flagged offside — settled it.",
+      "src": "https://www.uefa.com/uefasupercup/match/2048319--paris-vs-aston-villa/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-11-hyundai-cup-semi-tickets-jalan-besar",
+      "date": "2026-08-11",
+      "cat": "spl",
+      "title": "Tickets go on sale for Lions' Hyundai Cup semi-final first leg vs Thailand",
+      "summary": "FAS put tickets on sale for the Lions' ASEAN Hyundai Cup 2026 semi-final first leg against Thailand at Jalan Besar Stadium on 15 August, sold online-only via Tickethotline with Category 1 priced at S$49 and Category 2 at S$35.",
+      "src": "https://fas.org.sg/tickets-for-lions-asean-hyundai-cup-2026-semi-final-first-leg-at-jalan-besar-stadium-on-sale-tomorrow/",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
