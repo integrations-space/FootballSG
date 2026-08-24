@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-08-24",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,34 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-08-18-rodri-completes-barcelona-transfer",
+      "date": "2026-08-18",
+      "cat": "intl",
+      "title": "Rodri completes transfer from Manchester City to Barcelona",
+      "summary": "Spain international Rodri completed a move from Manchester City to Barcelona in a deal reported at an initial €60m, rising to roughly €76.5m with add-ons, on a four-year contract. He turned down interest from Real Madrid to join several Spain teammates already at Camp Nou.",
+      "src": "https://www.espn.com/soccer/story/_/id/49598191/rodri-seals-transfer-barcelona-seven-year-stint-man-city",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-18-lions-exit-hyundai-cup-semifinal-thailand",
+      "date": "2026-08-18",
+      "cat": "spl",
+      "title": "Lions knocked out of ASEAN Hyundai Cup semi-finals despite second-leg win over Thailand",
+      "summary": "Singapore beat Thailand 2-1 away in Bangkok but were eliminated 4-3 on aggregate after Saturday's 3-1 first-leg defeat at Jalan Besar Stadium. Harhys Stewart's strike and a Thai own goal put the Lions 2-0 up on the night before Kakana Khamyok's 61st-minute penalty settled it for the hosts, who advance to the final to face Vietnam or Malaysia.",
+      "src": "https://www.aseanfootball.org/v3/thailand-advance-into-asean-hyundai-cup-2026-final-after-4-3-aggregate-win-over-singapore/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-13-singapore-premier-youth-league-launch",
+      "date": "2026-08-13",
+      "cat": "pathways",
+      "title": "FAS launches the Singapore Premier Youth League, succeeding the Elite Youth League",
+      "summary": "FAS announced the Singapore Premier Youth League (SPYL), a new high-performance competition building on the foundations of the adidas Elite Youth League and supported by the Unleash The Roar! project. The inaugural season runs 15 August to 22 November with 57 teams across seven age bands from U10 to U19 (expanding beyond the previous U11-U17 spread), bringing together SPL club youth teams, private academies, National Development Centre teams, Singapore Sports School, and invited Malaysian club Johor Darul Ta'zim. The U17 category kicked off 15 August, the other six age groups the following day.",
+      "src": "https://fas.org.sg/singapore-premier-youth-league-to-kick-off-providing-a-new-competitive-platform-for-singapores-leading-young-players/",
+      "clubs": ["ndc", "sss"],
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
