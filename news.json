@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-08-31",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,34 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-08-30-leao-galatasaray-transfer",
+      "date": "2026-08-30",
+      "cat": "intl",
+      "title": "Rafael Leão completes permanent move from AC Milan to Galatasaray",
+      "summary": "AC Milan confirmed in an official statement on 30 August that Rafael Leão has completed a permanent transfer to Turkish side Galatasaray after seven seasons at the club, reportedly for around €38m. The Portugal winger, Serie A MVP in 2021-22, signs a four-year deal; Milan retain a 20% sell-on share of any future transfer fee.",
+      "src": "https://www.acmilan.com/en/news/articles/media/2026-08-30/official-statement-rafael-leao",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-28-dsa-sec-outcomes-released",
+      "date": "2026-08-28",
+      "cat": "pathways",
+      "title": "DSA-Sec 2026 outcomes released to Secondary 1 (2027 intake) applicants",
+      "summary": "The Direct School Admission (DSA-Sec) exercise for the 2027 Secondary 1 intake reached its outcome-notification deadline on Friday, 28 August 2026, with schools required to inform every applicant — Confirmed Offer or Wait-Listed — directly by this date, ahead of the PSLE results. DSA-Sec is the route by which schools with football talent programmes, including Singapore Sports School, select students on sporting merit, so this date matters to families who applied on a football portfolio.",
+      "src": "https://www.moe.gov.sg/secondary/dsa/selection/outcomes",
+      "clubs": ["sss"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-08-27-ucl-league-phase-draw",
+      "date": "2026-08-27",
+      "cat": "intl",
+      "title": "2026-27 Champions League league-phase draw held in Monaco",
+      "summary": "UEFA held the league-phase draw for the 2026-27 Champions League at the Grimaldi Forum in Monaco on 27 August, setting the 36-team, 8-matchday league phase (144 matches total). Notable pairings include Real Madrid facing Arsenal and Inter, and holders Paris Saint-Germain drawn against Barcelona and Manchester City. The first matchday is 8-10 September 2026, with the final at the Estadio Metropolitano, Madrid, on 5 June 2027.",
+      "src": "https://www.uefa.com/uefachampionsleague/news/02a8-215821715a96-9a3b43fad585-1000--uefa-champions-league-league-phase-draw/",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
