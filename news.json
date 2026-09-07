@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-09-07",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,25 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-09-06-lcs-win-community-shield",
+      "date": "2026-09-06",
+      "cat": "spl",
+      "title": "Lion City Sailors beat Tampines Rovers 2-0 to win the 2026/27 Community Shield",
+      "summary": "Ilhan Fandi scored twice inside the first half-hour as Lion City Sailors beat Tampines Rovers 2-0 in front of a 3,865-strong crowd at Jalan Besar Stadium to win the SPL Community Shield — their fourth title in the fixture, after 2019, 2022 and 2024. The match served as the curtain-raiser to the 2026/27 Singapore Premier League season, which kicks off on 11 September.",
+      "src": "https://spl.sg/news/sailors-clinch-playback-community-shield-with-2-0-victory-over-tampines/",
+      "clubs": ["lcs", "tmp"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-09-03-sg-u20-progress-afc-u20-qualifiers",
+      "date": "2026-09-03",
+      "cat": "spl",
+      "title": "Singapore's U20s beat Macau 1-0 to confirm progress in AFC U20 Asian Cup qualifying",
+      "summary": "Head coach Syed Azmir's side beat Macau 1-0 in Thimphu, Bhutan, in Group J of the AFC U20 Asian Cup China 2027 Qualifiers Development Phase, staying unbeaten alongside group winners Chinese Taipei to confirm Singapore's promotion to the next Qualification Phase. It's a step in the same national pathway that youth players reach via the Singapore Youth League and National School Games.",
+      "src": "https://www.the-afc.com/en/national/afc_u20_asian_cup.html/news/qualifiers-group-j-macau-china-0-1-singapore",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
