@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-09-21",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,25 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-09-19-spl-matchweek-2-fc-jurong-perfect-start",
+      "date": "2026-09-19",
+      "cat": "spl",
+      "title": "FC Jurong go two-from-two as SPL Matchweek 2 closes",
+      "summary": "FC Jurong beat Hougang United 3-0 at Jurong East Stadium on 18 September, following their 4-0 opening-day win over Young Lions, to sit top of the table with a perfect record after two matches. In Saturday's other Matchweek 2 fixture at Bishan Stadium, Tanjong Pagar United won a seven-goal thriller 4-3 away to Balestier Khalsa.",
+      "src": "https://spl.sg/results/",
+      "clubs": ["fcj", "hgfc", "bal", "tpu"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-09-18-lions-squad-fifa-asean-cup-2026",
+      "date": "2026-09-18",
+      "cat": "spl",
+      "title": "Gavin Lee names 23-man Lions squad for the inaugural FIFA ASEAN Cup 2026",
+      "summary": "Head coach Gavin Lee named the 23 players representing Singapore at the FIFA ASEAN Cup 2026, running 24 September to 5 October. The Lions open Group A away to hosts Indonesia in Jakarta on 25 September, play Bangladesh on 28 September, then close the group against Causeway rivals Malaysia on 1 October. Defenders Safuwan Baharudin and Irfan Najeeb return to the squad, with forward Faris Ramli earning his first call-up since last November.",
+      "src": "https://fas.org.sg/lions-squad-announced-for-fifa-asean-cup-2026/",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
