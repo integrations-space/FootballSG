@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-09-28",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,24 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-09-27-fas-congress-2026",
+      "date": "2026-09-27",
+      "cat": "policy",
+      "title": "FAS Congress reviews the year: women's team progress, doubled SPL prize pool",
+      "summary": "At its Congress at Shangri-La Singapore, FAS President Forrest Li and the Council reviewed the past year with member clubs and stakeholders from FIFA, the AFC, AFF, SportSG and Unleash The Roar!. Cited highlights included the Women's National Team's third-place finish at the AFF Women's Cup and its qualification for the 2027 ASEAN Women's Championship under new head coach Mihoko Ishida, all Women's Premier League matches being live-streamed for the first time, and a doubling of the SPL prize pool. No new youth-fee, academy-licensing or pathway policy was announced at the Congress itself.",
+      "src": "https://fas.org.sg/fas-council-marks-strong-year-of-progress-as-momentum-builds-across-singapore-football",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-09-25-lions-lose-asean-cup-opener-indonesia",
+      "date": "2026-09-25",
+      "cat": "spl",
+      "title": "Lions open FIFA ASEAN Cup 2026 with 2-0 defeat to hosts Indonesia",
+      "summary": "Singapore lost 2-0 to co-hosts Indonesia in their Division 1 Group A opener at Gelora Bung Karno Stadium in Jakarta. Ragnar Oratmangoen put Indonesia ahead in the 13th minute and Ole Romeny added a 74th-minute penalty after Safuwan Baharudin was sent off for Singapore in the 70th minute. The Lions, who reached the semi-finals of July's ASEAN Championship Hyundai Cup, continue their group campaign against Bangladesh and Malaysia.",
+      "src": "https://www.fifa.com/en/tournaments/mens/asean-cup/2026/articles/indonesia-singapore-report-highlights-quotes",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
