@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-10-19",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,34 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-10-14-spl-matchweek3-geylang-top-sailors-rout",
+      "date": "2026-10-14",
+      "cat": "spl",
+      "title": "Geylang top the SPL after Matchweek 3; Lion City Sailors rout Young Lions 6-1 in Mark Jackson's first league game",
+      "summary": "Geylang International beat FC Jurong 3-1 at Our Tampines Hub to go top of the 2026/27 Singapore Premier League table on nine points after three matches. In the same round, Lion City Sailors thrashed Young Lions 6-1 at Jalan Besar Stadium on 11 October — new head coach Mark Jackson's first league match in charge — with Matthias Phaëton scoring twice.",
+      "src": "https://spl.sg/news/2026-27-singapore-premier-league-matchweek-3-roundup/",
+      "clubs": ["lcs", "fcj"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-10-14-champions-league-matchday2-goal-record",
+      "date": "2026-10-14",
+      "cat": "intl",
+      "title": "Champions League matchday 2 sets all-time scoring record with 78 goals",
+      "summary": "UEFA confirmed that Matchday 2 of the 2026/27 Champions League produced 78 goals across 18 matches on 13-14 October, the highest total for any matchday in the competition's history and seven more than the previous record of 71 set on Matchday 3 of 2025/26. Headline results included Liverpool 6-3 LASK, Aston Villa 6-0 Fenerbahce, Real Madrid's 4-3 comeback win at Roma and PSG's 4-2 win at Manchester City.",
+      "src": "https://www.uefa.com/uefachampionsleague/news/023d-0e97c625b737-41a8e3c3c6c3-1000--matchday-2-sets-new-record-with-78-goals-high/",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-10-12-fas-u15-world-cup-squad-baku",
+      "date": "2026-10-12",
+      "cat": "pathways",
+      "title": "FAS confirms Singapore U-15 boys' squad and fixtures for inaugural FIFA U-15 World Cup & Festival",
+      "summary": "The Football Association of Singapore confirmed on 12 October that the national Under-15 boys' team will play five group matches in three days at the first-ever FIFA U-15 World Cup & Festival, held 24-30 October in Baku, Azerbaijan. Singapore are drawn in Group P with Guatemala, Honduras, Canada, Guinea and American Samoa, with all matches at the Hovsan Competition Complex; players must be born in 2011 or 2012.",
+      "src": "https://littlebigreddot.com/?p=28566",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
