@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-10-26",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,24 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-10-20-u15-boys-depart-baku-fifa-world-cup-festival",
+      "date": "2026-10-20",
+      "cat": "spl",
+      "title": "Singapore's U15 Boys depart for the inaugural FIFA U-15 World Cup & Festival in Baku",
+      "summary": "FAS confirmed the 14-strong Under-15 Boys squad, coached by Ashraf Ariffin, departed for Baku, Azerbaijan on 21 October to compete in the first-ever FIFA U-15 World Cup & Festival. Singapore sit in Group P with Guatemala, Honduras, Canada, Guinea and American Samoa, playing all five group matches between 24 and 26 October at the Hovsan Competition Complex. Two Spain-based players, Kyen Sasikumar and Edan McCulloch, are among the squad named.",
+      "src": "https://fas.org.sg/singapore-u15-boys-gear-up-for-international-challenge-at-fifa-u15-world-cup-and-festival-2026",
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-10-20-ucl-matchday3-psg-barcelona",
+      "date": "2026-10-20",
+      "cat": "intl",
+      "title": "PSG beat Barcelona 4-2 in Champions League Matchday 3, Barcelona's first loss of the season",
+      "summary": "Paris Saint-Germain came from behind twice to beat Barcelona 4-2 at Parc des Princes, with goals from Doué, Lucas Hernandez, Vitinha and Fabian Ruiz either side of a Lamine Yamal equaliser. The result was Barcelona's first defeat of the 2026/27 season under Hansi Flick and extended PSG's unbeaten run in the competition. Elsewhere on Matchday 3, Manchester City beat AEK Athens 5-1 and Liverpool won 4-3 against Villarreal.",
+      "src": "https://easternherald.com/2026/10/21/psg-barcelona-liverpool-villarreal-champions-league-matchday-3/",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
