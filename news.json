@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-11-09",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,35 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-11-05-lcs-rout-adelaide-united-acl-two",
+      "date": "2026-11-05",
+      "cat": "spl",
+      "title": "Lion City Sailors thrash Adelaide United 5-0 for 7-0 aggregate in AFC Champions League Two",
+      "summary": "Lion City Sailors beat Australia's Adelaide United 5-0 at Jalan Besar Stadium on 5 November, with Matthias Phaeton scoring twice, to complete a 7-0 aggregate win over the two legs in AFC Champions League Two Group F. The result follows the Sailors' 2-0 away win in Adelaide on 29 October, when they became the first Singapore club to win a competitive match on Australian soil. The win strengthens the Sailors' position at the top of Group F with two group games remaining.",
+      "src": "https://littlebigreddot.com/?p=31227",
+      "clubs": ["lcs"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-11-04-lions-squad-mizuho-blue-challenge",
+      "date": "2026-11-04",
+      "cat": "spl",
+      "title": "Gavin Lee names 24-man Lions squad for inaugural Mizuho Blue Challenge",
+      "summary": "Head coach Gavin Lee named a 24-man Singapore squad for the Mizuho Blue Challenge (the Kallang Football Series), a four-team tournament at the National Stadium from 13 to 17 November 2026 featuring Brazil, Japan and Paraguay. The squad includes a first senior call-up for Balestier Khalsa's Woo Chun Wei, plus recalls for Hougang United's Saifullah Akbar and Geylang International's Joshua Pereira and Darren Teh, partly covering an injury to Lion City Sailors' Nur Adam Abdullah. Singapore play Paraguay on 13 November and Brazil, featuring Vinicius Jr, on 17 November.",
+      "src": "https://fas.org.sg/lions-squad-announced-for-mizuho-blue-challenge/",
+      "clubs": ["bal", "hgfc", "gey", "lcs"],
+      "status": "confirmed"
+    },
+    {
+      "id": "2026-11-04-como-9-1-lens-champions-league-record",
+      "date": "2026-11-04",
+      "cat": "intl",
+      "title": "Como equal Champions League record with 9-1 rout of Lens",
+      "summary": "Como thrashed Racing Club de Lens 9-1 away in UEFA Champions League Matchday 4 on 4 November, equalling the competition's biggest-ever winning margin and becoming only the second side to score nine goals in a single Champions League match. Tasos Douvikas scored a hat-trick and 18-year-old debutant Matteo Papaccioli also scored as Como moved to fourth in the 36-team league table.",
+      "src": "https://www.khaleejtimes.com/football/como-hit-nine-in-stunning-champions-league-win-at-lens-2",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
