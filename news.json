@@ -1,6 +1,6 @@
 {
   "_readme": "News archive for FootballSG. Append to items[]; never rewrite history. Every item needs a real source URL — an unsourced item must not ship. Dates must come from the article body, not a listing page: FAS listing pages mis-attribute dates. `time` is optional and Asia/Singapore — state it only when the source does; never invent one. Validated by checks/news-audit.mjs on every push.",
-  "updated": "2026-07-27",
+  "updated": "2026-11-23",
   "tz": "Asia/Singapore",
   "categories": [
     { "id": "fees", "label": "Fees & clubs", "desc": "Fee changes, programmes, venues, closures", "v": "--c3" },
@@ -10,6 +10,15 @@
     { "id": "intl", "label": "International", "desc": "Major results, tournaments, transfers", "v": "--c5" }
   ],
   "items": [
+    {
+      "id": "2026-11-17-lions-brazil-mizuho-blue-challenge",
+      "date": "2026-11-17",
+      "cat": "spl",
+      "title": "Lions thrashed 7-0 by Brazil in Mizuho Blue Challenge finale at National Stadium",
+      "summary": "Vinicius Junior scored a first-half hat-trick as Brazil — missing suspended head coach Carlo Ancelotti and winger Raphinha — beat Singapore 7-0 at the National Stadium on 17 November, in the first-ever meeting between the two nations. The result closed the inaugural Mizuho Blue Challenge, a multi-nation friendly series hosted in Singapore in which the Lions had also lost 4-1 to Paraguay on 13 November.",
+      "src": "https://www.aljazeera.com/sports/2026/11/17/brazil-defeat-singapore-7-0-as-vinicius-scores-first-half-hat-trick",
+      "status": "confirmed"
+    },
     {
       "id": "2026-07-20-lions-25-man-squad-hyundai-cup",
       "date": "2026-07-20",
